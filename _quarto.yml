@@ -2,15 +2,14 @@ project:
   type: website
 
 website:
-  title: "Zana's Blog"
-  description: "A week of notes, code, and things I learned."
-  site-url: https://zanabrilej22.github.io/Reproducible_research_course/
+  description: "A blog built with Quarto"
+
+  title: "Blog"
   navbar:
     right:
-      - href: about.qmd
-        text: About
+      - about.qmd
       - icon: github
-        href: https://github.com/zanabrilej22
+        href: https://github.com/
       - icon: bluesky
         href: https://bsky.app/
 format:
@@ -19,3 +18,9 @@ format:
       - minty
       - brand
     css: styles.css
+
+execute: 
+  freeze: auto
+
+
+

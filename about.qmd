@@ -1,19 +1,19 @@
 ---
-title: "Zana Brilej"
-image: profile.jpg
+title: "About"
+image: IMG_20230621_145059.jpg
 about:
   template: jolla
   links:
-    - icon: github
-      text: Github
-      href: https://github.com/zanabrilej22
-    - icon: linkedin
-      text: LinkedIn
-      href: https://linkedin.com
     - icon: bluesky
       text: Bluesky
       href: https://bsky.app/
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com
+    - icon: github
+      text: Github
+      href: https://github.com
+
 ---
 
-Welcome to my blog. I write here about what I'm learning, one post a day
-from Monday to Friday.
+About this blog
