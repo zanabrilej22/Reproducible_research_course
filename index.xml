@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Zana&#39;s Blog</title>
+<link>https://zanabrilej22.github.io/Reproducible_research_course/</link>
+<atom:link href="https://zanabrilej22.github.io/Reproducible_research_course/index.xml" rel="self" type="application/rss+xml"/>
+<description>A week of notes, code, and things I learned.</description>
+<generator>quarto-1.10.18</generator>
+<lastBuildDate>Thu, 17 Sep 2026 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Friday</title>
+  <dc:creator>Zana Brilej</dc:creator>
+  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/friday/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="what-i-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
+<p>Write a short summary of Friday here.</p>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<p>Write today’s notes here.</p>
+</section>
+<section id="looking-back-on-the-week" class="level2">
+<h2 class="anchored" data-anchor-id="looking-back-on-the-week">Looking back on the week</h2>
+<p>A few things that stood out across <a href="../monday/">Monday</a> through today.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>weekly</category>
+  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/friday/</guid>
+  <pubDate>Thu, 17 Sep 2026 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Thursday</title>
+  <dc:creator>Zana Brilej</dc:creator>
+  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/thursday/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="what-i-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
+<p>Write a short summary of Thursday here.</p>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<p>Write today’s notes here.</p>
+</section>
+<section id="up-next" class="level2">
+<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
+<p>What I plan to pick up on <a href="../friday/">Friday</a>.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>weekly</category>
+  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/thursday/</guid>
+  <pubDate>Wed, 16 Sep 2026 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Wednesday</title>
+  <dc:creator>Zana Brilej</dc:creator>
+  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/wednesday/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="what-i-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
+<p>Write a short summary of Wednesday here.</p>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<p>Write today’s notes here.</p>
+</section>
+<section id="up-next" class="level2">
+<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
+<p>What I plan to pick up on <a href="../thursday/">Thursday</a>.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>weekly</category>
+  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/wednesday/</guid>
+  <pubDate>Tue, 15 Sep 2026 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Tuesday</title>
+  <dc:creator>Zana Brilej</dc:creator>
+  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/tuesday/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="what-i-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
+<p>Write a short summary of Tuesday here.</p>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<p>Write today’s notes here.</p>
+</section>
+<section id="up-next" class="level2">
+<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
+<p>What I plan to pick up on <a href="../wednesday/">Wednesday</a>.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>weekly</category>
+  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/tuesday/</guid>
+  <pubDate>Mon, 14 Sep 2026 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Post With Code</title>
+  <dc:creator>Zana Brilej</dc:creator>
+  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This is a post with executable code.</p>
+
+
+
+ ]]></description>
+  <category>news</category>
+  <category>code</category>
+  <category>analysis</category>
+  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/</guid>
+  <pubDate>Sun, 13 Sep 2026 22:00:00 GMT</pubDate>
+  <media:content url="https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Monday</title>
+  <dc:creator>Zana Brilej</dc:creator>
+  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/monday/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="what-i-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
+<p>The first day of the week. I set up this blog with Quarto and got the project structure in place.</p>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<p>Write today’s notes here.</p>
+</section>
+<section id="up-next" class="level2">
+<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
+<p>What I plan to pick up on <a href="../tuesday/">Tuesday</a>.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>weekly</category>
+  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/monday/</guid>
+  <pubDate>Sun, 13 Sep 2026 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Welcome To My Blog</title>
+  <dc:creator>Zana Brilej</dc:creator>
+  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/welcome/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This is the first post in a Quarto blog. Welcome!</p>
+<p><img src="https://zanabrilej22.github.io/Reproducible_research_course/posts/welcome/thumbnail.jpg" class="img-fluid"></p>
+<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+
+
+
+ ]]></description>
+  <category>news</category>
+  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/welcome/</guid>
+  <pubDate>Thu, 10 Sep 2026 22:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>
