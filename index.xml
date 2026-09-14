@@ -10,7 +10,7 @@
 <atom:link href="https://zanabrilej22.github.io/Reproducible_research_course/index.xml" rel="self" type="application/rss+xml"/>
 <description>A week of notes, code, and things I learned.</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Thu, 17 Sep 2026 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 18 Sep 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Friday</title>
   <dc:creator>Zana Brilej</dc:creator>
@@ -39,7 +39,7 @@
  ]]></description>
   <category>weekly</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/friday/</guid>
-  <pubDate>Thu, 17 Sep 2026 22:00:00 GMT</pubDate>
+  <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Thursday</title>
@@ -69,7 +69,7 @@
  ]]></description>
   <category>weekly</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/thursday/</guid>
-  <pubDate>Wed, 16 Sep 2026 22:00:00 GMT</pubDate>
+  <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Wednesday</title>
@@ -99,7 +99,7 @@
  ]]></description>
   <category>weekly</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/wednesday/</guid>
-  <pubDate>Tue, 15 Sep 2026 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 16 Sep 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Tuesday</title>
@@ -129,29 +129,7 @@
  ]]></description>
   <category>weekly</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/tuesday/</guid>
-  <pubDate>Mon, 14 Sep 2026 22:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Post With Code</title>
-  <dc:creator>Zana Brilej</dc:creator>
-  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>This is a post with executable code.</p>
-
-
-
- ]]></description>
-  <category>news</category>
-  <category>code</category>
-  <category>analysis</category>
-  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/</guid>
-  <pubDate>Sun, 13 Sep 2026 22:00:00 GMT</pubDate>
-  <media:content url="https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
+  <pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Monday</title>
@@ -181,7 +159,29 @@
  ]]></description>
   <category>weekly</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/monday/</guid>
-  <pubDate>Sun, 13 Sep 2026 22:00:00 GMT</pubDate>
+  <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Post With Code</title>
+  <dc:creator>Zana Brilej</dc:creator>
+  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This is a post with executable code.</p>
+
+
+
+ ]]></description>
+  <category>news</category>
+  <category>code</category>
+  <category>analysis</category>
+  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/</guid>
+  <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Welcome To My Blog</title>
@@ -202,7 +202,7 @@
  ]]></description>
   <category>news</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/welcome/</guid>
-  <pubDate>Thu, 10 Sep 2026 22:00:00 GMT</pubDate>
+  <pubDate>Fri, 11 Sep 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

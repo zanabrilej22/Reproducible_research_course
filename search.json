@@ -1,40 +1,5 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "Zana Brilej",
-    "section": "",
-    "text": "Welcome to my blog. I write here about what I’m learning, one post a day from Monday to Friday."
-  },
-  {
-    "objectID": "posts/wednesday/index.html",
-    "href": "posts/wednesday/index.html",
-    "title": "Wednesday",
-    "section": "",
-    "text": "Write a short summary of Wednesday here."
-  },
-  {
-    "objectID": "posts/wednesday/index.html#what-i-did-today",
-    "href": "posts/wednesday/index.html#what-i-did-today",
-    "title": "Wednesday",
-    "section": "",
-    "text": "Write a short summary of Wednesday here."
-  },
-  {
-    "objectID": "posts/wednesday/index.html#notes",
-    "href": "posts/wednesday/index.html#notes",
-    "title": "Wednesday",
-    "section": "Notes",
-    "text": "Notes\nWrite today’s notes here."
-  },
-  {
-    "objectID": "posts/wednesday/index.html#up-next",
-    "href": "posts/wednesday/index.html#up-next",
-    "title": "Wednesday",
-    "section": "Up next",
-    "text": "Up next\nWhat I plan to pick up on Thursday."
-  },
-  {
     "objectID": "posts/tuesday/index.html",
     "href": "posts/tuesday/index.html",
     "title": "Tuesday",
@@ -63,67 +28,11 @@
     "text": "Up next\nWhat I plan to pick up on Wednesday."
   },
   {
-    "objectID": "posts/friday/index.html",
-    "href": "posts/friday/index.html",
-    "title": "Friday",
-    "section": "",
-    "text": "Write a short summary of Friday here."
-  },
-  {
-    "objectID": "posts/friday/index.html#what-i-did-today",
-    "href": "posts/friday/index.html#what-i-did-today",
-    "title": "Friday",
-    "section": "",
-    "text": "Write a short summary of Friday here."
-  },
-  {
-    "objectID": "posts/friday/index.html#notes",
-    "href": "posts/friday/index.html#notes",
-    "title": "Friday",
-    "section": "Notes",
-    "text": "Notes\nWrite today’s notes here."
-  },
-  {
-    "objectID": "posts/friday/index.html#looking-back-on-the-week",
-    "href": "posts/friday/index.html#looking-back-on-the-week",
-    "title": "Friday",
-    "section": "Looking back on the week",
-    "text": "Looking back on the week\nA few things that stood out across Monday through today."
-  },
-  {
     "objectID": "posts/post-with-code/index.html",
     "href": "posts/post-with-code/index.html",
     "title": "Post With Code",
     "section": "",
     "text": "This is a post with executable code."
-  },
-  {
-    "objectID": "posts/monday/index.html",
-    "href": "posts/monday/index.html",
-    "title": "Monday",
-    "section": "",
-    "text": "The first day of the week. I set up this blog with Quarto and got the project structure in place."
-  },
-  {
-    "objectID": "posts/monday/index.html#what-i-did-today",
-    "href": "posts/monday/index.html#what-i-did-today",
-    "title": "Monday",
-    "section": "",
-    "text": "The first day of the week. I set up this blog with Quarto and got the project structure in place."
-  },
-  {
-    "objectID": "posts/monday/index.html#notes",
-    "href": "posts/monday/index.html#notes",
-    "title": "Monday",
-    "section": "Notes",
-    "text": "Notes\nWrite today’s notes here."
-  },
-  {
-    "objectID": "posts/monday/index.html#up-next",
-    "href": "posts/monday/index.html#up-next",
-    "title": "Monday",
-    "section": "Up next",
-    "text": "Up next\nWhat I plan to pick up on Tuesday."
   },
   {
     "objectID": "posts/welcome/index.html",
@@ -165,6 +74,97 @@
     "href": "index.html",
     "title": "Zana’s Blog",
     "section": "",
-    "text": "Friday\n\n\n\nweekly\n\n\n\nWrapping up the week.\n\n\n\n\n\nSep 18, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nThursday\n\n\n\nweekly\n\n\n\nDay four.\n\n\n\n\n\nSep 17, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWednesday\n\n\n\nweekly\n\n\n\nMidweek.\n\n\n\n\n\nSep 16, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nTuesday\n\n\n\nweekly\n\n\n\nDay two.\n\n\n\n\n\nSep 15, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nMonday\n\n\n\nweekly\n\n\n\nStarting the week: setting up the blog.\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 11, 2026\n\n\nZana Brilej\n\n\n\n\n\nNo matching items"
+    "text": "Friday\n\n\n\nweekly\n\n\n\nWrapping up the week.\n\n\n\n\n\nSep 18, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nThursday\n\n\n\nweekly\n\n\n\nDay four.\n\n\n\n\n\nSep 17, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWednesday\n\n\n\nweekly\n\n\n\nMidweek.\n\n\n\n\n\nSep 16, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nTuesday\n\n\n\nweekly\n\n\n\nDay two.\n\n\n\n\n\nSep 15, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nMonday\n\n\n\nweekly\n\n\n\nStarting the week: setting up the blog.\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 11, 2026\n\n\nZana Brilej\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Zana Brilej",
+    "section": "",
+    "text": "Welcome to my blog. I write here about what I’m learning, one post a day from Monday to Friday."
+  },
+  {
+    "objectID": "posts/friday/index.html",
+    "href": "posts/friday/index.html",
+    "title": "Friday",
+    "section": "",
+    "text": "Write a short summary of Friday here."
+  },
+  {
+    "objectID": "posts/friday/index.html#what-i-did-today",
+    "href": "posts/friday/index.html#what-i-did-today",
+    "title": "Friday",
+    "section": "",
+    "text": "Write a short summary of Friday here."
+  },
+  {
+    "objectID": "posts/friday/index.html#notes",
+    "href": "posts/friday/index.html#notes",
+    "title": "Friday",
+    "section": "Notes",
+    "text": "Notes\nWrite today’s notes here."
+  },
+  {
+    "objectID": "posts/friday/index.html#looking-back-on-the-week",
+    "href": "posts/friday/index.html#looking-back-on-the-week",
+    "title": "Friday",
+    "section": "Looking back on the week",
+    "text": "Looking back on the week\nA few things that stood out across Monday through today."
+  },
+  {
+    "objectID": "posts/monday/index.html",
+    "href": "posts/monday/index.html",
+    "title": "Monday",
+    "section": "",
+    "text": "The first day of the week. I set up this blog with Quarto and got the project structure in place."
+  },
+  {
+    "objectID": "posts/monday/index.html#what-i-did-today",
+    "href": "posts/monday/index.html#what-i-did-today",
+    "title": "Monday",
+    "section": "",
+    "text": "The first day of the week. I set up this blog with Quarto and got the project structure in place."
+  },
+  {
+    "objectID": "posts/monday/index.html#notes",
+    "href": "posts/monday/index.html#notes",
+    "title": "Monday",
+    "section": "Notes",
+    "text": "Notes\nWrite today’s notes here."
+  },
+  {
+    "objectID": "posts/monday/index.html#up-next",
+    "href": "posts/monday/index.html#up-next",
+    "title": "Monday",
+    "section": "Up next",
+    "text": "Up next\nWhat I plan to pick up on Tuesday."
+  },
+  {
+    "objectID": "posts/wednesday/index.html",
+    "href": "posts/wednesday/index.html",
+    "title": "Wednesday",
+    "section": "",
+    "text": "Write a short summary of Wednesday here."
+  },
+  {
+    "objectID": "posts/wednesday/index.html#what-i-did-today",
+    "href": "posts/wednesday/index.html#what-i-did-today",
+    "title": "Wednesday",
+    "section": "",
+    "text": "Write a short summary of Wednesday here."
+  },
+  {
+    "objectID": "posts/wednesday/index.html#notes",
+    "href": "posts/wednesday/index.html#notes",
+    "title": "Wednesday",
+    "section": "Notes",
+    "text": "Notes\nWrite today’s notes here."
+  },
+  {
+    "objectID": "posts/wednesday/index.html#up-next",
+    "href": "posts/wednesday/index.html#up-next",
+    "title": "Wednesday",
+    "section": "Up next",
+    "text": "Up next\nWhat I plan to pick up on Thursday."
   }
 ]
