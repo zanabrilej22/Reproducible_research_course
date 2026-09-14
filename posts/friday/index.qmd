@@ -1,0 +1,18 @@
+---
+title: "Friday"
+description: "Wrapping up the week."
+date: "2026-09-18"
+categories: [weekly]
+---
+
+## What I did today
+
+Write a short summary of Friday here.
+
+## Notes
+
+Write today's notes here.
+
+## Looking back on the week
+
+A few things that stood out across [Monday](../monday/) through today.

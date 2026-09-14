@@ -1,0 +1,18 @@
+---
+title: "Tuesday"
+description: "Day two."
+date: "2026-09-15"
+categories: [weekly]
+---
+
+## What I did today
+
+Write a short summary of Tuesday here.
+
+## Notes
+
+Write today's notes here.
+
+## Up next
+
+What I plan to pick up on [Wednesday](../wednesday/).

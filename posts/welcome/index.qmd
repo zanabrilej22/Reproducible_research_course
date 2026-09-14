@@ -1,6 +1,6 @@
 ---
 title: "Welcome To My Blog"
-author: "Tristan O'Malley"
+author: "Zana Brilej"
 date: "2026-09-11"
 categories: [news]
 ---

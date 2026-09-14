@@ -1,0 +1,19 @@
+---
+title: "Monday"
+description: "Starting the week: setting up the blog."
+date: "2026-09-14"
+categories: [weekly]
+---
+
+## What I did today
+
+The first day of the week. I set up this blog with Quarto and got the
+project structure in place.
+
+## Notes
+
+Write today's notes here.
+
+## Up next
+
+What I plan to pick up on [Tuesday](../tuesday/).

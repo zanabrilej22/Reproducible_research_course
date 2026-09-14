@@ -1,6 +1,6 @@
 ---
 title: "Post With Code"
-author: "Harlow Malloc"
+author: "Zana Brilej"
 date: "2026-09-14"
 categories: [news, code, analysis]
 image: "image.jpg"
