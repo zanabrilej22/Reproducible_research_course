@@ -222,6 +222,57 @@ font-style: inherit;">-r</span> fastqc     <span class="co" style="color: #5E5E5
 background-color: null;
 font-style: inherit;"># come back to it later</span></span></code></pre></div></div>
 </section>
+<section id="containers" class="level2">
+<h2 class="anchored" data-anchor-id="containers">Containers</h2>
+<p>Pixi makes sure we install the same tools. A <strong>container</strong> goes one step further: it packs the tools <em>and</em> the operating system around them into a single file. That file behaves the same way on a laptop, on a server, or on someone else’s computer years from now.</p>
+<p>Containers help when:</p>
+<ul>
+<li>people in the group use different operating systems</li>
+<li>two tools need different versions of the same dependency</li>
+<li>old software will not install on a modern system</li>
+</ul>
+</section>
+<section id="which-container-tool" class="level2">
+<h2 class="anchored" data-anchor-id="which-container-tool">Which container tool</h2>
+<ul>
+<li><strong>Apptainer</strong> — for shared servers and clusters (it used to be called Singularity)</li>
+<li><strong>Docker</strong> — for a personal machine</li>
+</ul>
+<p>Ready-made images are kept on <strong>Docker Hub</strong> and <strong>Seqera</strong>. It is safer to pick a popular image from a trusted maker, such as <code>biocontainers</code>.</p>
+</section>
+<section id="getting-an-image" class="level2">
+<h2 class="anchored" data-anchor-id="getting-an-image">Getting an image</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> pull name.sif docker://repository/image:version</span></code></pre></div></div>
+<p>The <code>.sif</code> file that comes out <em>is</em> the container. Naming it with the tool and version keeps things clear later.</p>
+</section>
+<section id="running-it" class="level2">
+<h2 class="anchored" data-anchor-id="running-it">Running it</h2>
+<p>Run a single command inside the container:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> exec image.sif tool <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--version</span></span></code></pre></div></div>
+<p>Or step inside and work there:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> shell image.sif</span></code></pre></div></div>
+<p>A container cannot see our files by default. <code>-B outside:inside</code> makes a folder on the computer visible inside the container.</p>
+<p><code>run</code> and <code>exec</code> are not the same: <code>run</code> first executes the container’s own start-up script, while <code>exec</code> skips it and runs exactly the command we give.</p>
+</section>
+<section id="building-our-own" class="level2">
+<h2 class="anchored" data-anchor-id="building-our-own">Building our own</h2>
+<p>If no ready-made image exists, we describe one in a <code>.def</code> file: which operating system to start from, what to install (<code>%post</code>), which paths to set (<code>%environment</code>), and what to run by default (<code>%runscript</code>). Then:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> build output.sif definition.def</span></code></pre></div></div>
+</section>
+<section id="container-or-pixi" class="level2">
+<h2 class="anchored" data-anchor-id="container-or-pixi">Container or Pixi?</h2>
+<p>Pixi pins the tools. A container pins the whole system around them. Containers are bigger and slower to make, but more complete, so they suit sharing a finished pipeline or rescuing software that refuses to install.</p>
+</section>
 <section id="up-next" class="level2">
 <h2 class="anchored" data-anchor-id="up-next">Up next</h2>
 <p>What I plan to pick up on <a href="../wednesday/">Wednesday</a>.</p>
