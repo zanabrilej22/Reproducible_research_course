@@ -4,21 +4,21 @@
     "href": "posts/tuesday/index.html",
     "title": "Tuesday",
     "section": "",
-    "text": "Write a short summary of Tuesday here."
+    "text": "In the morning session we will learn how to use pixi environment.\n\n\n```wget -qO- https://pixi.sh/install.sh | sh````\n\n\n\n```pixi init lina_pixi_training -c conda-forge -c bioconda```` # -c stands for channel, conda-forge and bioconda are channels that contain the packages we need. # this creates a folder and a file pixi.toml"
   },
   {
     "objectID": "posts/tuesday/index.html#what-i-did-today",
     "href": "posts/tuesday/index.html#what-i-did-today",
     "title": "Tuesday",
     "section": "",
-    "text": "Write a short summary of Tuesday here."
+    "text": "In the morning session we will learn how to use pixi environment.\n\n\n```wget -qO- https://pixi.sh/install.sh | sh````\n\n\n\n```pixi init lina_pixi_training -c conda-forge -c bioconda```` # -c stands for channel, conda-forge and bioconda are channels that contain the packages we need. # this creates a folder and a file pixi.toml"
   },
   {
     "objectID": "posts/tuesday/index.html#notes",
     "href": "posts/tuesday/index.html#notes",
     "title": "Tuesday",
     "section": "Notes",
-    "text": "Notes\nWrite today’s notes here."
+    "text": "Notes\n““Everything done in pixi environment requires the pixi environment to be activated. This is done by running pixi activate in the terminal. If you are not in the pixi environment, you will get an error message saying that the command is not found.””"
   },
   {
     "objectID": "posts/tuesday/index.html#up-next",
