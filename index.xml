@@ -151,6 +151,77 @@ font-style: inherit;">-c</span> bioconda</span></code></pre></div></div>
 <li><strong><code>pixi.lock</code></strong> — the long, automatic one. It records the exact versions and where they came from. I never edit this by hand, but it is the file that makes the setup truly reproducible.</li>
 </ul>
 </section>
+<section id="quality-control" class="level2">
+<h2 class="anchored" data-anchor-id="quality-control">Quality control</h2>
+<p>Before analysing sequencing data, we check whether the data is any good. Bad data gives bad results, no matter how careful the analysis is. Problems come from contamination, handling mistakes, or the sequencing machine itself.</p>
+</section>
+<section id="what-the-raw-data-looks-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-raw-data-looks-like">What the raw data looks like</h2>
+<p>Sequencing data comes in <strong>FASTQ</strong> files. Every read takes four lines:</p>
+<ol type="1">
+<li>The read name, starting with <code>@</code></li>
+<li>The sequence itself</li>
+<li>A <code>+</code> separator</li>
+<li>The quality scores, one character per base</li>
+</ol>
+<p>The fourth line is the important one. Each character is a score from 0 to 42 saying how sure the machine was about that base. Low scores mean the base might be wrong.</p>
+</section>
+<section id="fastqc" class="level2">
+<h2 class="anchored" data-anchor-id="fastqc">FastQC</h2>
+<p><strong>FastQC</strong> checks the quality of a whole file at once, so we do not have to look at millions of reads by hand.</p>
+<p>We add it to the Pixi environment, not to the whole computer:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> add fastqc</span>
+<span id="cb3-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run fastqc <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--help</span></span></code></pre></div></div>
+</section>
+<section id="running-it-on-the-cluster" class="level2">
+<h2 class="anchored" data-anchor-id="running-it-on-the-cluster">Running it on the cluster</h2>
+<p>Big files take time, so the work runs on a cluster instead of a laptop. The cluster uses <strong>SLURM</strong> to decide who runs what and when. We ask for an account, some time, and a number of cores:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">srun</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-A</span> project_ID <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-t</span> 15:00 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-n</span> 1 pixi run fastqc</span></code></pre></div></div>
+<p>For more than one sample it is easier to put the same settings into a small script and submit it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sbatch</span> fastqc.sh</span></code></pre></div></div>
+<p>The script is also a record of exactly what was run, which is the reproducible part.</p>
+</section>
+<section id="multiqc" class="level2">
+<h2 class="anchored" data-anchor-id="multiqc">MultiQC</h2>
+<p>One report per sample adds up quickly. <strong>MultiQC</strong> collects them all into a single report, so the whole dataset can be checked in one place.</p>
+</section>
+<section id="keeping-the-session-alive" class="level2">
+<h2 class="anchored" data-anchor-id="keeping-the-session-alive">Keeping the session alive</h2>
+<p>If the connection to the cluster drops, the job dies with it. <code>screen</code> keeps it running:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">screen</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-S</span> fastqc     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># start a session</span></span>
+<span id="cb6-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Ctrl + a, then d   # leave it running</span></span>
+<span id="cb6-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">screen</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> fastqc     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># come back to it later</span></span></code></pre></div></div>
+</section>
 <section id="up-next" class="level2">
 <h2 class="anchored" data-anchor-id="up-next">Up next</h2>
 <p>What I plan to pick up on <a href="../wednesday/">Wednesday</a>.</p>

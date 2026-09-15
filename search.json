@@ -35,6 +35,48 @@
     "text": "Starting a project\nMake a new environment for the project:\npixi init lina_pixi_training -c conda-forge -c bioconda\nThe -c parts say where to download software from.\nThis creates two files:\n\npixi.toml — the short, readable one. It lists the project name and the tools I asked for. This is the file I actually edit.\npixi.lock — the long, automatic one. It records the exact versions and where they came from. I never edit this by hand, but it is the file that makes the setup truly reproducible."
   },
   {
+    "objectID": "posts/tuesday/index.html#quality-control",
+    "href": "posts/tuesday/index.html#quality-control",
+    "title": "Tuesday",
+    "section": "Quality control",
+    "text": "Quality control\nBefore analysing sequencing data, we check whether the data is any good. Bad data gives bad results, no matter how careful the analysis is. Problems come from contamination, handling mistakes, or the sequencing machine itself."
+  },
+  {
+    "objectID": "posts/tuesday/index.html#what-the-raw-data-looks-like",
+    "href": "posts/tuesday/index.html#what-the-raw-data-looks-like",
+    "title": "Tuesday",
+    "section": "What the raw data looks like",
+    "text": "What the raw data looks like\nSequencing data comes in FASTQ files. Every read takes four lines:\n\nThe read name, starting with @\nThe sequence itself\nA + separator\nThe quality scores, one character per base\n\nThe fourth line is the important one. Each character is a score from 0 to 42 saying how sure the machine was about that base. Low scores mean the base might be wrong."
+  },
+  {
+    "objectID": "posts/tuesday/index.html#fastqc",
+    "href": "posts/tuesday/index.html#fastqc",
+    "title": "Tuesday",
+    "section": "FastQC",
+    "text": "FastQC\nFastQC checks the quality of a whole file at once, so we do not have to look at millions of reads by hand.\nWe add it to the Pixi environment, not to the whole computer:\npixi add fastqc\npixi run fastqc --help"
+  },
+  {
+    "objectID": "posts/tuesday/index.html#running-it-on-the-cluster",
+    "href": "posts/tuesday/index.html#running-it-on-the-cluster",
+    "title": "Tuesday",
+    "section": "Running it on the cluster",
+    "text": "Running it on the cluster\nBig files take time, so the work runs on a cluster instead of a laptop. The cluster uses SLURM to decide who runs what and when. We ask for an account, some time, and a number of cores:\nsrun -A project_ID -t 15:00 -n 1 pixi run fastqc\nFor more than one sample it is easier to put the same settings into a small script and submit it:\nsbatch fastqc.sh\nThe script is also a record of exactly what was run, which is the reproducible part."
+  },
+  {
+    "objectID": "posts/tuesday/index.html#multiqc",
+    "href": "posts/tuesday/index.html#multiqc",
+    "title": "Tuesday",
+    "section": "MultiQC",
+    "text": "MultiQC\nOne report per sample adds up quickly. MultiQC collects them all into a single report, so the whole dataset can be checked in one place."
+  },
+  {
+    "objectID": "posts/tuesday/index.html#keeping-the-session-alive",
+    "href": "posts/tuesday/index.html#keeping-the-session-alive",
+    "title": "Tuesday",
+    "section": "Keeping the session alive",
+    "text": "Keeping the session alive\nIf the connection to the cluster drops, the job dies with it. screen keeps it running:\nscreen -S fastqc     # start a session\n# Ctrl + a, then d   # leave it running\nscreen -r fastqc     # come back to it later"
+  },
+  {
     "objectID": "posts/tuesday/index.html#up-next",
     "href": "posts/tuesday/index.html#up-next",
     "title": "Tuesday",
