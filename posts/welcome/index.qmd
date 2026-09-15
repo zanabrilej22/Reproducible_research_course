@@ -7,6 +7,3 @@ categories: [news]
 
 This is my first post in a Quarto blog. I have no idea what I'm doing but I will figure it out eventually.
 
-![](IMG_20230621_145059.jpg)
-
-Since this post doesn't specify an explicit `image`, the first image in the post will be used in the listing page of posts.
