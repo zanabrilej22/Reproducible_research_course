@@ -1,8 +1,8 @@
 ---
-title: "About"
+title: "About me"
 image: IMG_20230621_145059.jpg
 about:
-  template: jolla
+  template: minty
   links:
     - icon: linkedin
       text: LinkedIn

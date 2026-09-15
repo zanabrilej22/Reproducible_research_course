@@ -3,6 +3,10 @@ title: "Tuesday"
 description: "Today we were learning about environments, such as Pixi, and containers, such as Apptainer. Inside the pixi we installed FastQC and MultiQC to check the quality of sequencing data. We also learned how to use screen to keep a session alive on a cluster."
 date: "2026-09-15"
 categories: [weekly, tools]
+toc: true
+toc-depth: 2
+toc-location: left
+toc-title: "On this page"
 ---
 
 ## What I did today
@@ -177,7 +181,24 @@ apptainer build output.sif definition.def
 
 Pixi pins the tools. A container pins the whole system around them.
 Containers are bigger and slower to make, but more complete, so they suit
-sharing a finished pipeline or rescuing software that refuses to install.
+sharing a finished pipeline or rescuing software that refuses to install. Think of container as a box that holds everything and you cannot change what is inside. Pixi is more flexible. 
+
+
+::: {.callout-note title="Random notes"}
+
+- `pixi.lock` belongs in git. It is the file that lets someone else rebuild the
+  exact same environment.
+- Name `.sif` files after the tool and its version, like `fastqc_0.12.1.sif`,
+  or it gets confusing fast.
+- Quality scores run from 0 to 42. Higher is better.
+- `apptainer run` runs the container's own start-up script first, `apptainer
+  exec` skips it.
+- Keep raw data in its own folder and never edit it. Scripts and results go
+  somewhere else.
+- `screen -ls` lists the sessions that are still running, in case the name is
+  forgotten.
+
+:::
 
 ## Up next
 
