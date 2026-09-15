@@ -9,10 +9,10 @@ website:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
-        icon: linkedin
-        href: linkedin.com/in/zana-brilej-1a0b4b1b3/
-      
+        href: https://github.com/zanabrilej22
+      - icon: linkedin
+        href: https://www.linkedin.com/in/zana-brilej-1a0b4b1b3/
+
 format:
   html:
     theme:
@@ -20,8 +20,5 @@ format:
       - brand
     css: styles.css
 
-execute: 
+execute:
   freeze: auto
-
-
-

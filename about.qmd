@@ -4,15 +4,12 @@ image: IMG_20230621_145059.jpg
 about:
   template: jolla
   links:
-    - icon: bluesky
-      text: Bluesky
-      href: https://bsky.app/
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com
+      href: https://linkedin.com/in/zana-brilej
     - icon: github
       text: Github
-      href: https://github.com
+      href: https://zanabrilej22.github.io
 
 ---
 

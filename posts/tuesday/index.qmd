@@ -7,11 +7,21 @@ categories: [weekly]
 
 ## What I did today
 
-Write a short summary of Tuesday here.
+In the morning session we will learn how to use pixi environment. 
+
+### 1.Installation of Pixi
+```wget -qO- https://pixi.sh/install.sh | sh````
+
+### 2. Create a new project
+```pixi init lina_pixi_training -c conda-forge -c bioconda```` 
+# -c stands for channel, conda-forge and bioconda are channels that contain the packages we need.
+# this creates a folder and a file pixi.toml
+
+### 3. 
 
 ## Notes
 
-Write today's notes here.
+""Everything done in pixi environment requires the pixi environment to be activated. This is done by running `pixi activate` in the terminal. If you are not in the pixi environment, you will get an error message saying that the command is not found.""
 
 ## Up next
 
