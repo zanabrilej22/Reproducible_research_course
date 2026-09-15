@@ -113,22 +113,43 @@
 
 <section id="what-i-did-today" class="level2">
 <h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>In the morning session we will learn how to use pixi environment.</p>
-<section id="installation-of-pixi" class="level3">
-<h3 class="anchored" data-anchor-id="installation-of-pixi">1.Installation of Pixi</h3>
-<p>```wget -qO- https://pixi.sh/install.sh | sh````</p>
+<p>Today we learn about <strong>environments</strong> and why the same code can give different results on two different computers.</p>
+<p>The environment we looked at is called <strong>Pixi</strong>.</p>
 </section>
-<section id="create-a-new-project" class="level3">
-<h3 class="anchored" data-anchor-id="create-a-new-project">2. Create a new project</h3>
-<p>```pixi init lina_pixi_training -c conda-forge -c bioconda```` # -c stands for channel, conda-forge and bioconda are channels that contain the packages we need. # this creates a folder and a file pixi.toml</p>
+<section id="why-do-we-use-environments" class="level2">
+<h2 class="anchored" data-anchor-id="why-do-we-use-environments">Why do we use environments?</h2>
+<p>An environment keeps each project separate. It also means someone else can rebuild the exact same setup on their own computer.</p>
 </section>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section">3.</h3>
+<section id="installing-pixi" class="level2">
+<h2 class="anchored" data-anchor-id="installing-pixi">Installing Pixi</h2>
+<p>One line in the terminal:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wget</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-qO-</span> https://pixi.sh/install.sh <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sh</span></span></code></pre></div></div>
 </section>
-</section>
-<section id="notes" class="level2">
-<h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p>““Everything done in pixi environment requires the pixi environment to be activated. This is done by running <code>pixi activate</code> in the terminal. If you are not in the pixi environment, you will get an error message saying that the command is not found.””</p>
+<section id="starting-a-project" class="level2">
+<h2 class="anchored" data-anchor-id="starting-a-project">Starting a project</h2>
+<p>Make a new environment for the project:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> init lina_pixi_training <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> conda-forge <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> bioconda</span></code></pre></div></div>
+<p>The <code>-c</code> parts say where to download software from.</p>
+<p>This creates two files:</p>
+<ul>
+<li><strong><code>pixi.toml</code></strong> — the short, readable one. It lists the project name and the tools I asked for. This is the file I actually edit.</li>
+<li><strong><code>pixi.lock</code></strong> — the long, automatic one. It records the exact versions and where they came from. I never edit this by hand, but it is the file that makes the setup truly reproducible.</li>
+</ul>
 </section>
 <section id="up-next" class="level2">
 <h2 class="anchored" data-anchor-id="up-next">Up next</h2>
@@ -139,6 +160,7 @@
 
  ]]></description>
   <category>weekly</category>
+  <category>tools</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/tuesday/</guid>
   <pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate>
 </item>

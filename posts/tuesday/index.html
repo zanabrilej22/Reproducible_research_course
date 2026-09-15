@@ -8,7 +8,7 @@
 
 <meta name="author" content="Zana Brilej">
 <meta name="dcterms.date" content="2026-09-15">
-<meta name="description" content="Day two.">
+<meta name="description" content="Keeping software versions under control with Pixi.">
 
 <title>Tuesday – Blog</title>
 <style>
@@ -28,6 +28,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -126,11 +161,12 @@ ul.task-list li input[type="checkbox"] {
       <h1 class="title">Tuesday</h1>
                   <div>
         <div class="description">
-          Day two.
+          Keeping software versions under control with Pixi.
         </div>
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">weekly</div>
+                <div class="quarto-category">tools</div>
               </div>
                   </div>
   </div>
@@ -169,22 +205,28 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="what-i-did-today" class="level2">
 <h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>In the morning session we will learn how to use pixi environment.</p>
-<section id="installation-of-pixi" class="level3">
-<h3 class="anchored" data-anchor-id="installation-of-pixi">1.Installation of Pixi</h3>
-<p>```wget -qO- https://pixi.sh/install.sh | sh````</p>
+<p>Today we learn about <strong>environments</strong> and why the same code can give different results on two different computers.</p>
+<p>The environment we looked at is called <strong>Pixi</strong>.</p>
 </section>
-<section id="create-a-new-project" class="level3">
-<h3 class="anchored" data-anchor-id="create-a-new-project">2. Create a new project</h3>
-<p>```pixi init lina_pixi_training -c conda-forge -c bioconda```` # -c stands for channel, conda-forge and bioconda are channels that contain the packages we need. # this creates a folder and a file pixi.toml</p>
+<section id="why-do-we-use-environments" class="level2">
+<h2 class="anchored" data-anchor-id="why-do-we-use-environments">Why do we use environments?</h2>
+<p>An environment keeps each project separate. It also means someone else can rebuild the exact same setup on their own computer.</p>
 </section>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section">3.</h3>
+<section id="installing-pixi" class="level2">
+<h2 class="anchored" data-anchor-id="installing-pixi">Installing Pixi</h2>
+<p>One line in the terminal:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-qO-</span> https://pixi.sh/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-</section>
-<section id="notes" class="level2">
-<h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p>““Everything done in pixi environment requires the pixi environment to be activated. This is done by running <code>pixi activate</code> in the terminal. If you are not in the pixi environment, you will get an error message saying that the command is not found.””</p>
+<section id="starting-a-project" class="level2">
+<h2 class="anchored" data-anchor-id="starting-a-project">Starting a project</h2>
+<p>Make a new environment for the project:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> init lina_pixi_training <span class="at">-c</span> conda-forge <span class="at">-c</span> bioconda</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>-c</code> parts say where to download software from.</p>
+<p>This creates two files:</p>
+<ul>
+<li><strong><code>pixi.toml</code></strong> — the short, readable one. It lists the project name and the tools I asked for. This is the file I actually edit.</li>
+<li><strong><code>pixi.lock</code></strong> — the long, automatic one. It records the exact versions and where they came from. I never edit this by hand, but it is the file that makes the setup truly reproducible.</li>
+</ul>
 </section>
 <section id="up-next" class="level2">
 <h2 class="anchored" data-anchor-id="up-next">Up next</h2>

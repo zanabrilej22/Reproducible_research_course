@@ -4,21 +4,35 @@
     "href": "posts/tuesday/index.html",
     "title": "Tuesday",
     "section": "",
-    "text": "In the morning session we will learn how to use pixi environment.\n\n\n```wget -qO- https://pixi.sh/install.sh | sh````\n\n\n\n```pixi init lina_pixi_training -c conda-forge -c bioconda```` # -c stands for channel, conda-forge and bioconda are channels that contain the packages we need. # this creates a folder and a file pixi.toml"
+    "text": "Today we learn about environments and why the same code can give different results on two different computers.\nThe environment we looked at is called Pixi."
   },
   {
     "objectID": "posts/tuesday/index.html#what-i-did-today",
     "href": "posts/tuesday/index.html#what-i-did-today",
     "title": "Tuesday",
     "section": "",
-    "text": "In the morning session we will learn how to use pixi environment.\n\n\n```wget -qO- https://pixi.sh/install.sh | sh````\n\n\n\n```pixi init lina_pixi_training -c conda-forge -c bioconda```` # -c stands for channel, conda-forge and bioconda are channels that contain the packages we need. # this creates a folder and a file pixi.toml"
+    "text": "Today we learn about environments and why the same code can give different results on two different computers.\nThe environment we looked at is called Pixi."
   },
   {
-    "objectID": "posts/tuesday/index.html#notes",
-    "href": "posts/tuesday/index.html#notes",
+    "objectID": "posts/tuesday/index.html#why-do-we-use-environments",
+    "href": "posts/tuesday/index.html#why-do-we-use-environments",
     "title": "Tuesday",
-    "section": "Notes",
-    "text": "Notes\n““Everything done in pixi environment requires the pixi environment to be activated. This is done by running pixi activate in the terminal. If you are not in the pixi environment, you will get an error message saying that the command is not found.””"
+    "section": "Why do we use environments?",
+    "text": "Why do we use environments?\nAn environment keeps each project separate. It also means someone else can rebuild the exact same setup on their own computer."
+  },
+  {
+    "objectID": "posts/tuesday/index.html#installing-pixi",
+    "href": "posts/tuesday/index.html#installing-pixi",
+    "title": "Tuesday",
+    "section": "Installing Pixi",
+    "text": "Installing Pixi\nOne line in the terminal:\nwget -qO- https://pixi.sh/install.sh | sh"
+  },
+  {
+    "objectID": "posts/tuesday/index.html#starting-a-project",
+    "href": "posts/tuesday/index.html#starting-a-project",
+    "title": "Tuesday",
+    "section": "Starting a project",
+    "text": "Starting a project\nMake a new environment for the project:\npixi init lina_pixi_training -c conda-forge -c bioconda\nThe -c parts say where to download software from.\nThis creates two files:\n\npixi.toml — the short, readable one. It lists the project name and the tools I asked for. This is the file I actually edit.\npixi.lock — the long, automatic one. It records the exact versions and where they came from. I never edit this by hand, but it is the file that makes the setup truly reproducible."
   },
   {
     "objectID": "posts/tuesday/index.html#up-next",
@@ -74,7 +88,7 @@
     "href": "index.html",
     "title": "Blog Zana",
     "section": "",
-    "text": "Friday\n\n\n\nweekly\n\n\n\nWrapping up the week.\n\n\n\n\n\nSep 18, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nThursday\n\n\n\nweekly\n\n\n\nDay four.\n\n\n\n\n\nSep 17, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWednesday\n\n\n\nweekly\n\n\n\nMidweek.\n\n\n\n\n\nSep 16, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nTuesday\n\n\n\nweekly\n\n\n\nDay two.\n\n\n\n\n\nSep 15, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nMonday\n\n\n\nweekly\n\n\n\nStarting the week: setting up the blog.\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\nNo matching items"
+    "text": "Friday\n\n\n\nweekly\n\n\n\nWrapping up the week.\n\n\n\n\n\nSep 18, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nThursday\n\n\n\nweekly\n\n\n\nDay four.\n\n\n\n\n\nSep 17, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWednesday\n\n\n\nweekly\n\n\n\nMidweek.\n\n\n\n\n\nSep 16, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nTuesday\n\n\n\nweekly\n\ntools\n\n\n\nKeeping software versions under control with Pixi.\n\n\n\n\n\nSep 15, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nMonday\n\n\n\nweekly\n\n\n\nStarting the week: setting up the blog.\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
