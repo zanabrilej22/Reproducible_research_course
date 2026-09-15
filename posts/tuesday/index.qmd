@@ -112,6 +112,73 @@ screen -S fastqc     # start a session
 screen -r fastqc     # come back to it later
 ```
 
+
+## Containers
+
+Pixi makes sure we install the same tools. A **container** goes one step
+further: it packs the tools *and* the operating system around them into a
+single file. That file behaves the same way on a laptop, on a server, or on
+someone else's computer years from now.
+
+Containers help when:
+
+- people in the group use different operating systems
+- two tools need different versions of the same dependency
+- old software will not install on a modern system
+
+## Which container tool
+
+- **Apptainer** — for shared servers and clusters (it used to be called Singularity)
+- **Docker** — for a personal machine
+
+Ready-made images are kept on **Docker Hub** and **Seqera**. It is safer to
+pick a popular image from a trusted maker, such as `biocontainers`.
+
+## Getting an image
+
+```bash
+apptainer pull name.sif docker://repository/image:version
+```
+
+The `.sif` file that comes out *is* the container. Naming it with the tool and
+version keeps things clear later.
+
+## Running it
+
+Run a single command inside the container:
+
+```bash
+apptainer exec image.sif tool --version
+```
+
+Or step inside and work there:
+
+```bash
+apptainer shell image.sif
+```
+
+A container cannot see our files by default. `-B outside:inside` makes a folder
+on the computer visible inside the container.
+
+`run` and `exec` are not the same: `run` first executes the container's own
+start-up script, while `exec` skips it and runs exactly the command we give.
+
+## Building our own
+
+If no ready-made image exists, we describe one in a `.def` file: which
+operating system to start from, what to install (`%post`), which paths to set
+(`%environment`), and what to run by default (`%runscript`). Then:
+
+```bash
+apptainer build output.sif definition.def
+```
+
+## Container or Pixi?
+
+Pixi pins the tools. A container pins the whole system around them.
+Containers are bigger and slower to make, but more complete, so they suit
+sharing a finished pipeline or rescuing software that refuses to install.
+
 ## Up next
 
 What I plan to pick up on [Wednesday](../wednesday/).
