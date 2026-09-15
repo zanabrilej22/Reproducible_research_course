@@ -45,7 +45,72 @@ This creates two files:
   where they came from. I never edit this by hand, but it is the file that
   makes the setup truly reproducible.
 
+## Quality control
 
+Before analysing sequencing data, we check whether the data is any good. Bad
+data gives bad results, no matter how careful the analysis is. Problems come
+from contamination, handling mistakes, or the sequencing machine itself.
+
+## What the raw data looks like
+
+Sequencing data comes in **FASTQ** files. Every read takes four lines:
+
+1. The read name, starting with `@`
+2. The sequence itself
+3. A `+` separator
+4. The quality scores, one character per base
+
+The fourth line is the important one. Each character is a score from 0 to 42
+saying how sure the machine was about that base. Low scores mean the base
+might be wrong.
+
+## FastQC
+
+**FastQC** checks the quality of a whole file at once, so we do not have to
+look at millions of reads by hand.
+
+We add it to the Pixi environment, not to the whole computer:
+
+```bash
+pixi add fastqc
+pixi run fastqc --help
+```
+
+## Running it on the cluster
+
+Big files take time, so the work runs on a cluster instead of a laptop. The
+cluster uses **SLURM** to decide who runs what and when. We ask for an account,
+some time, and a number of cores:
+
+```bash
+srun -A project_ID -t 15:00 -n 1 pixi run fastqc
+```
+
+For more than one sample it is easier to put the same settings into a small
+script and submit it:
+
+```bash
+sbatch fastqc.sh
+```
+
+The script is also a record of exactly what was run, which is the reproducible
+part.
+
+## MultiQC
+
+One report per sample adds up quickly. **MultiQC** collects them all into a
+single report, so the whole dataset can be checked in one place.
+
+## Keeping the session alive
+
+If the connection to the cluster drops, the job dies with it. `screen` keeps
+it running:
+
+```bash
+screen -S fastqc     # start a session
+# Ctrl + a, then d   # leave it running
+screen -r fastqc     # come back to it later
+```
 
 ## Up next
 
