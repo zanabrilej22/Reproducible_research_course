@@ -1,6 +1,6 @@
 ---
 title: "Tuesday"
-description: "Keeping software versions under control with Pixi."
+description: "Today we were learning about environments, such as Pixi, and containers, such as Apptainer. Inside the pixi we installed FastQC and MultiQC to check the quality of sequencing data. We also learned how to use screen to keep a session alive on a cluster."
 date: "2026-09-15"
 categories: [weekly, tools]
 ---
