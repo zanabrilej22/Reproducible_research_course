@@ -1,27 +1,51 @@
 ---
 title: "Tuesday"
-description: "Day two."
+description: "Keeping software versions under control with Pixi."
 date: "2026-09-15"
-categories: [weekly]
+categories: [weekly, tools]
 ---
 
 ## What I did today
 
-In the morning session we will learn how to use pixi environment. 
+Today we learn about **environments** and why the same code can give different
+results on two different computers.
 
-### 1.Installation of Pixi
-```wget -qO- https://pixi.sh/install.sh | sh````
+The environment we looked at is called
+**Pixi**.
 
-### 2. Create a new project
-```pixi init lina_pixi_training -c conda-forge -c bioconda```` 
-# -c stands for channel, conda-forge and bioconda are channels that contain the packages we need.
-# this creates a folder and a file pixi.toml
+## Why do we use environments?
 
-### 3. 
+An environment keeps each project separate. 
+It also means someone else can rebuild the exact same setup on their own
+computer. 
 
-## Notes
+## Installing Pixi
 
-""Everything done in pixi environment requires the pixi environment to be activated. This is done by running `pixi activate` in the terminal. If you are not in the pixi environment, you will get an error message saying that the command is not found.""
+One line in the terminal:
+
+```bash
+wget -qO- https://pixi.sh/install.sh | sh
+```
+
+## Starting a project
+
+Make a new environment for the project:
+
+```bash
+pixi init lina_pixi_training -c conda-forge -c bioconda
+```
+
+The `-c` parts say where to download software from. 
+
+This creates two files:
+
+- **`pixi.toml`** — the short, readable one. It lists the project name and the
+  tools I asked for. This is the file I actually edit.
+- **`pixi.lock`** — the long, automatic one. It records the exact versions and
+  where they came from. I never edit this by hand, but it is the file that
+  makes the setup truly reproducible.
+
+
 
 ## Up next
 

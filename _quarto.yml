@@ -20,5 +20,11 @@ format:
       - brand
     css: styles.css
 
+
+sidebar:
+  depth: 2
+  
+
+
 execute:
   freeze: auto
