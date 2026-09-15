@@ -10,8 +10,9 @@ website:
       - about.qmd
       - icon: github
         href: https://github.com/
-      - icon: bluesky
-        href: https://bsky.app/
+        icon: linkedin
+        href: linkedin.com/in/zana-brilej-1a0b4b1b3/
+      
 format:
   html:
     theme:
