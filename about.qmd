@@ -1,6 +1,6 @@
 ---
 title: "About me"
-image: IMG_20230621_145059.jpg
+image: IMG_6871.jpeg
 about:
   template: minty
   links:
@@ -10,6 +10,9 @@ about:
     - icon: github
       text: Github
       href: https://zanabrilej22.github.io
+    - icon: Karolinska Institutet
+      text: Karolinska Institutet
+      href: https://ki.se/personer/zana-brilej
 
 ---
 
