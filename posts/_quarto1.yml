@@ -1,0 +1,31 @@
+project:
+  type: website
+
+website:
+  title: "Reproducible Research · Course Blog"
+  description: "One week of reproducible bioinformatics: Quarto, Pixi, containers, Nextflow, nf-core and ggplot2."
+  navbar:
+    right:
+      - text: Home
+        href: index.qmd
+      - text: About
+        href: about.qmd
+      - icon: github
+        href: https://github.com/zanabrilej22
+  page-footer:
+    center: "Zana Brilej · Reproducible Research in Bioinformatics, September 2026"
+
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+    toc-title: "On this page"
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+
+execute:
+  freeze: auto
