@@ -1,6 +1,6 @@
 ---
 title: "About me"
-image: IMG_6871.jpeg
+image: profile.jpg
 about:
   template: minty
   links:
@@ -16,4 +16,4 @@ about:
 
 ---
 
-About this blog
+This is a blog for the Reproducible Research course at from MedBioInfo program. The blog will be used to share the material, codes, tips, and updates related to the course.
