@@ -1,5 +1,5 @@
 ---
-title: "About me"
+title: "About me🎀"
 image: profile copy.jpg
 about:
   template: jolla
@@ -16,9 +16,7 @@ about:
 
 ---
 
-## About me
-
-Hi! I am Zana, a second-year PhD student at Karolinska Institutet. As you can see I love pasta. I spend most of my free time dancing, running, and beeing outdoors. 
+Hi! I am Zana, a PhD student at Karolinska Institutet. I am more of a wet-lab scientist, trying to get into bioinformatics. But I'm also ✨*just a girl*✨ and I was always very scared of computers and data and all these things. But I thought *How hard can it be...boys do it...👀*
 
 ## My research
 
@@ -27,6 +25,6 @@ My PhD project is about **immune evasion in Merkel cell carcinoma**, a rare and 
 
 ## Why this blog?
 
-I started this blog during the course *Reproducible Research in Bioinformatics and Computational Biology* (September 2026). I use it as a report of what we did during the course, and a notebook I can come back to whenever I need to remember how to use the tools we learned.
+I started this blog during the course *Reproducible Research in Bioinformatics and Computational Biology*. To be honest I have no idea what I'm doing but I will figure it out eventually. I want to use this blog to document my learning journey. 
 
 
