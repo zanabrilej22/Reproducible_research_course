@@ -6,7 +6,7 @@ about:
   links:
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com/in/zana-brilej
+      href: https://www.linkedin.com/in/%C5%BEana-brilej-643402201/?isSelfProfile=true 
     - icon: github
       text: Github
       href: https://github.com/zanabrilej22
