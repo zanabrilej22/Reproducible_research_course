@@ -3,6 +3,7 @@ project:
 
 website:
   description: "A blog built with Quarto"
+  site-url: https://zanabrilej22.github.io/Reproducible_research_course/
 
   title: "Blog"
   navbar:
