@@ -1,19 +1,222 @@
 ---
 title: "Monday"
-description: "Starting the week: setting up the blog."
+description: "How to create quarto blog in VS Code, connect it with git, and set up GitHub Actions so that it publishes  every time I push."
 date: "2026-09-14"
-categories: [weekly]
+categories: [Quarto, git, GitHub, GitHub Actions]
+engine: knitr
 ---
 
-## What I did today
+## What we did today
 
-The first day of the week. I set up this blog with Quarto and got the
-project structure in place.
+Morning session was about git and git hub. In the afternoon we were setting up this blog. We will use it to make notes on everything we do during the week. The blog was createdwith **Quarto**, using version control with **git**. We uploaded it to **GitHub**, and set **GitHub Actions** so that the website is updated and published automatically every time I push changes.
 
-## Notes
+::: {.callout-tip}
+## The idea of Reproducible Research
+Someone else (or me, in six months) can take my data and my code and get the same result. So, good documentation is importnat. Quarto is a **fantastic** tool that lets me keep text, code and results together in one document, which is called *literate programming*.
+:::
 
-Write today's notes here.
+## 1. Creating a blog with Quarto
 
-## Up next
+In VS Code, open the command palette (**View → Command Palette**, or `Ctrl/Cmd + Shift + P`) and type:
 
-What I plan to pick up on [Tuesday](../tuesday/).
+```
+Quarto: Create Project
+```
+
+Choose **Blog Project**, pick a folder on your computer and give the blog a name (I gave it a name New_blog).
+
+You can do the same thing from the terminal:
+
+```{bash}
+#| eval: false
+quarto create project blog New_blog
+```
+
+### What is inside the project folder?
+
+```
+New_blog/
+├── _quarto.yml        # settings for the whole website (title, navbar, theme...)
+├── index.qmd          # the home page, which lists all posts
+├── about.qmd          # the "About" page
+├── profile.jpg        # picture used on the About page
+├── styles.css         # extra styling 
+└── posts/
+    ├── _metadata.yml  # settings shared by all posts
+    └── monday/
+        └── index.qmd  # one folder per post, the post itself is index.qmd
+```
+
+Every post is in its own folder inside `posts/`. The home page finds them automatically. This is called a *listing*.
+
+## 2. Previewing the blog
+
+To see the website while I work on it:
+
+```{bash}
+#| eval: false
+quarto preview
+```
+
+This opens the blog in the browser and refreshes it every time I save a file. In VS Code, the **Preview** button (top right of a `.qmd` file) does the same for a single page.
+
+## 3. Writing a post
+
+A post starts with a **YAML header** between two lines of `---`. It holds information *about* the post:
+
+```yaml
+---
+title: "Monday"
+description: "One sentence shown on the home page"
+date: "2026-09-14"
+categories: [Quarto, git]
+---
+```
+
+After the header comes normal text written in Markdown (`**bold**`, `*italic*`, `## Heading`, `[link](https://...)`), and **code chunks**.
+
+### Code chunks
+
+A code chunk is a block of code that Quarto can actually *run* when it builds the page. The result is shown right below the code. 
+
+Lines starting with `#|` are **chunk options**. They control what happens with the chunk:
+
+| Option | What it does |
+|---|---|
+| `#| eval: false` | show the code but **don't run it** (I use this for code that only works on the HPC server) |
+| `#| echo: false` | run the code but **hide** it, show only the result |
+| `#| output: false` | run the code but **hide the result** |
+| `#| warning: false` | hide warnings |
+| `#| label: my-chunk` | give the chunk a name |
+| `#| fig-cap: "..."` | caption for a figure |
+
+::: {.callout-note}
+## Why most chunks in this blog have `eval: false`
+The commands from Tuesday to Thursday were run on the HPC2N server, with data and software that only exist there. My computer can't run them, so I show the code without executing it. 
+:::
+
+### Freeze
+
+In `_quarto.yml` I added:
+
+```yaml
+execute:
+  freeze: auto
+```
+
+This means Quarto re-runs the code in a post **only when that post has changed**, and stores the results in a folder called `_freeze/`. I commit `_freeze/` to GitHub, so GitHub Actions can build the website without needing R installed.
+
+::: {.callout-tip}
+## More features
+[Quarto website](https://quarto.org/) # Here is literally everything you need to know about Quarto. It has a lot of features!
+:::
+
+## 4. Tracking the blog with git
+
+git keeps a history of every change I make. In the terminal, inside the blog folder:
+
+```{bash}
+#| eval: false
+git init                      # turn the folder into a git repository
+git status                    # see which files are new or changed
+git add .                     # stage all files
+git commit -m "Create blog"   # save a snapshot with a message
+```
+
+## 5. Putting the blog on GitHub
+
+On [github.com], create a **new, public, empty** repository (no README, no .gitignore, no license). GitHub then shows the commands under *"…or push an existing repository from the command line"*:
+
+```{bash}
+#| eval: false
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git
+git branch -M main
+git push -u origin main
+```
+
+Refresh the GitHub page and the files are there.
+
+## 6. Publishing with GitHub Actions
+
+**GitHub Pages** is a free hosting service for websites. **GitHub Actions** is a robot that runs a set of commands every time I push. Together, they rebuild and publish the blog automatically. I followed the [Quarto guide](https://quarto.org/docs/publishing/github-pages.html#github-action).
+
+**Step 1.** Render the blog locally, so the `_freeze/` folder exists:
+
+```{bash}
+#| eval: false
+quarto render
+```
+
+**Step 2.** Publish once by hand. This creates a branch called `gh-pages`, which is where the finished website lives:
+
+```{bash}
+#| eval: false
+quarto publish gh-pages
+```
+
+**Step 3.** On GitHub, go to **Settings → Pages** and check that the source is **Deploy from a branch**, branch **gh-pages**, folder **/ (root)**.
+
+**Step 4.** Add the workflow file `.github/workflows/publish.yml`. This is the "recipe" GitHub Actions follows:
+
+```{.yaml filename=".github/workflows/publish.yml"}
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+name: Quarto Publish
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+**Step 5.** Commit and push. The **Actions** tab on GitHub shows the workflow running (yellow = running, green = done, red = error). The blog will online at `https://zanabrilej22.github.io/Reproducible_research_course/`.
+
+```{bash}
+#| eval: false
+git add .
+git commit -m "Add GitHub Actions workflow"
+git push
+```
+
+From now on, every `git push` updates the website.
+
+::: {.callout-warning}
+## Don't push data
+GitHub is for code, not data. Large files (like `.fastq.gz`) should be listed in `.gitignore` so git ignores them.
+:::
+
+## Cheat sheet
+
+| I want to... | Command |
+|---|---|
+| create a blog | `quarto create project blog <name>` |
+| see the blog live while editing | `quarto preview` |
+| build the whole website | `quarto render` |
+| see what changed | `git status` |
+| save a snapshot | `git add .` then `git commit -m "message"` |
+| upload to GitHub | `git push` |
+| publish by hand | `quarto publish gh-pages` |
+
+## Notes {#notes}
+
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
+

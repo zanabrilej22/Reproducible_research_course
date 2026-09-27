@@ -1,205 +1,229 @@
 ---
 title: "Tuesday"
-description: "Today we were learning about environments, such as Pixi, and containers, such as Apptainer. Inside the pixi we installed FastQC and MultiQC to check the quality of sequencing data. We also learned how to use screen to keep a session alive on a cluster."
+description: "Pixi environments and quality control of RNA-seq data"
 date: "2026-09-15"
-categories: [weekly, tools]
-toc: true
-toc-depth: 2
-toc-location: left
-toc-title: "On this page"
+categories: [Pixi, HPC2N, SLURM, screen, FastQC, MultiQC, RNA-seq]
+engine: knitr
 ---
 
-## What I did today
+## What we did today
 
-Today we learn about **environments** and why the same code can give different
-results on two different computers.
+In the morning we learned about **software environments** and the environment manager **Pixi**. In the afternoon we used Pixi on the **HPC2N** cluster to run a quality control (QC) of an RNA-seq dataset with **FastQC**, and summarised all the reports with **MultiQC**.
 
-The environment we looked at is called
-**Pixi**.
+## 1. Why do we need environments?
 
-## Why do we use environments?
+It makes pipline more reproducible. Different computers have different operating systems and different versions of tools. If my FastQC version is different from yours, we might get different results.
 
-An environment keeps each project separate. 
-It also means someone else can rebuild the exact same setup on their own
-computer. 
+An **environment** is a separate box that contains exactly the tools and versions a project needs. The tools are installed *inside* the environment, not on the whole computer. Each project gets its own environment, so projects never mess with each other.
 
-## Installing Pixi
+## 2. Pixi basics
 
-One line in the terminal:
+### Install Pixi (once per user)
 
-```bash
+```{bash}
+#| eval: false
 wget -qO- https://pixi.sh/install.sh | sh
+source ~/.bashrc    # reload the shell so the "pixi" command is found (on Mac: ~/.zshrc)
 ```
 
-## Starting a project
+### Create an environment
 
-Make a new environment for the project:
-
-```bash
-pixi init lina_pixi_training -c conda-forge -c bioconda
+```{bash}
+#| eval: false
+pixi init zana_pixi_training -c conda-forge -c bioconda
+cd zana_pixi_training
 ```
 
-The `-c` parts say where to download software from. 
+- `-c` adds a **channel**, a trusted place Pixi is allowed to download tools from.
+- The order matters: **conda-forge first, then bioconda**.
 
-This creates two files:
+This creates a file called `pixi.toml`:
 
-- **`pixi.toml`** — the short, readable one. It lists the project name and the
-  tools I asked for. This is the file I actually edit.
-- **`pixi.lock`** — the long, automatic one. It records the exact versions and
-  where they came from. I never edit this by hand, but it is the file that
-  makes the setup truly reproducible.
+```{.toml filename="pixi.toml"}
+[workspace]
+channels = ["conda-forge", "bioconda"]   # where tools come from
+name = "zana_pixi_training"              # name of the environment
+platforms = ["linux-64"]                 # operating system(s)
+version = "0.1.0"
 
-## Quality control
+[tasks]                                  # (not used in this course)
 
-Before analysing sequencing data, we check whether the data is any good. Bad
-data gives bad results, no matter how careful the analysis is. Problems come
-from contamination, handling mistakes, or the sequencing machine itself.
+[dependencies]                           # tools installed in the environment
+```
 
-## What the raw data looks like
+### Add tools and run them
 
-Sequencing data comes in **FASTQ** files. Every read takes four lines:
+```{bash}
+#| eval: false
+pixi add quarto           # install a tool into the environment 
+pixi add --help           # every command has a help page
+pixi run quarto --help    # run a tool from the environment
+```
 
-1. The read name, starting with `@`
-2. The sequence itself
-3. A `+` separator
-4. The quality scores, one character per base
+After `pixi add`, a second file appears: `pixi.lock`. It records the exact version and source of every package.
 
-The fourth line is the important one. Each character is a score from 0 to 42
-saying how sure the machine was about that base. Low scores mean the base
-might be wrong.
+::: {.callout-important}
+## Never delete `pixi.toml` or `pixi.lock`
+Together they *are* the environment. `pixi.toml` says what I asked for, `pixi.lock` says exactly what was installed. Sharing these two files lets anyone rebuild the same environment.
+:::
 
-## FastQC
+::: {.callout-note}
+## `pixi shell`
+On a normal computer, `pixi shell` "enters" the environment so tools can be used without typing `pixi run` every time (`exit` to leave). **This does not work on HPC2N**, so there I always used `pixi run`.
+:::
 
-**FastQC** checks the quality of a whole file at once, so we do not have to
-look at millions of reads by hand.
+## 3. screen: keep working when I disconnect
 
-We add it to the Pixi environment, not to the whole computer:
+`screen` opens a terminal session on the server that keeps running even if my laptop goes to sleep or I lose connection.
 
-```bash
+```{bash}
+#| eval: false
+screen -S fastqc      # start a new session called "fastqc"
+# Ctrl + a, then d     -> detach (leave it running in the background)
+screen -ls            # list my sessions
+screen -r fastqc      # go back into the session
+exit                  # inside a session: close it for good
+```
+
+## 4. Setting up the project
+
+It is important that we keep the folder organized. Raw data goes in `data/`, and I should never change it. Instead of copying the large files, I make **symbolic links** (shortcuts) to the shared course data:
+
+```{bash}
+#| eval: false
+mkdir -p rnaseq/data
+cd rnaseq/data
+ln -s /path/to/repbio26/common_data/RNAseq/*fastq.gz .
+cd ..
+```
+
+
+## 5. The FASTQ format
+
+Sequencing reads are stored in FASTQ files. Each read takes **4 lines**:
+
+1. `@` + the read name
+2. the DNA sequence
+3. a `+` (sometimes followed by the name again)
+4. the quality of each base, one character per base
+
+To look at the first reads of a (compressed) file on the server:
+
+```{bash}
+#| eval: false
+zcat data/SRR5223504_1.fastq.gz | head -n 8
+```
+
+
+## 6. FastQC in a Pixi environment
+
+FastQC is not installed on the server (`fastqc: command not found`), so I made an environment for it inside my project folder:
+
+```{bash}
+#| eval: false
+pixi init -c conda-forge -c bioconda
 pixi add fastqc
 pixi run fastqc --help
 ```
 
-## Running it on the cluster
+### Running a job with SLURM
 
-Big files take time, so the work runs on a cluster instead of a laptop. The
-cluster uses **SLURM** to decide who runs what and when. We ask for an account,
-some time, and a number of cores:
+On a cluster, I must not run heavy work on the **login node**. Instead I ask the job scheduler **SLURM** for resources. SLURM needs to know:
 
-```bash
-srun -A project_ID -t 15:00 -n 1 pixi run fastqc
+- `-A` which project pays for the computing time
+- `-t` how long the job may run (e.g. `15:00` = 15 minutes)
+- `-n` how many cores
+
+**Option 1: `srun`**, quick, for one command:
+
+```{bash}
+#| eval: false
+mkdir fastqc
+srun -A <project_ID> -t 15:00 -n 1 pixi run fastqc --noextract -o fastqc \
+     data/SRR5223504_1.fastq.gz data/SRR5223504_2.fastq.gz
 ```
 
-For more than one sample it is easier to put the same settings into a small
-script and submit it:
+**Option 2: `sbatch`**, a script I can save and reuse. This is better for reproducibility, because the script is a record of exactly what I ran.
 
-```bash
-sbatch fastqc.sh
+```{.bash filename="scripts/fastqc.sh"}
+#! /bin/bash -l
+#SBATCH -A <project_ID>
+#SBATCH -t 30:00
+#SBATCH -n 1
+
+pixi run fastqc -o ../fastqc --noextract ../data/*fastq.gz
 ```
 
-The script is also a record of exactly what was run, which is the reproducible
-part.
-
-## MultiQC
-
-One report per sample adds up quickly. **MultiQC** collects them all into a
-single report, so the whole dataset can be checked in one place.
-
-## Keeping the session alive
-
-If the connection to the cluster drops, the job dies with it. `screen` keeps
-it running:
-
-```bash
-screen -S fastqc     # start a session
-# Ctrl + a, then d   # leave it running
-screen -r fastqc     # come back to it later
+```{bash}
+#| eval: false
+cd scripts
+sbatch fastqc.sh                 # submit the job
+squeue -u <username>             # check if it is waiting (PD) or running (R)
+less slurm-<jobID>.out           # read the log when it's done (q to quit)
 ```
 
+Project structure at this point:
 
-## Containers
-
-Pixi makes sure we install the same tools. A **container** goes one step
-further: it packs the tools *and* the operating system around them into a
-single file. That file behaves the same way on a laptop, on a server, or on
-someone else's computer years from now.
-
-Containers help when:
-
-- people in the group use different operating systems
-- two tools need different versions of the same dependency
-- old software will not install on a modern system
-
-## Which container tool
-
-- **Apptainer** — for shared servers and clusters (it used to be called Singularity)
-- **Docker** — for a personal machine
-
-Ready-made images are kept on **Docker Hub** and **Seqera**. It is safer to
-pick a popular image from a trusted maker, such as `biocontainers`.
-
-## Getting an image
-
-```bash
-apptainer pull name.sif docker://repository/image:version
+```
+rnaseq/
+├── data/            # symbolic links to the raw fastq.gz files
+├── fastqc/          # one .html + one .zip report per fastq file
+├── pixi.lock
+├── pixi.toml
+└── scripts/
+    └── fastqc.sh
 ```
 
-The `.sif` file that comes out *is* the container. Naming it with the tool and
-version keeps things clear later.
+To look at a report, right-click the `.html` file in the VS Code file explorer and choose **Download**.
 
-## Running it
+## 7. MultiQC: one report for all samples
 
-Run a single command inside the container:
+Opening eight separate FastQC reports gets tedious. MultiQC collects them into one report.
 
-```bash
-apptainer exec image.sif tool --version
+```{bash}
+#| eval: false
+pixi add multiqc
 ```
 
-Or step inside and work there:
+```{.bash filename="scripts/multiqc.sh"}
+#! /bin/bash -l
+#SBATCH -A <project_ID>
+#SBATCH -t 15:00
+#SBATCH -n 1
 
-```bash
-apptainer shell image.sif
+pixi run multiqc ../fastqc -o ../multiqc
 ```
 
-A container cannot see our files by default. `-B outside:inside` makes a folder
-on the computer visible inside the container.
-
-`run` and `exec` are not the same: `run` first executes the container's own
-start-up script, while `exec` skips it and runs exactly the command we give.
-
-## Building our own
-
-If no ready-made image exists, we describe one in a `.def` file: which
-operating system to start from, what to install (`%post`), which paths to set
-(`%environment`), and what to run by default (`%runscript`). Then:
-
-```bash
-apptainer build output.sif definition.def
+```{bash}
+#| eval: false
+sbatch multiqc.sh
 ```
 
-## Container or Pixi?
+The result is `multiqc/multiqc_report.html`.
 
-Pixi pins the tools. A container pins the whole system around them.
-Containers are bigger and slower to make, but more complete, so they suit
-sharing a finished pipeline or rescuing software that refuses to install. Think of container as a box that holds everything and you cannot change what is inside. Pixi is more flexible. 
-
-
-::: {.callout-note title="Random notes"}
-
-- `pixi.lock` belongs in git. It is the file that lets someone else rebuild the
-  exact same environment.
-- Name `.sif` files after the tool and its version, like `fastqc_0.12.1.sif`,
-  or it gets confusing fast.
-- Quality scores run from 0 to 42. Higher is better.
-- `apptainer run` runs the container's own start-up script first, `apptainer
-  exec` skips it.
-- Keep raw data in its own folder and never edit it. Scripts and results go
-  somewhere else.
-- `screen -ls` lists the sessions that are still running, in case the name is
-  forgotten.
-
+::: {.callout-tip}
+## Reading the report
+Some "failed" modules are normal for RNA-seq. For example, *Per base sequence content* often fails at the start of the reads because of random-primer bias, and *Sequence duplication* is high because highly expressed genes produce many identical reads. Always check whether a warning is expected for the type of data.
 :::
 
-## Up next
+## Cheat sheet
 
-What I plan to pick up on [Wednesday](../wednesday/).
+| I want to... | Command |
+|---|---|
+| create a Pixi environment | `pixi init <name> -c conda-forge -c bioconda` |
+| install a tool | `pixi add <tool>` |
+| run a tool | `pixi run <tool> <options>` |
+| start / leave / return to screen | `screen -S <name>` / `Ctrl+a d` / `screen -r <name>` |
+| link data instead of copying | `ln -s /path/to/source .` |
+| peek into a fastq.gz | `zcat file.fastq.gz \| head -n 8` |
+| run one command on the cluster | `srun -A <proj> -t 15:00 -n 1 <command>` |
+| submit a script | `sbatch script.sh` |
+| check my jobs | `squeue -u <username>` |
+| check my projects | `projinfo` |
+
+## Notes {#notes}
+
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
+

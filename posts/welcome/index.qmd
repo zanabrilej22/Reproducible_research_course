@@ -1,8 +1,0 @@
----
-title: "Welcome To My Blog"
-author: "Zana Brilej"
-date: "2026-09-14"
-categories: [news]
----
-
-This is my first post in a Quarto blog. I have no idea what I'm doing but I will figure it out eventually.

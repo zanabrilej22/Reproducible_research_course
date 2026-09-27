@@ -1,6 +1,6 @@
 ---
 title: "About me"
-image: profile.jpg
+image: profile copy.jpg
 about:
   template: minty
   links:
@@ -9,11 +9,24 @@ about:
       href: https://linkedin.com/in/zana-brilej
     - icon: github
       text: Github
-      href: https://zanabrilej22.github.io
+      href: https://github.com/zanabrilej22
     - icon: Karolinska Institutet
       text: Karolinska Institutet
       href: https://ki.se/personer/zana-brilej
 
 ---
 
-This is a blog for the Reproducible Research course at from MedBioInfo program. The blog will be used to share the material, codes, tips, and updates related to the course.
+## About me
+
+Hi! I am Zana, a second-year PhD student at Karolinska Institutet. As you can see I love pasta. I spend most of my free time dancing, running, and beeing outdoors. 
+
+## My research
+
+My PhD project is about **immune evasion in Merkel cell carcinoma**, a rare and aggressive skin cancer. I am trying to understand why some tumours do not respond to immunotherapy. 
+
+
+## Why this blog?
+
+I started this blog during the course *Reproducible Research in Bioinformatics and Computational Biology* (September 2026). I use it as a report of what we did during the course, and a notebook I can come back to whenever I need to remember how to use the tools we learned.
+
+

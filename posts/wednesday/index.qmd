@@ -1,18 +1,414 @@
 ---
 title: "Wednesday"
-description: "Midweek."
+description: "Containers and Nextflow workflows"
 date: "2026-09-16"
-categories: [weekly]
+categories: [containers, Apptainer, Nextflow, RNA-seq, Salmon]
+engine: knitr
 ---
 
-## What I did today
+## What we did today
 
-Write a short summary of Wednesday here.
+First we learned about **containers** and ran our QC tools inside them with **Apptainer**. Then we learned the basics of the workflow manager **Nextflow** and used it to build a small **RNA-seq workflow** (index → quantify → QC → report).
 
-## Notes
+## Part 1: Containers
 
-Write today's notes here.
+### What is a container?
 
-## Up next
+A Pixi environment packs the *tools*. A **container** goes one step further: it packs the tools **and a whole operating system** into a single file, called an **image**. Because the operating system travels with it, a container runs the same way on my laptop, on a colleague's computer and on a cluster. Images do not change once they are built, so they stay stable over time.
 
-What I plan to pick up on [Thursday](../thursday/).
+Popular container programs are Docker, Podman and **Apptainer** (earlier called *Singularity*). On shared servers like HPC2N, Apptainer is the right choice.
+
+### Getting an image
+
+Two good places to find images:
+
+- **[Docker Hub](https://hub.docker.com)**: images that people have uploaded. The [biocontainers](https://hub.docker.com/u/biocontainers) profile has many well-built bioinformatics tools.
+- **[Seqera Containers](https://seqera.io/containers/)**: builds an image on request from conda-forge/bioconda packages, and can put several tools into one image. Choose **Singularity** as the format. #we used this to get containers for Salmon, FastQC and MultiQC.
+
+```{bash}
+#| eval: false
+# from Seqera (note the oras:// prefix)
+apptainer pull vcftools_0.1.17.sif oras://community.wave.seqera.io/library/vcftools:0.1.17--b541aa8d9f9213f9
+```
+
+The first name (`vcftools_0.1.17.sif`) is what the file is called on my computer. Putting the tool name **and version** in it makes it clear what is inside.
+
+### Using a container
+
+```{bash}
+#| eval: false
+# run one command inside the container ("from the outside")
+apptainer exec vcftools_0.1.17.sif vcftools --version
+
+# open a shell inside the container ("from the inside"), type exit to leave
+apptainer shell vcftools_0.1.17.sif
+
+# make a folder from outside visible inside the container with -B outside:inside
+apptainer exec -B ../data:/rawdata fastqc_0.12.1.sif ls /rawdata
+```
+
+`exec` vs `run`:
+
+- `apptainer exec` runs **the command I give it**. This is what I use most.
+- `apptainer run` first runs the container's built-in **runscript** (its default action).
+
+### Building my own container
+
+If nobody has made an image for a tool, I can build one from a **definition file**. The course example was a cow that tells the date:
+
+```{.default filename="lolcow.def"}
+Bootstrap: docker
+From: ubuntu:22.04
+
+%post
+    apt-get -y update
+    apt-get -y install cowsay lolcat fortune
+
+%environment
+    export LC_ALL=C
+    export PATH=/usr/games:$PATH
+
+%runscript
+    date | cowsay | lolcat
+```
+
+- `From:` which operating system to start from
+- `%post` commands that install things
+- `%environment` settings available when the container runs
+- `%runscript` what `apptainer run` does
+
+```{bash}
+#| eval: false
+apptainer build lolcow.sif lolcow.def
+apptainer run lolcow.sif
+```
+
+### QC with containers
+
+We repeated Tuesday's QC, but with FastQC and MultiQC from containers instead of the Pixi environment. The only change in the SLURM script is the command line:
+
+```{.bash filename="scripts/fastqc_container.sh"}
+#! /bin/bash -l
+#SBATCH -A <project_ID>
+#SBATCH -t 30:00
+#SBATCH -n 1
+
+apptainer exec ../containers/fastqc_0.12.1.sif fastqc -o ../fastqc --noextract ../data/*fastq.gz
+```
+
+MultiQC from the outside and from the inside:
+
+```{bash}
+#| eval: false
+# outside
+apptainer exec containers/multiqc.sif multiqc fastqc -o multiqc
+
+# inside
+apptainer shell containers/multiqc.sif
+multiqc fastqc -o multiqc
+exit
+```
+
+## Part 2: Nextflow basics
+
+### Why a workflow manager?
+
+Nextflow:
+
+- connects the steps so the output of one becomes the input of the next,
+- runs independent tasks **in parallel**,
+- remembers what already finished, so I can **resume** after an error,
+- separates **what** to run (the workflow) from **where** to run it (laptop, cluster, cloud). This is called *execution abstraction*.
+
+### The building blocks
+
+- **process**: one step, e.g. "run FastQC". It has `input`, `output` and a `script`.
+- **channel**: a queue that carries data from one process to the next.
+- **workflow**: the part that connects processes and channels.
+- **executor**: where the tasks run (`local` or `slurm`).
+
+```{mermaid}
+flowchart LR
+    A(["greeting_ch<br/>'Hello world!'"]) --> B["SPLITLETTERS"]
+    B --> C(["chunk_aa, chunk_ab"])
+    C -->|flatten| D["CONVERTTOUPPER"]
+    D --> E(["HELLO<br/>WORLD!"])
+```
+
+### Setting up
+
+```{bash}
+#| eval: false
+screen -S nextflow
+cp -r /path/to/repbio26/common_data/nf-training .
+cd nf-training
+pixi init -c conda-forge -c bioconda
+pixi add nextflow
+```
+
+### hello.nf
+
+```{.groovy filename="hello.nf"}
+#!/usr/bin/env nextflow
+
+params.greeting = 'Hello world!'          // a parameter I can change from the command line
+
+process SPLITLETTERS {
+    input:
+    val x                                  // a value
+
+    output:
+    path 'chunk_*'                         // files starting with chunk_
+
+    script:
+    """
+    printf '$x' | split -b 6 - chunk_
+    """
+}
+
+process CONVERTTOUPPER {
+    input:
+    path y
+
+    output:
+    stdout                                 // whatever is printed
+
+    script:
+    """
+    cat $y | tr '[a-z]' '[A-Z]'
+    """
+}
+
+workflow {
+    greeting_ch = Channel.of(params.greeting)
+    letters_ch  = SPLITLETTERS(greeting_ch)
+    results_ch  = CONVERTTOUPPER(letters_ch.flatten())   // flatten: one task per chunk
+    results_ch.view{ it }
+}
+```
+
+```{bash}
+#| eval: false
+pixi run nextflow run hello.nf
+```
+
+Output:
+
+```
+executor >  local (3)
+[96/fd5f07] SPLITLETTERS (1)   [100%] 1 of 1 ✔
+[7e/dad424] CONVERTTOUPPER (2) [100%] 2 of 2 ✔
+HELLO
+WORLD!
+```
+
+The codes like `96/fd5f07` are the start of the folder in `work/` where that task ran. It is useful for debugging. `HELLO` and `WORLD!` can come in any order because the two tasks run in parallel.
+
+### Resume and parameters
+
+```{bash}
+#| eval: false
+# after changing a process: only the changed part is re-run, the rest comes from the cache
+pixi run nextflow run hello.nf -resume
+
+# change a parameter from the command line (two dashes = pipeline parameter)
+pixi run nextflow run hello.nf -resume --greeting 'Bonjour le monde!'
+```
+
+::: {.callout-note}
+## One dash or two?
+`-resume` has **one** dash, so it is an option for Nextflow itself. `--greeting` has **two** dashes, so it is a parameter of *my* pipeline.
+:::
+
+Settings can come from many places. The most important ones, from strongest to weakest: command line (`--param`) → `-params-file` → `-c my.config` → `nextflow.config` in the current folder → values in the script.
+
+### Cleaning up
+
+The `work/` folder grows fast.
+
+```{bash}
+#| eval: false
+pixi run nextflow log                        # list previous runs in this folder
+pixi run nextflow clean -f                   # remove work files
+pixi run nextflow clean -before <run_name> -f
+```
+
+## Part 3: A simple RNA-seq workflow with Nextflow
+
+We built this workflow step by step in `script1.nf` to `script7.nf`:
+
+```{mermaid}
+flowchart TD
+    T([transcriptome.fa]) --> IDX["INDEX<br/>salmon index"]
+    R([paired-end reads]) -->|fromFilePairs| RP([read pairs per sample])
+    IDX --> Q["QUANTIFICATION<br/>salmon quant"]
+    RP --> Q
+    RP --> FQ["FASTQC"]
+    Q --> M["MULTIQC"]
+    FQ --> M
+    M --> REP([multiqc_report.html])
+```
+
+- **INDEX**: Salmon turns the transcriptome into a searchable index. This is done once.
+- **QUANTIFICATION**: for each sample, Salmon estimates how much of each transcript is present.
+- **FASTQC**: checks read quality. It runs *at the same time* as quantification, because neither needs the other.
+- **MULTIQC**: waits for everything and makes one report.
+
+### Running on the cluster: `nextflow.config`
+
+Running on the login node is not allowed on a cluster, so we told Nextflow to send every task to SLURM. This file is read automatically when it is in the folder where I run Nextflow:
+
+```{.groovy filename="nextflow.config"}
+process {
+    executor = "slurm"
+    time = '2.h'          // default time for every process
+    cpus = 4
+
+    withName: 'INDEX' {   // settings only for the INDEX process
+        time = 15.m
+        cpus = 2
+    }
+    withName: 'QUANTIFICATION' {
+        time = 30.m
+        cpus = 2
+    }
+}
+
+resume = true             // always resume, no need to type -resume
+singularity.enabled = true
+
+executor {
+    account = '<project_ID>'
+}
+```
+
+### Channels of read pairs
+
+Salmon needs both files of a pair together. `fromFilePairs` groups them by sample name. The `{1,2}` marks the part of the file name that differs:
+
+```{.groovy}
+read_pairs_ch = channel.fromFilePairs(params.reads)
+read_pairs_ch.view()
+// [gut, [/.../gut_1.fq, /.../gut_2.fq]]   <- a tuple: sample ID + list of two files
+```
+
+### The complete workflow
+
+This is what my final script looked like. Each process gets its tool from a container, which is more reproducible than installing the tools in the environment:
+
+```{.groovy filename="script7.nf"}
+#!/usr/bin/env nextflow
+
+params.reads              = "$projectDir/data/ggal/gut_{1,2}.fq"
+params.transcriptome_file = "$projectDir/data/ggal/transcriptome.fa"
+params.outdir             = "results"
+
+workflow {
+    read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true)
+
+    index_ch  = INDEX(file(params.transcriptome_file, checkIfExists: true))
+    quant_ch  = QUANTIFICATION(index_ch, read_pairs_ch)
+    fastqc_ch = FASTQC(read_pairs_ch)
+
+    // mix: put both channels together; collect: wait for all and pass them as ONE item
+    MULTIQC(quant_ch.mix(fastqc_ch).collect())
+}
+
+process INDEX {
+    container 'oras://community.wave.seqera.io/library/salmon:2.7.0--cb05356ce9eb88b7'
+
+    input:
+    path transcriptome
+
+    output:
+    path 'salmon_index'
+
+    script:
+    """
+    salmon index --threads $task.cpus -t $transcriptome -i salmon_index
+    """
+}
+
+process QUANTIFICATION {
+    tag "Salmon on $sample_id"
+    container 'oras://community.wave.seqera.io/library/salmon:2.7.0--cb05356ce9eb88b7'
+    publishDir "$params.outdir/salmon", mode: 'copy'
+
+    input:
+    path salmon_index
+    tuple val(sample_id), path(reads)
+
+    output:
+    path "$sample_id"
+
+    script:
+    """
+    salmon quant --threads $task.cpus --libType=U -i $salmon_index -1 ${reads[0]} -2 ${reads[1]} -o $sample_id
+    """
+}
+
+process FASTQC {
+    tag "FastQC on $sample_id"
+    container '<fastqc container address from Seqera>'
+
+    input:
+    tuple val(sample_id), path(reads)
+
+    output:
+    path "fastqc_${sample_id}_logs"
+
+    script:
+    """
+    mkdir fastqc_${sample_id}_logs
+    fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads}
+    """
+}
+
+process MULTIQC {
+    container '<multiqc container address from Seqera>'
+    publishDir "$params.outdir/multiqc", mode: 'copy'
+
+    input:
+    path '*'
+
+    output:
+    path 'multiqc_report.html'
+
+    script:
+    """
+    multiqc .
+    """
+}
+```
+
+```{bash}
+#| eval: false
+# run on all three samples (gut, liver, lung)
+pixi run nextflow run script7.nf --reads 'data/ggal/*_{1,2}.fq'
+```
+
+::: {.callout-tip}
+## `publishDir` and `mode: 'copy'`
+By default, `publishDir` only makes *links* to files inside `work/`. If I clean `work/`, the results disappear. `mode: 'copy'` makes real copies that survive the cleanup.
+:::
+
+## Cheat sheet
+
+| I want to... | Command |
+|---|---|
+| download an image | `apptainer pull <name>.sif docker://...` or `oras://...` |
+| run a tool in a container | `apptainer exec <image>.sif <command>` |
+| work inside a container | `apptainer shell <image>.sif` |
+| make a folder visible inside | `-B outside/path:inside/path` |
+| build an image | `apptainer build <name>.sif <name>.def` |
+| run a Nextflow script | `pixi run nextflow run script.nf` |
+| continue where it stopped | add `-resume` |
+| change a parameter | add `--param_name value` |
+| see previous runs / clean up | `nextflow log` / `nextflow clean -f` |
+
+## Notes {#notes}
+
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
+

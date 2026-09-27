@@ -1,18 +1,182 @@
 ---
 title: "Friday"
-description: "Wrapping up the week."
+description: "Plotting with ggplot2 and a discussion about AI in bioinformatics"
 date: "2026-09-18"
-categories: [weekly]
+categories: [R, ggplot2, visualisation, AI]
+engine: knitr
 ---
 
-## What I did today
+## What we did today
 
-Write a short summary of Friday here.
+In the morning we learned how to make plots in R with **ggplot2**. In the afternoon we had a discussion about **AI in bioinformatics**.
 
-## Notes
 
-Write today's notes here.
+## Part 1: ggplot2
 
-## Looking back on the week
+### Setup
 
-A few things that stood out across [Monday](../monday/) through today.
+```{r}
+#| label: install
+#| eval: false
+install.packages("ggplot2")   # only needed once
+```
+
+```{r}
+#| label: setup
+#| message: false
+library(ggplot2)
+```
+
+### The grammar of graphics
+
+Every ggplot is built from the same layers, added with `+`:
+
+| Layer | Question it answers | Example |
+|---|---|---|
+| **data** | which table? | `ggplot(iris, ...)` |
+| **aesthetics** `aes()` | which column goes where (x, y, colour, size...)? | `aes(x = Sepal.Length, colour = Species)` |
+| **geoms** | what shape? points, lines, boxes... | `geom_point()`, `geom_boxplot()` |
+| **facets** | split into small panels? | `facet_wrap(~ Species)` |
+| **scales** | how values map to colours/axes | `scale_colour_manual()`, `scale_y_log10()` |
+| **labels** | titles and axis names | `labs(title = ..., x = ...)` |
+| **theme** | the look (background, fonts...) | `theme_bw()` |
+
+
+### 1. A first plot
+
+`iris` is a dataset built into R: flower measurements from three species.
+
+```{r}
+#| label: fig-first
+#| fig-cap: "The simplest ggplot: data + aesthetics + one geom."
+ggplot(data = iris, mapping = aes(x = Sepal.Length, y = Petal.Length)) +
+  geom_point()
+```
+
+### 2. Colour, labels and a theme
+
+```{r}
+#| label: fig-colour
+#| fig-cap: "Colour mapped to species, with labels and a cleaner theme."
+ggplot(iris, aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
+  geom_point(size = 2, alpha = 0.7) +
+  labs(
+    title = "Petal length vs sepal length",
+    x = "Sepal length (cm)",
+    y = "Petal length (cm)",
+    colour = "Species"
+  ) +
+  theme_bw()
+```
+
+::: {.callout-important}
+## Inside or outside `aes()`?
+- **Inside** `aes()` = *depends on the data*: `aes(colour = Species)` gives each species its own colour.
+- **Outside** `aes()` = *the same for everything*: `geom_point(colour = "blue")` makes all points blue.
+:::
+
+### 3. Boxplots with the data points on top
+
+```{r}
+#| label: fig-boxplot
+#| fig-cap: "A boxplot shows the distribution. Jittered points show every observation."
+ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) +
+  geom_boxplot(alpha = 0.5, outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.6) +
+  labs(x = NULL, y = "Petal width (cm)") +
+  theme_classic() +
+  theme(legend.position = "none")
+```
+
+### 4. Facets and trend lines
+
+```{r}
+#| label: fig-facets
+#| fig-cap: "One panel per species, each with a linear trend line."
+#| message: false
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(colour = "steelblue") +
+  geom_smooth(method = "lm", colour = "black") +
+  facet_wrap(~ Species) +
+  theme_bw()
+```
+
+### 5. A volcano plot 
+
+A volcano plot is the classic way to show a differential expression result: fold change on the x-axis, significance on the y-axis. The data below is **simulated**, just to practise the plot.
+
+```{r}
+#| label: simulate-de
+set.seed(42)
+n_genes <- 2000
+de <- data.frame(
+  gene   = paste0("gene_", seq_len(n_genes)),
+  log2FC = rnorm(n_genes, mean = 0, sd = 1.2)
+)
+de$pvalue <- 10^(-abs(de$log2FC) * runif(n_genes, 0.5, 3))
+de$direction <- ifelse(de$pvalue < 0.01 & de$log2FC >  1, "Up",
+                ifelse(de$pvalue < 0.01 & de$log2FC < -1, "Down", "Not significant"))
+head(de)
+table(de$direction)
+```
+
+```{r}
+#| label: fig-volcano
+#| fig-cap: "Volcano plot of simulated data. Dashed lines show the cut-offs |log2FC| > 1 and p < 0.01."
+ggplot(de, aes(x = log2FC, y = -log10(pvalue), colour = direction)) +
+  geom_point(alpha = 0.6, size = 1.2) +
+  geom_vline(xintercept = c(-1, 1), linetype = "dashed") +
+  geom_hline(yintercept = -log10(0.01), linetype = "dashed") +
+  scale_colour_manual(values = c("Down" = "#2166ac",
+                                 "Not significant" = "grey75",
+                                 "Up" = "#b2182b")) +
+  labs(x = "log2 fold change", y = "-log10(p-value)", colour = NULL) +
+  theme_minimal()
+```
+
+### 6. Saving a plot
+
+```{r}
+#| label: save
+#| eval: false
+p <- ggplot(iris, aes(Sepal.Length, Petal.Length, colour = Species)) + geom_point()
+ggsave("my_plot.png", plot = p, width = 6, height = 4, dpi = 300)
+ggsave("my_plot.pdf", plot = p, width = 6, height = 4)   # vector format, good for papers
+```
+
+## Part 2: AI in bioinformatics
+
+The afternoon was a discussion about **AI in bioinformatics**. The main points:
+
+**LLMs predict text, they don't "know" things.** They are trained on huge amounts of internet text, including biased and wrong content. They don't say "I don't know" and can **hallucinate** answers, including citations that don't exist. Every reference an AI gives me must be checked.
+
+**Data privacy.** Sequencing and patient data are sensitive. Pasting data into an online chatbot can send it to a company's servers, depending on the terms of service. A safer habit is to describe the data (column names, data types) instead of uploading it. **Local, open-weight models** keep everything on my own computer, but need good hardware and are usually less capable.
+
+**Learning and productivity.** Relying on AI too much can mean learning less. Studies discussed in the course suggest it does not always make experienced people faster either.
+
+**Responsibility.** I am responsible for everything I use.
+
+**Environmental cost.** Data centres use a lot of electricity and water, so it is worth thinking before sending a query.
+
+**AI and reproducibility.** The habits from this week (version control, clear folder structure, documented decisions) also make it easier for an AI assistant, or a human colleague, to understand and help with a project.
+
+## Cheat sheet
+
+| I want to... | Code |
+|---|---|
+| start a plot | `ggplot(data, aes(x = ..., y = ...))` |
+| scatter / line / bar / boxplot | `geom_point()`, `geom_line()`, `geom_col()`, `geom_boxplot()` |
+| colour by a column | `aes(colour = column)` (or `fill =` for areas) |
+| one fixed colour | `geom_point(colour = "blue")` |
+| split into panels | `facet_wrap(~ column)` |
+| add a trend line | `geom_smooth(method = "lm")` |
+| set titles and axis names | `labs(title = , x = , y = )` |
+| change the look | `theme_bw()`, `theme_minimal()`, `theme(legend.position = "none")` |
+| save | `ggsave("plot.png", width = , height = , dpi = 300)` |
+
+## Notes {#notes}
+
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
+

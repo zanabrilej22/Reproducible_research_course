@@ -1,18 +1,211 @@
 ---
 title: "Thursday"
-description: "Day four."
+description: "Running the nf-core/rnaseq pipeline"
 date: "2026-09-17"
-categories: [weekly]
+categories: [nf-core, Nextflow, RNA-seq, HPC2N, screen, Pixi]
+engine: knitr
 ---
 
-## What I did today
+## What we did today
 
-Write a short summary of Thursday here.
+On Wednesday we wrote a small workflow ourselves. Today we used a **ready-made, community pipeline** from **nf-core**: `nf-core/rnaseq`. We ran it on our real RNA-seq data on the HPC2N cluster. Because the run takes hours, we started it inside a **screen** session so it kept running after we disconnected.
 
-## Notes
+## 1. What is nf-core?
 
-Write today's notes here.
+[nf-core](https://nf-co.re) is a community that builds and maintains Nextflow pipelines for common analyses (RNA-seq, variant calling, metagenomics...). Every nf-core pipeline:
 
-## Up next
+- is **versioned** (I can always rerun the exact same version, e.g. `-r 3.26.0`),
+- uses **containers** for every tool,
+- has good **documentation** (the *Usage*, *Parameters* and *Output* tabs on the website),
+- comes with a **test profile** with tiny data to check that everything works.
 
-What I plan to pick up on [Friday](../friday/).
+For publications, this makes the analysis much easier to reproduce than a homemade script.
+
+## 2. Start a screen session first
+
+Pipelines can run for hours. If I start them in a normal terminal and my connection drops, the run stops. So the first step is always:
+
+```{bash}
+#| eval: false
+screen -S rnaseq          # new session called "rnaseq"
+```
+
+- `Ctrl + a`, then `d`: detach. The pipeline keeps running and I can close my laptop.
+- `screen -ls`: list sessions.
+- `screen -r rnaseq`: reconnect and see the progress.
+
+## 3. Pixi environment with Nextflow and nf-core
+
+```{bash}
+#| eval: false
+pixi init nextflow_test -c conda-forge -c bioconda
+cd nextflow_test
+pixi add nextflow nf-core
+
+# check that everything works
+pixi run nextflow -version
+pixi run nf-core --help
+pixi run nextflow run hello
+```
+
+## 4. The HPC2N configuration file
+
+The config file tells Nextflow how to use the cluster: use SLURM, use Singularity/Apptainer, and the maximum memory, CPUs and time a job may ask for.
+
+```{bash}
+#| eval: false
+wget https://raw.githubusercontent.com/hpc2n/intro-course/master/exercises/NEXTFLOW/INTERACTIVE/hpc2n.config
+```
+
+In the file I changed `project = null` to our project ID, with single quotes. On the real run I also added my email under `email` to get a summary when the run finished.
+
+```{.groovy filename="hpc2n.config (the parts that matter)"}
+params {
+  project    = '<project_ID>'   // <- changed this line
+  max_memory = 128.GB
+  max_cpus   = 28
+  max_time   = 168.h
+}
+
+singularity {
+  enabled = true
+}
+
+process {
+  executor = 'slurm'
+  clusterOptions = { "-A $params.project ${params.clusterOptions ?: ''}" }
+}
+```
+
+## 5. Test run with the built-in test data
+
+Before using real data, I checked the setup and got to know the output with the pipeline's test profile:
+
+```{bash}
+#| eval: false
+pixi run nextflow run nf-core/rnaseq -r 3.26.0 -profile test --outdir rnaseq_test -c hpc2n.config
+```
+
+What each part means:
+
+| Part | Meaning |
+|---|---|
+| `pixi run` | use the Pixi environment |
+| `nextflow run nf-core/rnaseq` | download and run the pipeline from nf-core |
+| `-r 3.26.0` | use this exact version |
+| `-profile test` | use the small built-in test data |
+| `--outdir rnaseq_test` | where to save the results |
+| `-c hpc2n.config` | settings for the HPC2N cluster |
+
+## 6. Running the pipeline on our RNA-seq data
+
+### Project folder and data
+
+```{bash}
+#| eval: false
+mkdir -p rnaseq_nfcore/data
+cd rnaseq_nfcore
+pixi init -c conda-forge -c bioconda
+pixi add nextflow nf-core
+
+cd data
+ln -s /path/to/repbio26/common_data/RNAseq/*fastq.gz .
+cd ..
+```
+
+### The samplesheet
+
+The pipeline needs a CSV file that lists the samples. The exact format is described in the *Usage* tab of the pipeline. For paired-end data it has four columns: sample name, read 1, read 2 and strandedness (`auto` lets the pipeline figure it out).
+
+Instead of typing it by hand, I let a small loop write it. The chunk below runs, so you can see the result. On the server I replaced the path with my absolute path and saved it with `> samplesheet.csv` at the end:
+
+```{bash}
+#| label: make-samplesheet
+DATA=/path/to/rnaseq_nfcore/data   # use ABSOLUTE paths
+
+echo "sample,fastq_1,fastq_2,strandedness"
+for id in SRR5223504 SRR5223517 SRR5223546 SRR5223559; do
+  echo "${id},${DATA}/${id}_1.fastq.gz,${DATA}/${id}_2.fastq.gz,auto"
+done
+```
+
+### Reference genome
+
+Our samples are human. iGenomes has a human reference, but its annotation is outdated, so nf-core recommends downloading an up-to-date genome FASTA and GTF annotation ([see the nf-core docs](https://nf-co.re/docs/usage/reference_genomes#custom-genomes)). I downloaded them to a `reference/` folder.
+
+### nf-core launch → `nf-params.json`
+
+On the [nf-core/rnaseq page](https://nf-co.re/rnaseq/3.26.0/) I clicked **Launch version 3.26.0** and filled in the form: absolute paths to the samplesheet, the output folder, the genome FASTA and the GTF file, and `resume` set to true. At the end, the launcher gives a JSON file. I saved it on the server as `nf-params.json` and added `"save_reference": true`, so the genome index is saved and does not have to be built again.
+
+```{.json filename="nf-params.json (example, replace the paths)"}
+{
+    "input": "/path/to/rnaseq_nfcore/samplesheet.csv",
+    "outdir": "/path/to/rnaseq_nfcore/results",
+    "fasta": "/path/to/rnaseq_nfcore/reference/genome.fa.gz",
+    "gtf": "/path/to/rnaseq_nfcore/reference/annotation.gtf.gz",
+    "save_reference": true
+}
+```
+
+::: {.callout-warning}
+## JSON is picky
+Every line except the last one needs a comma at the end.
+:::
+
+### Starting the run
+
+**Option A: directly with Pixi, inside the screen session.** This is what I did:
+
+```{bash}
+#| eval: false
+screen -S rnaseq
+pixi run nextflow run nf-core/rnaseq -r 3.26.0 -resume -params-file nf-params.json -c hpc2n.config
+# Ctrl + a, d  -> detach and go home :)
+```
+
+**Option B: submit it as a SLURM job with `sbatch`.**
+
+```{.bash filename="zana_submit_rnaseq.sh"}
+#!/bin/bash -l
+#SBATCH -A <project_ID>
+#SBATCH -n 5
+#SBATCH -t 24:00:00
+
+/home/<user>/.pixi/bin/pixi run nextflow run nf-core/rnaseq -r 3.26.0 \
+    -params-file /path/to/nf-params.json -c /path/to/hpc2n.config
+```
+
+```{bash}
+#| eval: false
+sbatch zana_submit_rnaseq.sh
+squeue -u <username>
+```
+
+The main Nextflow process sends each step to SLURM as its own job, so `squeue` shows many small jobs appearing and disappearing while the pipeline runs.
+
+## 7. The results
+
+When the run is finished, the output folder contains, among other things:
+
+- `multiqc/`: **the first thing to open**. One report with QC, trimming, alignment and quantification statistics for all samples.
+- `star_salmon/`: alignments and the gene/transcript count tables, which are the input for differential expression analysis.
+- `fastqc/`, `trimgalore/`: quality control and trimming results.
+- `pipeline_info/`: exact versions of every tool and the run parameters. This is very useful for the methods section of a paper.
+
+## Cheat sheet
+
+| I want to... | Command |
+|---|---|
+| start / detach / return to a session | `screen -S <name>` / `Ctrl+a d` / `screen -r <name>` |
+| set up the environment | `pixi add nextflow nf-core` |
+| test a pipeline | `pixi run nextflow run nf-core/<pipeline> -r <version> -profile test --outdir <dir> -c hpc2n.config` |
+| run on my data | `pixi run nextflow run nf-core/rnaseq -r 3.26.0 -resume -params-file nf-params.json -c hpc2n.config` |
+| check jobs | `squeue -u <username>` |
+| clean up old runs | `nextflow log`, then `nextflow clean -f -before <run_name>` |
+
+## Notes {#notes}
+
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
+
