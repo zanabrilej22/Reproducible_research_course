@@ -42,7 +42,7 @@ Every ggplot is built from the same layers, added with `+`:
 | **theme** | the look (background, fonts...) | `theme_bw()` |
 
 
-### 1. A first plot
+### 1. A scatter plot
 
 `iris` is a dataset built into R: flower measurements from three species.
 
