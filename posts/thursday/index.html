@@ -8,7 +8,7 @@
 
 <meta name="author" content="Zana Brilej">
 <meta name="dcterms.date" content="2026-09-17">
-<meta name="description" content="Day four.">
+<meta name="description" content="Running the nf-core/rnaseq pipeline">
 
 <title>Thursday – Blog</title>
 <style>
@@ -29,6 +29,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -48,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3f68e3761999f75b0fd8faf9fa20daed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-95e700bef72d2880c277d2cb84c9764b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -100,7 +135,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">About me</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/zanabrilej22"> <i class="bi bi-github" role="img">
@@ -126,11 +161,16 @@ ul.task-list li input[type="checkbox"] {
       <h1 class="title">Thursday</h1>
                   <div>
         <div class="description">
-          Day four.
+          Running the nf-core/rnaseq pipeline
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">weekly</div>
+                <div class="quarto-category">nf-core</div>
+                <div class="quarto-category">Nextflow</div>
+                <div class="quarto-category">RNA-seq</div>
+                <div class="quarto-category">HPC2N</div>
+                <div class="quarto-category">screen</div>
+                <div class="quarto-category">Pixi</div>
               </div>
                   </div>
   </div>
@@ -167,17 +207,272 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="what-i-did-today" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>Write a short summary of Thursday here.</p>
+<section id="what-we-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-did-today">What we did today</h2>
+<p>On Wednesday we wrote a small workflow ourselves. Today we used a <strong>ready-made, community pipeline</strong> from <strong>nf-core</strong>: <code>nf-core/rnaseq</code>. We ran it on our real RNA-seq data on the HPC2N cluster. Because the run takes hours, we started it inside a <strong>screen</strong> session so it kept running after we disconnected.</p>
+</section>
+<section id="what-is-nf-core" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-nf-core">1. What is nf-core?</h2>
+<p><a href="https://nf-co.re">nf-core</a> is a community that builds and maintains Nextflow pipelines for common analyses (RNA-seq, variant calling, metagenomics…). Every nf-core pipeline:</p>
+<ul>
+<li>is <strong>versioned</strong> (I can always rerun the exact same version, e.g.&nbsp;<code>-r 3.26.0</code>),</li>
+<li>uses <strong>containers</strong> for every tool,</li>
+<li>has good <strong>documentation</strong> (the <em>Usage</em>, <em>Parameters</em> and <em>Output</em> tabs on the website),</li>
+<li>comes with a <strong>test profile</strong> with tiny data to check that everything works.</li>
+</ul>
+<p>For publications, this makes the analysis much easier to reproduce than a homemade script.</p>
+</section>
+<section id="start-a-screen-session-first" class="level2">
+<h2 class="anchored" data-anchor-id="start-a-screen-session-first">2. Start a screen session first</h2>
+<p>Pipelines can run for hours. If I start them in a normal terminal and my connection drops, the run stops. So the first step is always:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">screen</span> <span class="at">-S</span> rnaseq          <span class="co"># new session called "rnaseq"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><code>Ctrl + a</code>, then <code>d</code>: detach. The pipeline keeps running and I can close my laptop.</li>
+<li><code>screen -ls</code>: list sessions.</li>
+<li><code>screen -r rnaseq</code>: reconnect and see the progress.</li>
+</ul>
+</section>
+<section id="pixi-environment-with-nextflow-and-nf-core" class="level2">
+<h2 class="anchored" data-anchor-id="pixi-environment-with-nextflow-and-nf-core">3. Pixi environment with Nextflow and nf-core</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> init nextflow_test <span class="at">-c</span> conda-forge <span class="at">-c</span> bioconda</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> nextflow_test</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> add nextflow nf-core</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># check that everything works</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run nextflow <span class="at">-version</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run nf-core <span class="at">--help</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run nextflow run hello</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="the-hpc2n-configuration-file" class="level2">
+<h2 class="anchored" data-anchor-id="the-hpc2n-configuration-file">4. The HPC2N configuration file</h2>
+<p>The config file tells Nextflow how to use the cluster: use SLURM, use Singularity/Apptainer, and the maximum memory, CPUs and time a job may ask for.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://raw.githubusercontent.com/hpc2n/intro-course/master/exercises/NEXTFLOW/INTERACTIVE/hpc2n.config</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>In the file I changed <code>project = null</code> to our project ID, with single quotes. On the real run I also added my email under <code>email</code> to get a summary when the run finished.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>hpc2n.config (the parts that matter)</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="hpc2n.config (the parts that matter)"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>params <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  project    <span class="op">=</span> <span class="st">'&lt;project_ID&gt;'</span>   <span class="co">// &lt;- changed this line</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  max_memory <span class="op">=</span> <span class="fl">128.</span>GB</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  max_cpus   <span class="op">=</span> <span class="dv">28</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  max_time   <span class="op">=</span> <span class="fl">168.</span>h</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>singularity <span class="op">{</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  enabled <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>process <span class="op">{</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  executor <span class="op">=</span> <span class="st">'slurm'</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  clusterOptions <span class="op">=</span> <span class="op">{</span> <span class="st">"-A </span><span class="ss">$params</span><span class="op">.</span><span class="ss">project</span><span class="st"> </span><span class="ss">${</span>params<span class="op">.</span>clusterOptions <span class="op">?:</span> <span class="st">''</span><span class="ss">}</span><span class="st">"</span> <span class="op">}</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="test-run-with-the-built-in-test-data" class="level2">
+<h2 class="anchored" data-anchor-id="test-run-with-the-built-in-test-data">5. Test run with the built-in test data</h2>
+<p>Before using real data, I checked the setup and got to know the output with the pipeline’s test profile:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run nextflow run nf-core/rnaseq <span class="at">-r</span> 3.26.0 <span class="at">-profile</span> test <span class="at">--outdir</span> rnaseq_test <span class="at">-c</span> hpc2n.config</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>What each part means:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>pixi run</code></td>
+<td>use the Pixi environment</td>
+</tr>
+<tr class="even">
+<td><code>nextflow run nf-core/rnaseq</code></td>
+<td>download and run the pipeline from nf-core</td>
+</tr>
+<tr class="odd">
+<td><code>-r 3.26.0</code></td>
+<td>use this exact version</td>
+</tr>
+<tr class="even">
+<td><code>-profile test</code></td>
+<td>use the small built-in test data</td>
+</tr>
+<tr class="odd">
+<td><code>--outdir rnaseq_test</code></td>
+<td>where to save the results</td>
+</tr>
+<tr class="even">
+<td><code>-c hpc2n.config</code></td>
+<td>settings for the HPC2N cluster</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="running-the-pipeline-on-our-rna-seq-data" class="level2">
+<h2 class="anchored" data-anchor-id="running-the-pipeline-on-our-rna-seq-data">6. Running the pipeline on our RNA-seq data</h2>
+<section id="project-folder-and-data" class="level3">
+<h3 class="anchored" data-anchor-id="project-folder-and-data">Project folder and data</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> rnaseq_nfcore/data</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> rnaseq_nfcore</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> init <span class="at">-c</span> conda-forge <span class="at">-c</span> bioconda</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> add nextflow nf-core</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> data</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /path/to/repbio26/common_data/RNAseq/<span class="pp">*</span>fastq.gz .</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="the-samplesheet" class="level3">
+<h3 class="anchored" data-anchor-id="the-samplesheet">The samplesheet</h3>
+<p>The pipeline needs a CSV file that lists the samples. The exact format is described in the <em>Usage</em> tab of the pipeline. For paired-end data it has four columns: sample name, read 1, read 2 and strandedness (<code>auto</code> lets the pipeline figure it out).</p>
+<p>Instead of typing it by hand, I let a small loop write it. The chunk below runs, so you can see the result. On the server I replaced the path with my absolute path and saved it with <code>&gt; samplesheet.csv</code> at the end:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">DATA</span><span class="op">=</span>/path/to/rnaseq_nfcore/data   <span class="co"># use ABSOLUTE paths</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"sample,fastq_1,fastq_2,strandedness"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> id <span class="kw">in</span> SRR5223504 SRR5223517 SRR5223546 SRR5223559<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"</span><span class="va">${id}</span><span class="st">,</span><span class="va">${DATA}</span><span class="st">/</span><span class="va">${id}</span><span class="st">_1.fastq.gz,</span><span class="va">${DATA}</span><span class="st">/</span><span class="va">${id}</span><span class="st">_2.fastq.gz,auto"</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sample,fastq_1,fastq_2,strandedness
+SRR5223504,/path/to/rnaseq_nfcore/data/SRR5223504_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223504_2.fastq.gz,auto
+SRR5223517,/path/to/rnaseq_nfcore/data/SRR5223517_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223517_2.fastq.gz,auto
+SRR5223546,/path/to/rnaseq_nfcore/data/SRR5223546_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223546_2.fastq.gz,auto
+SRR5223559,/path/to/rnaseq_nfcore/data/SRR5223559_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223559_2.fastq.gz,auto</code></pre>
+</div>
+</div>
+</section>
+<section id="reference-genome" class="level3">
+<h3 class="anchored" data-anchor-id="reference-genome">Reference genome</h3>
+<p>Our samples are human. iGenomes has a human reference, but its annotation is outdated, so nf-core recommends downloading an up-to-date genome FASTA and GTF annotation (<a href="https://nf-co.re/docs/usage/reference_genomes#custom-genomes">see the nf-core docs</a>). I downloaded them to a <code>reference/</code> folder.</p>
+</section>
+<section id="nf-core-launch-nf-params.json" class="level3">
+<h3 class="anchored" data-anchor-id="nf-core-launch-nf-params.json">nf-core launch → <code>nf-params.json</code></h3>
+<p>On the <a href="https://nf-co.re/rnaseq/3.26.0/">nf-core/rnaseq page</a> I clicked <strong>Launch version 3.26.0</strong> and filled in the form: absolute paths to the samplesheet, the output folder, the genome FASTA and the GTF file, and <code>resume</code> set to true. At the end, the launcher gives a JSON file. I saved it on the server as <code>nf-params.json</code> and added <code>"save_reference": true</code>, so the genome index is saved and does not have to be built again.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>nf-params.json (example, replace the paths)</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-filename="nf-params.json (example, replace the paths)"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"input"</span><span class="fu">:</span> <span class="st">"/path/to/rnaseq_nfcore/samplesheet.csv"</span><span class="fu">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"outdir"</span><span class="fu">:</span> <span class="st">"/path/to/rnaseq_nfcore/results"</span><span class="fu">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"fasta"</span><span class="fu">:</span> <span class="st">"/path/to/rnaseq_nfcore/reference/genome.fa.gz"</span><span class="fu">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"gtf"</span><span class="fu">:</span> <span class="st">"/path/to/rnaseq_nfcore/reference/annotation.gtf.gz"</span><span class="fu">,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"save_reference"</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>JSON is picky
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Every line except the last one needs a comma at the end.</p>
+</div>
+</div>
+</section>
+<section id="starting-the-run" class="level3">
+<h3 class="anchored" data-anchor-id="starting-the-run">Starting the run</h3>
+<p><strong>Option A: directly with Pixi, inside the screen session.</strong> This is what I did:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">screen</span> <span class="at">-S</span> rnaseq</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run nextflow run nf-core/rnaseq <span class="at">-r</span> 3.26.0 <span class="at">-resume</span> <span class="at">-params-file</span> nf-params.json <span class="at">-c</span> hpc2n.config</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Ctrl + a, d  -&gt; detach and go home :)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Option B: submit it as a SLURM job with <code>sbatch</code>.</strong></p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>zana_submit_rnaseq.sh</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="zana_submit_rnaseq.sh"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -A &lt;project_ID&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 5</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -t 24:00:00</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/</span><span class="op">&lt;</span>user<span class="op">&gt;</span>/.pixi/bin/pixi run nextflow run nf-core/rnaseq <span class="at">-r</span> 3.26.0 <span class="dt">\</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">-params-file</span> /path/to/nf-params.json <span class="at">-c</span> /path/to/hpc2n.config</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> zana_submit_rnaseq.sh</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="op">&lt;</span>username<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The main Nextflow process sends each step to SLURM as its own job, so <code>squeue</code> shows many small jobs appearing and disappearing while the pipeline runs.</p>
+</section>
+</section>
+<section id="the-results" class="level2">
+<h2 class="anchored" data-anchor-id="the-results">7. The results</h2>
+<p>When the run is finished, the output folder contains, among other things:</p>
+<ul>
+<li><code>multiqc/</code>: <strong>the first thing to open</strong>. One report with QC, trimming, alignment and quantification statistics for all samples.</li>
+<li><code>star_salmon/</code>: alignments and the gene/transcript count tables, which are the input for differential expression analysis.</li>
+<li><code>fastqc/</code>, <code>trimgalore/</code>: quality control and trimming results.</li>
+<li><code>pipeline_info/</code>: exact versions of every tool and the run parameters. This is very useful for the methods section of a paper.</li>
+</ul>
+</section>
+<section id="cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="cheat-sheet">Cheat sheet</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>I want to…</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>start / detach / return to a session</td>
+<td><code>screen -S &lt;name&gt;</code> / <code>Ctrl+a d</code> / <code>screen -r &lt;name&gt;</code></td>
+</tr>
+<tr class="even">
+<td>set up the environment</td>
+<td><code>pixi add nextflow nf-core</code></td>
+</tr>
+<tr class="odd">
+<td>test a pipeline</td>
+<td><code>pixi run nextflow run nf-core/&lt;pipeline&gt; -r &lt;version&gt; -profile test --outdir &lt;dir&gt; -c hpc2n.config</code></td>
+</tr>
+<tr class="even">
+<td>run on my data</td>
+<td><code>pixi run nextflow run nf-core/rnaseq -r 3.26.0 -resume -params-file nf-params.json -c hpc2n.config</code></td>
+</tr>
+<tr class="odd">
+<td>check jobs</td>
+<td><code>squeue -u &lt;username&gt;</code></td>
+</tr>
+<tr class="even">
+<td>clean up old runs</td>
+<td><code>nextflow log</code>, then <code>nextflow clean -f -before &lt;run_name&gt;</code></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p>Write today’s notes here.</p>
-</section>
-<section id="up-next" class="level2">
-<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
-<p>What I plan to pick up on <a href="../friday/">Friday</a>.</p>
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
 
 
 </section>

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Zana Brilej">
 <meta name="dcterms.date" content="2026-09-14">
-<meta name="description" content="Starting the week: setting up the blog.">
+<meta name="description" content="How to create quarto blog in VS Code, connect it with git, and set up GitHub Actions so that it publishes every time I push.">
 
 <title>Monday – Blog</title>
 <style>
@@ -29,6 +29,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -48,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3f68e3761999f75b0fd8faf9fa20daed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-95e700bef72d2880c277d2cb84c9764b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -100,7 +135,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">About me</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/zanabrilej22"> <i class="bi bi-github" role="img">
@@ -126,11 +161,14 @@ ul.task-list li input[type="checkbox"] {
       <h1 class="title">Monday</h1>
                   <div>
         <div class="description">
-          Starting the week: setting up the blog.
+          How to create quarto blog in VS Code, connect it with git, and set up GitHub Actions so that it publishes every time I push.
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">weekly</div>
+                <div class="quarto-category">Quarto</div>
+                <div class="quarto-category">git</div>
+                <div class="quarto-category">GitHub</div>
+                <div class="quarto-category">GitHub Actions</div>
               </div>
                   </div>
   </div>
@@ -167,17 +205,272 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="what-i-did-today" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>The first day of the week. I set up this blog with Quarto and got the project structure in place.</p>
+<section id="what-we-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-did-today">What we did today</h2>
+<p>Morning session was about git and git hub. In the afternoon we were setting up this blog. We will use it to make notes on everything we do during the week. The blog was createdwith <strong>Quarto</strong>, using version control with <strong>git</strong>. We uploaded it to <strong>GitHub</strong>, and set <strong>GitHub Actions</strong> so that the website is updated and published automatically every time I push changes.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The idea of Reproducible Research
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Someone else (or me, in six months) can take my data and my code and get the same result. So, good documentation is importnat. Quarto is a <strong>fantastic</strong> tool that lets me keep text, code and results together in one document, which is called <em>literate programming</em>.</p>
+</div>
+</div>
+</section>
+<section id="creating-a-blog-with-quarto" class="level2">
+<h2 class="anchored" data-anchor-id="creating-a-blog-with-quarto">1. Creating a blog with Quarto</h2>
+<p>In VS Code, open the command palette (<strong>View → Command Palette</strong>, or <code>Ctrl/Cmd + Shift + P</code>) and type:</p>
+<pre><code>Quarto: Create Project</code></pre>
+<p>Choose <strong>Blog Project</strong>, pick a folder on your computer and give the blog a name (I gave it a name New_blog).</p>
+<p>You can do the same thing from the terminal:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> create project blog New_blog</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="what-is-inside-the-project-folder" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-inside-the-project-folder">What is inside the project folder?</h3>
+<pre><code>New_blog/
+├── _quarto.yml        # settings for the whole website (title, navbar, theme...)
+├── index.qmd          # the home page, which lists all posts
+├── about.qmd          # the "About" page
+├── profile.jpg        # picture used on the About page
+├── styles.css         # extra styling 
+└── posts/
+    ├── _metadata.yml  # settings shared by all posts
+    └── monday/
+        └── index.qmd  # one folder per post, the post itself is index.qmd</code></pre>
+<p>Every post is in its own folder inside <code>posts/</code>. The home page finds them automatically. This is called a <em>listing</em>.</p>
+</section>
+</section>
+<section id="previewing-the-blog" class="level2">
+<h2 class="anchored" data-anchor-id="previewing-the-blog">2. Previewing the blog</h2>
+<p>To see the website while I work on it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> preview</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This opens the blog in the browser and refreshes it every time I save a file. In VS Code, the <strong>Preview</strong> button (top right of a <code>.qmd</code> file) does the same for a single page.</p>
+</section>
+<section id="writing-a-post" class="level2">
+<h2 class="anchored" data-anchor-id="writing-a-post">3. Writing a post</h2>
+<p>A post starts with a <strong>YAML header</strong> between two lines of <code>---</code>. It holds information <em>about</em> the post:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Monday"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"One sentence shown on the home page"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"2026-09-14"</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">categories</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">Quarto</span><span class="kw">,</span><span class="at"> git</span><span class="kw">]</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>After the header comes normal text written in Markdown (<code>**bold**</code>, <code>*italic*</code>, <code>## Heading</code>, <code>[link](https://...)</code>), and <strong>code chunks</strong>.</p>
+<section id="code-chunks" class="level3">
+<h3 class="anchored" data-anchor-id="code-chunks">Code chunks</h3>
+<p>A code chunk is a block of code that Quarto can actually <em>run</em> when it builds the page. The result is shown right below the code.</p>
+<p>Lines starting with <code>#|</code> are <strong>chunk options</strong>. They control what happens with the chunk:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>#| eval: false</code></td>
+<td>show the code but <strong>don’t run it</strong> (I use this for code that only works on the HPC server)</td>
+</tr>
+<tr class="even">
+<td><code>#| echo: false</code></td>
+<td>run the code but <strong>hide</strong> it, show only the result</td>
+</tr>
+<tr class="odd">
+<td><code>#| output: false</code></td>
+<td>run the code but <strong>hide the result</strong></td>
+</tr>
+<tr class="even">
+<td><code>#| warning: false</code></td>
+<td>hide warnings</td>
+</tr>
+<tr class="odd">
+<td><code>#| label: my-chunk</code></td>
+<td>give the chunk a name</td>
+</tr>
+<tr class="even">
+<td><code>#| fig-cap: "..."</code></td>
+<td>caption for a figure</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why most chunks in this blog have <code>eval: false</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The commands from Tuesday to Thursday were run on the HPC2N server, with data and software that only exist there. My computer can’t run them, so I show the code without executing it.</p>
+</div>
+</div>
+</section>
+<section id="freeze" class="level3">
+<h3 class="anchored" data-anchor-id="freeze">Freeze</h3>
+<p>In <code>_quarto.yml</code> I added:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">freeze</span><span class="kw">:</span><span class="at"> auto</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This means Quarto re-runs the code in a post <strong>only when that post has changed</strong>, and stores the results in a folder called <code>_freeze/</code>. I commit <code>_freeze/</code> to GitHub, so GitHub Actions can build the website without needing R installed.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>More features
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://quarto.org/">Quarto website</a> # Here is literally everything you need to know about Quarto. It has a lot of features!</p>
+</div>
+</div>
+</section>
+</section>
+<section id="tracking-the-blog-with-git" class="level2">
+<h2 class="anchored" data-anchor-id="tracking-the-blog-with-git">4. Tracking the blog with git</h2>
+<p>git keeps a history of every change I make. In the terminal, inside the blog folder:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init                      <span class="co"># turn the folder into a git repository</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status                    <span class="co"># see which files are new or changed</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .                     <span class="co"># stage all files</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Create blog"</span>   <span class="co"># save a snapshot with a message</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="putting-the-blog-on-github" class="level2">
+<h2 class="anchored" data-anchor-id="putting-the-blog-on-github">5. Putting the blog on GitHub</h2>
+<p>On [github.com], create a <strong>new, public, empty</strong> repository (no README, no .gitignore, no license). GitHub then shows the commands under <em>“…or push an existing repository from the command line”</em>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-M</span> main</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Refresh the GitHub page and the files are there.</p>
+</section>
+<section id="publishing-with-github-actions" class="level2">
+<h2 class="anchored" data-anchor-id="publishing-with-github-actions">6. Publishing with GitHub Actions</h2>
+<p><strong>GitHub Pages</strong> is a free hosting service for websites. <strong>GitHub Actions</strong> is a robot that runs a set of commands every time I push. Together, they rebuild and publish the blog automatically. I followed the <a href="https://quarto.org/docs/publishing/github-pages.html#github-action">Quarto guide</a>.</p>
+<p><strong>Step 1.</strong> Render the blog locally, so the <code>_freeze/</code> folder exists:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Step 2.</strong> Publish once by hand. This creates a branch called <code>gh-pages</code>, which is where the finished website lives:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> publish gh-pages</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Step 3.</strong> On GitHub, go to <strong>Settings → Pages</strong> and check that the source is <strong>Deploy from a branch</strong>, branch <strong>gh-pages</strong>, folder <strong>/ (root)</strong>.</p>
+<p><strong>Step 4.</strong> Add the workflow file <code>.github/workflows/publish.yml</code>. This is the “recipe” GitHub Actions follows:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/workflows/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename=".github/workflows/publish.yml"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> main</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Quarto Publish</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">build-deploy</span><span class="kw">:</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">permissions</span><span class="kw">:</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> write</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check out repository</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v4</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Set up Quarto</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> quarto-dev/quarto-actions/setup@v2</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Render and Publish</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> quarto-dev/quarto-actions/publish@v2</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">target</span><span class="kw">:</span><span class="at"> gh-pages</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">GITHUB_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Step 5.</strong> Commit and push. The <strong>Actions</strong> tab on GitHub shows the workflow running (yellow = running, green = done, red = error). The blog will online at <code>https://zanabrilej22.github.io/Reproducible_research_course/</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add GitHub Actions workflow"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>From now on, every <code>git push</code> updates the website.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Don’t push data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>GitHub is for code, not data. Large files (like <code>.fastq.gz</code>) should be listed in <code>.gitignore</code> so git ignores them.</p>
+</div>
+</div>
+</section>
+<section id="cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="cheat-sheet">Cheat sheet</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>I want to…</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>create a blog</td>
+<td><code>quarto create project blog &lt;name&gt;</code></td>
+</tr>
+<tr class="even">
+<td>see the blog live while editing</td>
+<td><code>quarto preview</code></td>
+</tr>
+<tr class="odd">
+<td>build the whole website</td>
+<td><code>quarto render</code></td>
+</tr>
+<tr class="even">
+<td>see what changed</td>
+<td><code>git status</code></td>
+</tr>
+<tr class="odd">
+<td>save a snapshot</td>
+<td><code>git add .</code> then <code>git commit -m "message"</code></td>
+</tr>
+<tr class="even">
+<td>upload to GitHub</td>
+<td><code>git push</code></td>
+</tr>
+<tr class="odd">
+<td>publish by hand</td>
+<td><code>quarto publish gh-pages</code></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p>Write today’s notes here.</p>
-</section>
-<section id="up-next" class="level2">
-<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
-<p>What I plan to pick up on <a href="../tuesday/">Tuesday</a>.</p>
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
 
 
 </section>

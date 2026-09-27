@@ -21,23 +21,745 @@
 
 
 
-<section id="what-i-did-today" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>Write a short summary of Friday here.</p>
+<section id="what-we-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-did-today">What we did today</h2>
+<p>In the morning we learned how to make plots in R with <strong>ggplot2</strong>. In the afternoon we had a discussion about <strong>AI in bioinformatics</strong>.</p>
+</section>
+<section id="part-1-ggplot2" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-ggplot2">Part 1: ggplot2</h2>
+<section id="setup" class="level3">
+<h3 class="anchored" data-anchor-id="setup">Setup</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ggplot2"</span>)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># only needed once</span></span></code></pre></div></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span></code></pre></div></div>
+</div>
+</section>
+<section id="the-grammar-of-graphics" class="level3">
+<h3 class="anchored" data-anchor-id="the-grammar-of-graphics">The grammar of graphics</h3>
+<p>Every ggplot is built from the same layers, added with <code>+</code>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>Question it answers</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>data</strong></td>
+<td>which table?</td>
+<td><code>ggplot(iris, ...)</code></td>
+</tr>
+<tr class="even">
+<td><strong>aesthetics</strong> <code>aes()</code></td>
+<td>which column goes where (x, y, colour, size…)?</td>
+<td><code>aes(x = Sepal.Length, colour = Species)</code></td>
+</tr>
+<tr class="odd">
+<td><strong>geoms</strong></td>
+<td>what shape? points, lines, boxes…</td>
+<td><code>geom_point()</code>, <code>geom_boxplot()</code></td>
+</tr>
+<tr class="even">
+<td><strong>facets</strong></td>
+<td>split into small panels?</td>
+<td><code>facet_wrap(~ Species)</code></td>
+</tr>
+<tr class="odd">
+<td><strong>scales</strong></td>
+<td>how values map to colours/axes</td>
+<td><code>scale_colour_manual()</code>, <code>scale_y_log10()</code></td>
+</tr>
+<tr class="even">
+<td><strong>labels</strong></td>
+<td>titles and axis names</td>
+<td><code>labs(title = ..., x = ...)</code></td>
+</tr>
+<tr class="odd">
+<td><strong>theme</strong></td>
+<td>the look (background, fonts…)</td>
+<td><code>theme_bw()</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="a-first-plot" class="level3">
+<h3 class="anchored" data-anchor-id="a-first-plot">1. A first plot</h3>
+<p><code>iris</code> is a dataset built into R: flower measurements from three species.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> iris, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mapping =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Sepal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Petal.Length)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>()</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-first" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://zanabrilej22.github.io/Reproducible_research_course/posts/friday/index_files/figure-html/fig-first-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The simplest ggplot: data + aesthetics + one geom.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="colour-labels-and-a-theme" class="level3">
+<h3 class="anchored" data-anchor-id="colour-labels-and-a-theme">2. Colour, labels and a theme</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Sepal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Petal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> Species)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb4-4">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Petal length vs sepal length"</span>,</span>
+<span id="cb4-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sepal length (cm)"</span>,</span>
+<span id="cb4-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Petal length (cm)"</span>,</span>
+<span id="cb4-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Species"</span></span>
+<span id="cb4-8">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_bw</span>()</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-colour" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-colour-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://zanabrilej22.github.io/Reproducible_research_course/posts/friday/index_files/figure-html/fig-colour-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-colour-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Colour mapped to species, with labels and a cleaner theme.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Inside or outside <code>aes()</code>?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Inside</strong> <code>aes()</code> = <em>depends on the data</em>: <code>aes(colour = Species)</code> gives each species its own colour.</li>
+<li><strong>Outside</strong> <code>aes()</code> = <em>the same for everything</em>: <code>geom_point(colour = "blue")</code> makes all points blue.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="boxplots-with-the-data-points-on-top" class="level3">
+<h3 class="anchored" data-anchor-id="boxplots-with-the-data-points-on-top">3. Boxplots with the data points on top</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Species, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Petal.Width, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> Species)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_boxplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">outlier.shape =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_jitter</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.15</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Petal width (cm)"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_classic</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-boxplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://zanabrilej22.github.io/Reproducible_research_course/posts/friday/index_files/figure-html/fig-boxplot-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: A boxplot shows the distribution. Jittered points show every observation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="facets-and-trend-lines" class="level3">
+<h3 class="anchored" data-anchor-id="facets-and-trend-lines">4. Facets and trend lines</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Sepal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Sepal.Width)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"steelblue"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_smooth</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">method =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lm"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Species) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_bw</span>()</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-facets" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-facets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://zanabrilej22.github.io/Reproducible_research_course/posts/friday/index_files/figure-html/fig-facets-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-facets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: One panel per species, each with a linear trend line.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="a-volcano-plot" class="level3">
+<h3 class="anchored" data-anchor-id="a-volcano-plot">5. A volcano plot</h3>
+<p>A volcano plot is the classic way to show a differential expression result: fold change on the x-axis, significance on the y-axis. The data below is <strong>simulated</strong>, just to practise the plot.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>)</span>
+<span id="cb7-2">n_genes <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2000</span></span>
+<span id="cb7-3">de <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(</span>
+<span id="cb7-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">gene   =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gene_"</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq_len</span>(n_genes)),</span>
+<span id="cb7-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">log2FC =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(n_genes, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sd =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>)</span>
+<span id="cb7-6">)</span>
+<span id="cb7-7">de<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>pvalue <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(de<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>log2FC) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(n_genes, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>))</span>
+<span id="cb7-8">de<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>direction <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ifelse</span>(de<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>pvalue <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span> de<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>log2FC <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Up"</span>,</span>
+<span id="cb7-9">                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ifelse</span>(de<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>pvalue <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span> de<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>log2FC <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Down"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Not significant"</span>))</span>
+<span id="cb7-10"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>(de)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    gene     log2FC       pvalue       direction
+1 gene_1  1.6451501 0.0005177275              Up
+2 gene_2 -0.6776378 0.0104638682 Not significant
+3 gene_3  0.4357541 0.2273419244 Not significant
+4 gene_4  0.7594351 0.0100262655 Not significant
+5 gene_5  0.4851220 0.5083378570 Not significant
+6 gene_6 -0.1273494 0.6325646647 Not significant</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(de<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>direction)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+           Down Not significant              Up 
+            293            1444             263 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(de, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> log2FC, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">log10</span>(pvalue), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> direction)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb11-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb11-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_vline</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xintercept =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dashed"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb11-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_hline</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yintercept =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">log10</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dashed"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb11-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_colour_manual</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Down"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#2166ac"</span>,</span>
+<span id="cb11-6">                                 <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Not significant"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey75"</span>,</span>
+<span id="cb11-7">                                 <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Up"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#b2182b"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb11-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"log2 fold change"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-log10(p-value)"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb11-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-volcano" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://zanabrilej22.github.io/Reproducible_research_course/posts/friday/index_files/figure-html/fig-volcano-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Volcano plot of simulated data. Dashed lines show the cut-offs |log2FC| &gt; 1 and p &lt; 0.01.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="saving-a-plot" class="level3">
+<h3 class="anchored" data-anchor-id="saving-a-plot">6. Saving a plot</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(iris, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(Sepal.Length, Petal.Length, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> Species)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>()</span>
+<span id="cb12-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggsave</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"my_plot.png"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot =</span> p, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">dpi =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300</span>)</span>
+<span id="cb12-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggsave</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"my_plot.pdf"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot =</span> p, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># vector format, good for papers</span></span></code></pre></div></div>
+</div>
+</section>
+</section>
+<section id="part-2-ai-in-bioinformatics" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-ai-in-bioinformatics">Part 2: AI in bioinformatics</h2>
+<p>The afternoon was a discussion about <strong>AI in bioinformatics</strong>. The main points:</p>
+<p><strong>LLMs predict text, they don’t “know” things.</strong> They are trained on huge amounts of internet text, including biased and wrong content. They don’t say “I don’t know” and can <strong>hallucinate</strong> answers, including citations that don’t exist. Every reference an AI gives me must be checked.</p>
+<p><strong>Data privacy.</strong> Sequencing and patient data are sensitive. Pasting data into an online chatbot can send it to a company’s servers, depending on the terms of service. A safer habit is to describe the data (column names, data types) instead of uploading it. <strong>Local, open-weight models</strong> keep everything on my own computer, but need good hardware and are usually less capable.</p>
+<p><strong>Learning and productivity.</strong> Relying on AI too much can mean learning less. Studies discussed in the course suggest it does not always make experienced people faster either.</p>
+<p><strong>Responsibility.</strong> I am responsible for everything I use.</p>
+<p><strong>Environmental cost.</strong> Data centres use a lot of electricity and water, so it is worth thinking before sending a query.</p>
+<p><strong>AI and reproducibility.</strong> The habits from this week (version control, clear folder structure, documented decisions) also make it easier for an AI assistant, or a human colleague, to understand and help with a project.</p>
+</section>
+<section id="cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="cheat-sheet">Cheat sheet</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>I want to…</th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>start a plot</td>
+<td><code>ggplot(data, aes(x = ..., y = ...))</code></td>
+</tr>
+<tr class="even">
+<td>scatter / line / bar / boxplot</td>
+<td><code>geom_point()</code>, <code>geom_line()</code>, <code>geom_col()</code>, <code>geom_boxplot()</code></td>
+</tr>
+<tr class="odd">
+<td>colour by a column</td>
+<td><code>aes(colour = column)</code> (or <code>fill =</code> for areas)</td>
+</tr>
+<tr class="even">
+<td>one fixed colour</td>
+<td><code>geom_point(colour = "blue")</code></td>
+</tr>
+<tr class="odd">
+<td>split into panels</td>
+<td><code>facet_wrap(~ column)</code></td>
+</tr>
+<tr class="even">
+<td>add a trend line</td>
+<td><code>geom_smooth(method = "lm")</code></td>
+</tr>
+<tr class="odd">
+<td>set titles and axis names</td>
+<td><code>labs(title = , x = , y = )</code></td>
+</tr>
+<tr class="even">
+<td>change the look</td>
+<td><code>theme_bw()</code>, <code>theme_minimal()</code>, <code>theme(legend.position = "none")</code></td>
+</tr>
+<tr class="odd">
+<td>save</td>
+<td><code>ggsave("plot.png", width = , height = , dpi = 300)</code></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p>Write today’s notes here.</p>
-</section>
-<section id="looking-back-on-the-week" class="level2">
-<h2 class="anchored" data-anchor-id="looking-back-on-the-week">Looking back on the week</h2>
-<p>A few things that stood out across <a href="../monday/">Monday</a> through today.</p>
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
 
 
 </section>
 
  ]]></description>
-  <category>weekly</category>
+  <category>R</category>
+  <category>ggplot2</category>
+  <category>visualisation</category>
+  <category>AI</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/friday/</guid>
   <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
 </item>
@@ -51,23 +773,554 @@
 
 
 
-<section id="what-i-did-today" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>Write a short summary of Thursday here.</p>
+<section id="what-we-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-did-today">What we did today</h2>
+<p>On Wednesday we wrote a small workflow ourselves. Today we used a <strong>ready-made, community pipeline</strong> from <strong>nf-core</strong>: <code>nf-core/rnaseq</code>. We ran it on our real RNA-seq data on the HPC2N cluster. Because the run takes hours, we started it inside a <strong>screen</strong> session so it kept running after we disconnected.</p>
+</section>
+<section id="what-is-nf-core" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-nf-core">1. What is nf-core?</h2>
+<p><a href="https://nf-co.re">nf-core</a> is a community that builds and maintains Nextflow pipelines for common analyses (RNA-seq, variant calling, metagenomics…). Every nf-core pipeline:</p>
+<ul>
+<li>is <strong>versioned</strong> (I can always rerun the exact same version, e.g.&nbsp;<code>-r 3.26.0</code>),</li>
+<li>uses <strong>containers</strong> for every tool,</li>
+<li>has good <strong>documentation</strong> (the <em>Usage</em>, <em>Parameters</em> and <em>Output</em> tabs on the website),</li>
+<li>comes with a <strong>test profile</strong> with tiny data to check that everything works.</li>
+</ul>
+<p>For publications, this makes the analysis much easier to reproduce than a homemade script.</p>
+</section>
+<section id="start-a-screen-session-first" class="level2">
+<h2 class="anchored" data-anchor-id="start-a-screen-session-first">2. Start a screen session first</h2>
+<p>Pipelines can run for hours. If I start them in a normal terminal and my connection drops, the run stops. So the first step is always:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">screen</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-S</span> rnaseq          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># new session called "rnaseq"</span></span></code></pre></div></div>
+</div>
+<ul>
+<li><code>Ctrl + a</code>, then <code>d</code>: detach. The pipeline keeps running and I can close my laptop.</li>
+<li><code>screen -ls</code>: list sessions.</li>
+<li><code>screen -r rnaseq</code>: reconnect and see the progress.</li>
+</ul>
+</section>
+<section id="pixi-environment-with-nextflow-and-nf-core" class="level2">
+<h2 class="anchored" data-anchor-id="pixi-environment-with-nextflow-and-nf-core">3. Pixi environment with Nextflow and nf-core</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> init nextflow_test <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> conda-forge <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> bioconda</span>
+<span id="cb2-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> nextflow_test</span>
+<span id="cb2-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> add nextflow nf-core</span>
+<span id="cb2-4"></span>
+<span id="cb2-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># check that everything works</span></span>
+<span id="cb2-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-version</span></span>
+<span id="cb2-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nf-core <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--help</span></span>
+<span id="cb2-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow run hello</span></code></pre></div></div>
+</div>
+</section>
+<section id="the-hpc2n-configuration-file" class="level2">
+<h2 class="anchored" data-anchor-id="the-hpc2n-configuration-file">4. The HPC2N configuration file</h2>
+<p>The config file tells Nextflow how to use the cluster: use SLURM, use Singularity/Apptainer, and the maximum memory, CPUs and time a job may ask for.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wget</span> https://raw.githubusercontent.com/hpc2n/intro-course/master/exercises/NEXTFLOW/INTERACTIVE/hpc2n.config</span></code></pre></div></div>
+</div>
+<p>In the file I changed <code>project = null</code> to our project ID, with single quotes. On the real run I also added my email under <code>email</code> to get a summary when the run finished.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>hpc2n.config (the parts that matter)</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="hpc2n.config (the parts that matter)" style="background: #f1f3f5;"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb4-1">params <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb4-2">  project    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'&lt;project_ID&gt;'</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// &lt;- changed this line</span></span>
+<span id="cb4-3">  max_memory <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128.</span>GB</span>
+<span id="cb4-4">  max_cpus   <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">28</span></span>
+<span id="cb4-5">  max_time   <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">168.</span>h</span>
+<span id="cb4-6"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-7"></span>
+<span id="cb4-8">singularity <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb4-9">  enabled <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">true</span></span>
+<span id="cb4-10"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-11"></span>
+<span id="cb4-12">process <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb4-13">  executor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'slurm'</span></span>
+<span id="cb4-14">  clusterOptions <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-A </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$params</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">project</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">${</span>params<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>clusterOptions <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">?:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-15"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div></div>
+</div>
+</section>
+<section id="test-run-with-the-built-in-test-data" class="level2">
+<h2 class="anchored" data-anchor-id="test-run-with-the-built-in-test-data">5. Test run with the built-in test data</h2>
+<p>Before using real data, I checked the setup and got to know the output with the pipeline’s test profile:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow run nf-core/rnaseq <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> 3.26.0 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-profile</span> test <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--outdir</span> rnaseq_test <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> hpc2n.config</span></code></pre></div></div>
+</div>
+<p>What each part means:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>pixi run</code></td>
+<td>use the Pixi environment</td>
+</tr>
+<tr class="even">
+<td><code>nextflow run nf-core/rnaseq</code></td>
+<td>download and run the pipeline from nf-core</td>
+</tr>
+<tr class="odd">
+<td><code>-r 3.26.0</code></td>
+<td>use this exact version</td>
+</tr>
+<tr class="even">
+<td><code>-profile test</code></td>
+<td>use the small built-in test data</td>
+</tr>
+<tr class="odd">
+<td><code>--outdir rnaseq_test</code></td>
+<td>where to save the results</td>
+</tr>
+<tr class="even">
+<td><code>-c hpc2n.config</code></td>
+<td>settings for the HPC2N cluster</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="running-the-pipeline-on-our-rna-seq-data" class="level2">
+<h2 class="anchored" data-anchor-id="running-the-pipeline-on-our-rna-seq-data">6. Running the pipeline on our RNA-seq data</h2>
+<section id="project-folder-and-data" class="level3">
+<h3 class="anchored" data-anchor-id="project-folder-and-data">Project folder and data</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mkdir</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> rnaseq_nfcore/data</span>
+<span id="cb6-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> rnaseq_nfcore</span>
+<span id="cb6-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> init <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> conda-forge <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> bioconda</span>
+<span id="cb6-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> add nextflow nf-core</span>
+<span id="cb6-5"></span>
+<span id="cb6-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> data</span>
+<span id="cb6-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ln</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-s</span> /path/to/repbio26/common_data/RNAseq/<span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">*</span>fastq.gz .</span>
+<span id="cb6-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> ..</span></code></pre></div></div>
+</div>
+</section>
+<section id="the-samplesheet" class="level3">
+<h3 class="anchored" data-anchor-id="the-samplesheet">The samplesheet</h3>
+<p>The pipeline needs a CSV file that lists the samples. The exact format is described in the <em>Usage</em> tab of the pipeline. For paired-end data it has four columns: sample name, read 1, read 2 and strandedness (<code>auto</code> lets the pipeline figure it out).</p>
+<p>Instead of typing it by hand, I let a small loop write it. The chunk below runs, so you can see the result. On the server I replaced the path with my absolute path and saved it with <code>&gt; samplesheet.csv</code> at the end:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">DATA</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>/path/to/rnaseq_nfcore/data   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># use ABSOLUTE paths</span></span>
+<span id="cb7-2"></span>
+<span id="cb7-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sample,fastq_1,fastq_2,strandedness"</span></span>
+<span id="cb7-4"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> id <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> SRR5223504 SRR5223517 SRR5223546 SRR5223559<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">do</span></span>
+<span id="cb7-5">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${id}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">,</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${DATA}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${id}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">_1.fastq.gz,</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${DATA}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${id}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">_2.fastq.gz,auto"</span></span>
+<span id="cb7-6"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">done</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sample,fastq_1,fastq_2,strandedness
+SRR5223504,/path/to/rnaseq_nfcore/data/SRR5223504_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223504_2.fastq.gz,auto
+SRR5223517,/path/to/rnaseq_nfcore/data/SRR5223517_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223517_2.fastq.gz,auto
+SRR5223546,/path/to/rnaseq_nfcore/data/SRR5223546_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223546_2.fastq.gz,auto
+SRR5223559,/path/to/rnaseq_nfcore/data/SRR5223559_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223559_2.fastq.gz,auto</code></pre>
+</div>
+</div>
+</section>
+<section id="reference-genome" class="level3">
+<h3 class="anchored" data-anchor-id="reference-genome">Reference genome</h3>
+<p>Our samples are human. iGenomes has a human reference, but its annotation is outdated, so nf-core recommends downloading an up-to-date genome FASTA and GTF annotation (<a href="https://nf-co.re/docs/usage/reference_genomes#custom-genomes">see the nf-core docs</a>). I downloaded them to a <code>reference/</code> folder.</p>
+</section>
+<section id="nf-core-launch-nf-params.json" class="level3">
+<h3 class="anchored" data-anchor-id="nf-core-launch-nf-params.json">nf-core launch → <code>nf-params.json</code></h3>
+<p>On the <a href="https://nf-co.re/rnaseq/3.26.0/">nf-core/rnaseq page</a> I clicked <strong>Launch version 3.26.0</strong> and filled in the form: absolute paths to the samplesheet, the output folder, the genome FASTA and the GTF file, and <code>resume</code> set to true. At the end, the launcher gives a JSON file. I saved it on the server as <code>nf-params.json</code> and added <code>"save_reference": true</code>, so the genome index is saved and does not have to be built again.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>nf-params.json (example, replace the paths)</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-filename="nf-params.json (example, replace the paths)" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb9-2">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"input"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/path/to/rnaseq_nfcore/samplesheet.csv"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb9-3">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"outdir"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/path/to/rnaseq_nfcore/results"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb9-4">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"fasta"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/path/to/rnaseq_nfcore/reference/genome.fa.gz"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb9-5">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"gtf"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/path/to/rnaseq_nfcore/reference/annotation.gtf.gz"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb9-6">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"save_reference"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">true</span></span>
+<span id="cb9-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>JSON is picky
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Every line except the last one needs a comma at the end.</p>
+</div>
+</div>
+</section>
+<section id="starting-the-run" class="level3">
+<h3 class="anchored" data-anchor-id="starting-the-run">Starting the run</h3>
+<p><strong>Option A: directly with Pixi, inside the screen session.</strong> This is what I did:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">screen</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-S</span> rnaseq</span>
+<span id="cb10-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow run nf-core/rnaseq <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> 3.26.0 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-resume</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-params-file</span> nf-params.json <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> hpc2n.config</span>
+<span id="cb10-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Ctrl + a, d  -&gt; detach and go home :)</span></span></code></pre></div></div>
+</div>
+<p><strong>Option B: submit it as a SLURM job with <code>sbatch</code>.</strong></p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>zana_submit_rnaseq.sh</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="zana_submit_rnaseq.sh" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#!/bin/bash -l</span></span>
+<span id="cb11-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#SBATCH -A &lt;project_ID&gt;</span></span>
+<span id="cb11-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#SBATCH -n 5</span></span>
+<span id="cb11-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#SBATCH -t 24:00:00</span></span>
+<span id="cb11-5"></span>
+<span id="cb11-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">/home/</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>user<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>/.pixi/bin/pixi run nextflow run nf-core/rnaseq <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> 3.26.0 <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb11-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-params-file</span> /path/to/nf-params.json <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> /path/to/hpc2n.config</span></code></pre></div></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sbatch</span> zana_submit_rnaseq.sh</span>
+<span id="cb12-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">squeue</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-u</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>username<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div></div>
+</div>
+<p>The main Nextflow process sends each step to SLURM as its own job, so <code>squeue</code> shows many small jobs appearing and disappearing while the pipeline runs.</p>
+</section>
+</section>
+<section id="the-results" class="level2">
+<h2 class="anchored" data-anchor-id="the-results">7. The results</h2>
+<p>When the run is finished, the output folder contains, among other things:</p>
+<ul>
+<li><code>multiqc/</code>: <strong>the first thing to open</strong>. One report with QC, trimming, alignment and quantification statistics for all samples.</li>
+<li><code>star_salmon/</code>: alignments and the gene/transcript count tables, which are the input for differential expression analysis.</li>
+<li><code>fastqc/</code>, <code>trimgalore/</code>: quality control and trimming results.</li>
+<li><code>pipeline_info/</code>: exact versions of every tool and the run parameters. This is very useful for the methods section of a paper.</li>
+</ul>
+</section>
+<section id="cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="cheat-sheet">Cheat sheet</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>I want to…</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>start / detach / return to a session</td>
+<td><code>screen -S &lt;name&gt;</code> / <code>Ctrl+a d</code> / <code>screen -r &lt;name&gt;</code></td>
+</tr>
+<tr class="even">
+<td>set up the environment</td>
+<td><code>pixi add nextflow nf-core</code></td>
+</tr>
+<tr class="odd">
+<td>test a pipeline</td>
+<td><code>pixi run nextflow run nf-core/&lt;pipeline&gt; -r &lt;version&gt; -profile test --outdir &lt;dir&gt; -c hpc2n.config</code></td>
+</tr>
+<tr class="even">
+<td>run on my data</td>
+<td><code>pixi run nextflow run nf-core/rnaseq -r 3.26.0 -resume -params-file nf-params.json -c hpc2n.config</code></td>
+</tr>
+<tr class="odd">
+<td>check jobs</td>
+<td><code>squeue -u &lt;username&gt;</code></td>
+</tr>
+<tr class="even">
+<td>clean up old runs</td>
+<td><code>nextflow log</code>, then <code>nextflow clean -f -before &lt;run_name&gt;</code></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p>Write today’s notes here.</p>
-</section>
-<section id="up-next" class="level2">
-<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
-<p>What I plan to pick up on <a href="../friday/">Friday</a>.</p>
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
 
 
 </section>
 
  ]]></description>
-  <category>weekly</category>
+  <category>nf-core</category>
+  <category>Nextflow</category>
+  <category>RNA-seq</category>
+  <category>HPC2N</category>
+  <category>screen</category>
+  <category>Pixi</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/thursday/</guid>
   <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
 </item>
@@ -81,23 +1334,1146 @@
 
 
 
-<section id="what-i-did-today" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>Write a short summary of Wednesday here.</p>
+<section id="what-we-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-did-today">What we did today</h2>
+<p>First we learned about <strong>containers</strong> and ran our QC tools inside them with <strong>Apptainer</strong>. Then we learned the basics of the workflow manager <strong>Nextflow</strong> and used it to build a small <strong>RNA-seq workflow</strong> (index → quantify → QC → report).</p>
+</section>
+<section id="part-1-containers" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-containers">Part 1: Containers</h2>
+<section id="what-is-a-container" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-a-container">What is a container?</h3>
+<p>A Pixi environment packs the <em>tools</em>. A <strong>container</strong> goes one step further: it packs the tools <strong>and a whole operating system</strong> into a single file, called an <strong>image</strong>. Because the operating system travels with it, a container runs the same way on my laptop, on a colleague’s computer and on a cluster. Images do not change once they are built, so they stay stable over time.</p>
+<p>Popular container programs are Docker, Podman and <strong>Apptainer</strong> (earlier called <em>Singularity</em>). On shared servers like HPC2N, Apptainer is the right choice.</p>
+</section>
+<section id="getting-an-image" class="level3">
+<h3 class="anchored" data-anchor-id="getting-an-image">Getting an image</h3>
+<p>Two good places to find images:</p>
+<ul>
+<li><strong><a href="https://hub.docker.com">Docker Hub</a></strong>: images that people have uploaded. The <a href="https://hub.docker.com/u/biocontainers">biocontainers</a> profile has many well-built bioinformatics tools.</li>
+<li><strong><a href="https://seqera.io/containers/">Seqera Containers</a></strong>: builds an image on request from conda-forge/bioconda packages, and can put several tools into one image. Choose <strong>Singularity</strong> as the format. #we used this to get containers for Salmon, FastQC and MultiQC.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># from Seqera (note the oras:// prefix)</span></span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> pull vcftools_0.1.17.sif oras://community.wave.seqera.io/library/vcftools:0.1.17--b541aa8d9f9213f9</span></code></pre></div></div>
+</div>
+<p>The first name (<code>vcftools_0.1.17.sif</code>) is what the file is called on my computer. Putting the tool name <strong>and version</strong> in it makes it clear what is inside.</p>
+</section>
+<section id="using-a-container" class="level3">
+<h3 class="anchored" data-anchor-id="using-a-container">Using a container</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># run one command inside the container ("from the outside")</span></span>
+<span id="cb2-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> exec vcftools_0.1.17.sif vcftools <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--version</span></span>
+<span id="cb2-3"></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># open a shell inside the container ("from the inside"), type exit to leave</span></span>
+<span id="cb2-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> shell vcftools_0.1.17.sif</span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># make a folder from outside visible inside the container with -B outside:inside</span></span>
+<span id="cb2-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> exec <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-B</span> ../data:/rawdata fastqc_0.12.1.sif ls /rawdata</span></code></pre></div></div>
+</div>
+<p><code>exec</code> vs <code>run</code>:</p>
+<ul>
+<li><code>apptainer exec</code> runs <strong>the command I give it</strong>. This is what I use most.</li>
+<li><code>apptainer run</code> first runs the container’s built-in <strong>runscript</strong> (its default action).</li>
+</ul>
+</section>
+<section id="building-my-own-container" class="level3">
+<h3 class="anchored" data-anchor-id="building-my-own-container">Building my own container</h3>
+<p>If nobody has made an image for a tool, I can build one from a <strong>definition file</strong>. The course example was a cow that tells the date:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>lolcow.def</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="lolcow.def" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb3-1">Bootstrap: docker</span>
+<span id="cb3-2">From: ubuntu:22.04</span>
+<span id="cb3-3"></span>
+<span id="cb3-4">%post</span>
+<span id="cb3-5">    apt-get -y update</span>
+<span id="cb3-6">    apt-get -y install cowsay lolcat fortune</span>
+<span id="cb3-7"></span>
+<span id="cb3-8">%environment</span>
+<span id="cb3-9">    export LC_ALL=C</span>
+<span id="cb3-10">    export PATH=/usr/games:$PATH</span>
+<span id="cb3-11"></span>
+<span id="cb3-12">%runscript</span>
+<span id="cb3-13">    date | cowsay | lolcat</span></code></pre></div></div>
+</div>
+<ul>
+<li><code>From:</code> which operating system to start from</li>
+<li><code>%post</code> commands that install things</li>
+<li><code>%environment</code> settings available when the container runs</li>
+<li><code>%runscript</code> what <code>apptainer run</code> does</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> build lolcow.sif lolcow.def</span>
+<span id="cb4-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> run lolcow.sif</span></code></pre></div></div>
+</div>
+</section>
+<section id="qc-with-containers" class="level3">
+<h3 class="anchored" data-anchor-id="qc-with-containers">QC with containers</h3>
+<p>We repeated Tuesday’s QC, but with FastQC and MultiQC from containers instead of the Pixi environment. The only change in the SLURM script is the command line:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>scripts/fastqc_container.sh</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="scripts/fastqc_container.sh" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#! /bin/bash -l</span></span>
+<span id="cb5-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#SBATCH -A &lt;project_ID&gt;</span></span>
+<span id="cb5-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#SBATCH -t 30:00</span></span>
+<span id="cb5-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#SBATCH -n 1</span></span>
+<span id="cb5-5"></span>
+<span id="cb5-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> exec ../containers/fastqc_0.12.1.sif fastqc <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-o</span> ../fastqc <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--noextract</span> ../data/<span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">*</span>fastq.gz</span></code></pre></div></div>
+</div>
+<p>MultiQC from the outside and from the inside:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># outside</span></span>
+<span id="cb6-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> exec containers/multiqc.sif multiqc fastqc <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-o</span> multiqc</span>
+<span id="cb6-3"></span>
+<span id="cb6-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># inside</span></span>
+<span id="cb6-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">apptainer</span> shell containers/multiqc.sif</span>
+<span id="cb6-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">multiqc</span> fastqc <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-o</span> multiqc</span>
+<span id="cb6-7"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">exit</span></span></code></pre></div></div>
+</div>
+</section>
+</section>
+<section id="part-2-nextflow-basics" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-nextflow-basics">Part 2: Nextflow basics</h2>
+<section id="why-a-workflow-manager" class="level3">
+<h3 class="anchored" data-anchor-id="why-a-workflow-manager">Why a workflow manager?</h3>
+<p>Nextflow:</p>
+<ul>
+<li>connects the steps so the output of one becomes the input of the next,</li>
+<li>runs independent tasks <strong>in parallel</strong>,</li>
+<li>remembers what already finished, so I can <strong>resume</strong> after an error,</li>
+<li>separates <strong>what</strong> to run (the workflow) from <strong>where</strong> to run it (laptop, cluster, cloud). This is called <em>execution abstraction</em>.</li>
+</ul>
+</section>
+<section id="the-building-blocks" class="level3">
+<h3 class="anchored" data-anchor-id="the-building-blocks">The building blocks</h3>
+<ul>
+<li><strong>process</strong>: one step, e.g.&nbsp;“run FastQC”. It has <code>input</code>, <code>output</code> and a <code>script</code>.</li>
+<li><strong>channel</strong>: a queue that carries data from one process to the next.</li>
+<li><strong>workflow</strong>: the part that connects processes and channels.</li>
+<li><strong>executor</strong>: where the tasks run (<code>local</code> or <code>slurm</code>).</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A(["greeting_ch&lt;br/&gt;'Hello world!'"]) --&gt; B["SPLITLETTERS"]
+    B --&gt; C(["chunk_aa, chunk_ab"])
+    C --&gt;|flatten| D["CONVERTTOUPPER"]
+    D --&gt; E(["HELLO&lt;br/&gt;WORLD!"])
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="setting-up" class="level3">
+<h3 class="anchored" data-anchor-id="setting-up">Setting up</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">screen</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-S</span> nextflow</span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cp</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> /path/to/repbio26/common_data/nf-training .</span>
+<span id="cb7-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> nf-training</span>
+<span id="cb7-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> init <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> conda-forge <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> bioconda</span>
+<span id="cb7-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> add nextflow</span></code></pre></div></div>
+</div>
+</section>
+<section id="hello.nf" class="level3">
+<h3 class="anchored" data-anchor-id="hello.nf">hello.nf</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>hello.nf</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="hello.nf" style="background: #f1f3f5;"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb8-1">#<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/usr/</span>bin<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>env nextflow</span>
+<span id="cb8-2"></span>
+<span id="cb8-3">params<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>greeting <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Hello world!'</span>          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// a parameter I can change from the command line</span></span>
+<span id="cb8-4"></span>
+<span id="cb8-5">process SPLITLETTERS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb8-6">    input<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb8-7">    val x                                  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// a value</span></span>
+<span id="cb8-8"></span>
+<span id="cb8-9">    output<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb8-10">    path <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'chunk_*'</span>                         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// files starting with chunk_</span></span>
+<span id="cb8-11"></span>
+<span id="cb8-12">    script<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb8-13">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb8-14"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    printf '</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$x</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' | split -b 6 - chunk_</span></span>
+<span id="cb8-15"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb8-16"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb8-17"></span>
+<span id="cb8-18">process CONVERTTOUPPER <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb8-19">    input<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb8-20">    path y</span>
+<span id="cb8-21"></span>
+<span id="cb8-22">    output<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb8-23">    stdout                                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// whatever is printed</span></span>
+<span id="cb8-24"></span>
+<span id="cb8-25">    script<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb8-26">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb8-27"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    cat </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$y</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> | tr '[a-z]' '[A-Z]'</span></span>
+<span id="cb8-28"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb8-29"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb8-30"></span>
+<span id="cb8-31">workflow <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb8-32">    greeting_ch <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">Channel</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">of</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>params<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>greeting<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb8-33">    letters_ch  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">SPLITLETTERS</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>greeting_ch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb8-34">    results_ch  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">CONVERTTOUPPER</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>letters_ch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">flatten</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">())</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// flatten: one task per chunk</span></span>
+<span id="cb8-35">    results_ch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">view</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span> it <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb8-36"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow run hello.nf</span></code></pre></div></div>
+</div>
+<p>Output:</p>
+<pre><code>executor &gt;  local (3)
+[96/fd5f07] SPLITLETTERS (1)   [100%] 1 of 1 ✔
+[7e/dad424] CONVERTTOUPPER (2) [100%] 2 of 2 ✔
+HELLO
+WORLD!</code></pre>
+<p>The codes like <code>96/fd5f07</code> are the start of the folder in <code>work/</code> where that task ran. It is useful for debugging. <code>HELLO</code> and <code>WORLD!</code> can come in any order because the two tasks run in parallel.</p>
+</section>
+<section id="resume-and-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="resume-and-parameters">Resume and parameters</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># after changing a process: only the changed part is re-run, the rest comes from the cache</span></span>
+<span id="cb11-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow run hello.nf <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-resume</span></span>
+<span id="cb11-3"></span>
+<span id="cb11-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># change a parameter from the command line (two dashes = pipeline parameter)</span></span>
+<span id="cb11-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow run hello.nf <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-resume</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--greeting</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Bonjour le monde!'</span></span></code></pre></div></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>One dash or two?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>-resume</code> has <strong>one</strong> dash, so it is an option for Nextflow itself. <code>--greeting</code> has <strong>two</strong> dashes, so it is a parameter of <em>my</em> pipeline.</p>
+</div>
+</div>
+<p>Settings can come from many places. The most important ones, from strongest to weakest: command line (<code>--param</code>) → <code>-params-file</code> → <code>-c my.config</code> → <code>nextflow.config</code> in the current folder → values in the script.</p>
+</section>
+<section id="cleaning-up" class="level3">
+<h3 class="anchored" data-anchor-id="cleaning-up">Cleaning up</h3>
+<p>The <code>work/</code> folder grows fast.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow log                        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># list previous runs in this folder</span></span>
+<span id="cb12-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow clean <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-f</span>                   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># remove work files</span></span>
+<span id="cb12-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow clean <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-before</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>run_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> -f</span></code></pre></div></div>
+</div>
+</section>
+</section>
+<section id="part-3-a-simple-rna-seq-workflow-with-nextflow" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-a-simple-rna-seq-workflow-with-nextflow">Part 3: A simple RNA-seq workflow with Nextflow</h2>
+<p>We built this workflow step by step in <code>script1.nf</code> to <code>script7.nf</code>:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    T([transcriptome.fa]) --&gt; IDX["INDEX&lt;br/&gt;salmon index"]
+    R([paired-end reads]) --&gt;|fromFilePairs| RP([read pairs per sample])
+    IDX --&gt; Q["QUANTIFICATION&lt;br/&gt;salmon quant"]
+    RP --&gt; Q
+    RP --&gt; FQ["FASTQC"]
+    Q --&gt; M["MULTIQC"]
+    FQ --&gt; M
+    M --&gt; REP([multiqc_report.html])
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li><strong>INDEX</strong>: Salmon turns the transcriptome into a searchable index. This is done once.</li>
+<li><strong>QUANTIFICATION</strong>: for each sample, Salmon estimates how much of each transcript is present.</li>
+<li><strong>FASTQC</strong>: checks read quality. It runs <em>at the same time</em> as quantification, because neither needs the other.</li>
+<li><strong>MULTIQC</strong>: waits for everything and makes one report.</li>
+</ul>
+<section id="running-on-the-cluster-nextflow.config" class="level3">
+<h3 class="anchored" data-anchor-id="running-on-the-cluster-nextflow.config">Running on the cluster: <code>nextflow.config</code></h3>
+<p>Running on the login node is not allowed on a cluster, so we told Nextflow to send every task to SLURM. This file is read automatically when it is in the folder where I run Nextflow:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>nextflow.config</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-filename="nextflow.config" style="background: #f1f3f5;"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb13-1">process <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb13-2">    executor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"slurm"</span></span>
+<span id="cb13-3">    time <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'2.h'</span>          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// default time for every process</span></span>
+<span id="cb13-4">    cpus <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span></span>
+<span id="cb13-5"></span>
+<span id="cb13-6">    withName<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'INDEX'</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// settings only for the INDEX process</span></span>
+<span id="cb13-7">        time <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15.</span>m</span>
+<span id="cb13-8">        cpus <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb13-9">    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb13-10">    withName<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'QUANTIFICATION'</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb13-11">        time <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30.</span>m</span>
+<span id="cb13-12">        cpus <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb13-13">    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb13-14"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb13-15"></span>
+<span id="cb13-16">resume <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">true</span>             <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// always resume, no need to type -resume</span></span>
+<span id="cb13-17">singularity<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>enabled <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">true</span></span>
+<span id="cb13-18"></span>
+<span id="cb13-19">executor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb13-20">    account <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'&lt;project_ID&gt;'</span></span>
+<span id="cb13-21"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div></div>
+</div>
+</section>
+<section id="channels-of-read-pairs" class="level3">
+<h3 class="anchored" data-anchor-id="channels-of-read-pairs">Channels of read pairs</h3>
+<p>Salmon needs both files of a pair together. <code>fromFilePairs</code> groups them by sample name. The <code>{1,2}</code> marks the part of the file name that differs:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb14-1">read_pairs_ch <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> channel<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fromFilePairs</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>params<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>reads<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb14-2">read_pairs_ch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">view</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb14-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// [gut, [/.../gut_1.fq, /.../gut_2.fq]]   &lt;- a tuple: sample ID + list of two files</span></span></code></pre></div></div>
+</section>
+<section id="the-complete-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="the-complete-workflow">The complete workflow</h3>
+<p>This is what my final script looked like. Each process gets its tool from a container, which is more reproducible than installing the tools in the environment:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>script7.nf</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-filename="script7.nf" style="background: #f1f3f5;"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb15-1">#<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/usr/</span>bin<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>env nextflow</span>
+<span id="cb15-2"></span>
+<span id="cb15-3">params<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>reads              <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$projectDir</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/data/ggal/gut_{1,2}.fq"</span></span>
+<span id="cb15-4">params<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>transcriptome_file <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$projectDir</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/data/ggal/transcriptome.fa"</span></span>
+<span id="cb15-5">params<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>outdir             <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"results"</span></span>
+<span id="cb15-6"></span>
+<span id="cb15-7">workflow <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb15-8">    read_pairs_ch <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> channel<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fromFilePairs</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>params<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>reads<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> checkIfExists<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">true</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb15-9"></span>
+<span id="cb15-10">    index_ch  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">INDEX</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">file</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>params<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>transcriptome_file<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> checkIfExists<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">true</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">))</span></span>
+<span id="cb15-11">    quant_ch  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">QUANTIFICATION</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>index_ch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> read_pairs_ch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb15-12">    fastqc_ch <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">FASTQC</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>read_pairs_ch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb15-13"></span>
+<span id="cb15-14">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// mix: put both channels together; collect: wait for all and pass them as ONE item</span></span>
+<span id="cb15-15">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">MULTIQC</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>quant_ch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mix</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>fastqc_ch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">).</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">collect</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">())</span></span>
+<span id="cb15-16"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb15-17"></span>
+<span id="cb15-18">process INDEX <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb15-19">    container <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'oras://community.wave.seqera.io/library/salmon:2.7.0--cb05356ce9eb88b7'</span></span>
+<span id="cb15-20"></span>
+<span id="cb15-21">    input<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-22">    path transcriptome</span>
+<span id="cb15-23"></span>
+<span id="cb15-24">    output<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-25">    path <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'salmon_index'</span></span>
+<span id="cb15-26"></span>
+<span id="cb15-27">    script<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-28">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb15-29"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    salmon index --threads </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$task</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">cpus</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> -t </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$transcriptome</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> -i salmon_index</span></span>
+<span id="cb15-30"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb15-31"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb15-32"></span>
+<span id="cb15-33">process QUANTIFICATION <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb15-34">    tag <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Salmon on </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$sample_id</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb15-35">    container <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'oras://community.wave.seqera.io/library/salmon:2.7.0--cb05356ce9eb88b7'</span></span>
+<span id="cb15-36">    publishDir <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$params</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">outdir</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/salmon"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> mode<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'copy'</span></span>
+<span id="cb15-37"></span>
+<span id="cb15-38">    input<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-39">    path salmon_index</span>
+<span id="cb15-40">    tuple <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">val</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>sample_id<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">),</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>reads<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb15-41"></span>
+<span id="cb15-42">    output<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-43">    path <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$sample_id</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb15-44"></span>
+<span id="cb15-45">    script<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-46">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb15-47"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    salmon quant --threads </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$task</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">cpus</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> --libType=U -i </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$salmon_index</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> -1 </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">${</span>reads<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> -2 </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">${</span>reads<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> -o </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$sample_id</span></span>
+<span id="cb15-48"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb15-49"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb15-50"></span>
+<span id="cb15-51">process FASTQC <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb15-52">    tag <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"FastQC on </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$sample_id</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb15-53">    container <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'&lt;fastqc container address from Seqera&gt;'</span></span>
+<span id="cb15-54"></span>
+<span id="cb15-55">    input<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-56">    tuple <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">val</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>sample_id<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">),</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>reads<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb15-57"></span>
+<span id="cb15-58">    output<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-59">    path <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fastqc_</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">${</span>sample_id<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">_logs"</span></span>
+<span id="cb15-60"></span>
+<span id="cb15-61">    script<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-62">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb15-63"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    mkdir fastqc_</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">${</span>sample_id<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">_logs</span></span>
+<span id="cb15-64"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    fastqc -o fastqc_</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">${</span>sample_id<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">_logs -f fastq -q </span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">${</span>reads<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb15-65"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb15-66"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb15-67"></span>
+<span id="cb15-68">process MULTIQC <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb15-69">    container <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'&lt;multiqc container address from Seqera&gt;'</span></span>
+<span id="cb15-70">    publishDir <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$params</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">outdir</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/multiqc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> mode<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'copy'</span></span>
+<span id="cb15-71"></span>
+<span id="cb15-72">    input<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-73">    path <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'*'</span></span>
+<span id="cb15-74"></span>
+<span id="cb15-75">    output<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-76">    path <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'multiqc_report.html'</span></span>
+<span id="cb15-77"></span>
+<span id="cb15-78">    script<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb15-79">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb15-80"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    multiqc .</span></span>
+<span id="cb15-81"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb15-82"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># run on all three samples (gut, liver, lung)</span></span>
+<span id="cb16-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run nextflow run script7.nf <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--reads</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'data/ggal/*_{1,2}.fq'</span></span></code></pre></div></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span><code>publishDir</code> and <code>mode: 'copy'</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>By default, <code>publishDir</code> only makes <em>links</em> to files inside <code>work/</code>. If I clean <code>work/</code>, the results disappear. <code>mode: 'copy'</code> makes real copies that survive the cleanup.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="cheat-sheet">Cheat sheet</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>I want to…</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>download an image</td>
+<td><code>apptainer pull &lt;name&gt;.sif docker://...</code> or <code>oras://...</code></td>
+</tr>
+<tr class="even">
+<td>run a tool in a container</td>
+<td><code>apptainer exec &lt;image&gt;.sif &lt;command&gt;</code></td>
+</tr>
+<tr class="odd">
+<td>work inside a container</td>
+<td><code>apptainer shell &lt;image&gt;.sif</code></td>
+</tr>
+<tr class="even">
+<td>make a folder visible inside</td>
+<td><code>-B outside/path:inside/path</code></td>
+</tr>
+<tr class="odd">
+<td>build an image</td>
+<td><code>apptainer build &lt;name&gt;.sif &lt;name&gt;.def</code></td>
+</tr>
+<tr class="even">
+<td>run a Nextflow script</td>
+<td><code>pixi run nextflow run script.nf</code></td>
+</tr>
+<tr class="odd">
+<td>continue where it stopped</td>
+<td>add <code>-resume</code></td>
+</tr>
+<tr class="even">
+<td>change a parameter</td>
+<td>add <code>--param_name value</code></td>
+</tr>
+<tr class="odd">
+<td>see previous runs / clean up</td>
+<td><code>nextflow log</code> / <code>nextflow clean -f</code></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p>Write today’s notes here.</p>
-</section>
-<section id="up-next" class="level2">
-<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
-<p>What I plan to pick up on <a href="../thursday/">Thursday</a>.</p>
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
 
 
 </section>
 
  ]]></description>
-  <category>weekly</category>
+  <category>containers</category>
+  <category>Apptainer</category>
+  <category>Nextflow</category>
+  <category>RNA-seq</category>
+  <category>Salmon</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/wednesday/</guid>
   <pubDate>Wed, 16 Sep 2026 00:00:00 GMT</pubDate>
 </item>
@@ -111,19 +2487,21 @@
 
 
 
-<section id="what-i-did-today" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>Today we learn about <strong>environments</strong> and why the same code can give different results on two different computers.</p>
-<p>The environment we looked at is called <strong>Pixi</strong>.</p>
+<section id="what-we-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-did-today">What we did today</h2>
+<p>In the morning we learned about <strong>software environments</strong> and the environment manager <strong>Pixi</strong>. In the afternoon we used Pixi on the <strong>HPC2N</strong> cluster to run a quality control (QC) of an RNA-seq dataset with <strong>FastQC</strong>, and summarised all the reports with <strong>MultiQC</strong>.</p>
 </section>
-<section id="why-do-we-use-environments" class="level2">
-<h2 class="anchored" data-anchor-id="why-do-we-use-environments">Why do we use environments?</h2>
-<p>An environment keeps each project separate. It also means someone else can rebuild the exact same setup on their own computer.</p>
+<section id="why-do-we-need-environments" class="level2">
+<h2 class="anchored" data-anchor-id="why-do-we-need-environments">1. Why do we need environments?</h2>
+<p>It makes pipline more reproducible. Different computers have different operating systems and different versions of tools. If my FastQC version is different from yours, we might get different results.</p>
+<p>An <strong>environment</strong> is a separate box that contains exactly the tools and versions a project needs. The tools are installed <em>inside</em> the environment, not on the whole computer. Each project gets its own environment, so projects never mess with each other.</p>
 </section>
-<section id="installing-pixi" class="level2">
-<h2 class="anchored" data-anchor-id="installing-pixi">Installing Pixi</h2>
-<p>One line in the terminal:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<section id="pixi-basics" class="level2">
+<h2 class="anchored" data-anchor-id="pixi-basics">2. Pixi basics</h2>
+<section id="install-pixi-once-per-user" class="level3">
+<h3 class="anchored" data-anchor-id="install-pixi-once-per-user">Install Pixi (once per user)</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">wget</span> <span class="at" style="color: #657422;
 background-color: null;
@@ -132,180 +2510,485 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">sh</span></span></code></pre></div></div>
-</section>
-<section id="starting-a-project" class="level2">
-<h2 class="anchored" data-anchor-id="starting-a-project">Starting a project</h2>
-<p>Make a new environment for the project:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+font-style: inherit;">sh</span></span>
+<span id="cb1-2"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">pixi</span> init lina_pixi_training <span class="at" style="color: #657422;
+font-style: inherit;">source</span> ~/.bashrc    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># reload the shell so the "pixi" command is found (on Mac: ~/.zshrc)</span></span></code></pre></div></div>
+</div>
+</section>
+<section id="create-an-environment" class="level3">
+<h3 class="anchored" data-anchor-id="create-an-environment">Create an environment</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> init zana_pixi_training <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-c</span> conda-forge <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-c</span> bioconda</span></code></pre></div></div>
-<p>The <code>-c</code> parts say where to download software from.</p>
-<p>This creates two files:</p>
+font-style: inherit;">-c</span> bioconda</span>
+<span id="cb2-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> zana_pixi_training</span></code></pre></div></div>
+</div>
 <ul>
-<li><strong><code>pixi.toml</code></strong> — the short, readable one. It lists the project name and the tools I asked for. This is the file I actually edit.</li>
-<li><strong><code>pixi.lock</code></strong> — the long, automatic one. It records the exact versions and where they came from. I never edit this by hand, but it is the file that makes the setup truly reproducible.</li>
+<li><code>-c</code> adds a <strong>channel</strong>, a trusted place Pixi is allowed to download tools from.</li>
+<li>The order matters: <strong>conda-forge first, then bioconda</strong>.</li>
 </ul>
+<p>This creates a file called <code>pixi.toml</code>:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pixi.toml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="pixi.toml" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[workspace]</span></span>
+<span id="cb3-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">channels</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"conda-forge"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bioconda"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># where tools come from</span></span>
+<span id="cb3-3"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">name</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"zana_pixi_training"</span>              <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># name of the environment</span></span>
+<span id="cb3-4"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">platforms</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"linux-64"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># operating system(s)</span></span>
+<span id="cb3-5"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">version</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.1.0"</span></span>
+<span id="cb3-6"></span>
+<span id="cb3-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[tasks]</span>                                  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># (not used in this course)</span></span>
+<span id="cb3-8"></span>
+<span id="cb3-9"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[dependencies]</span>                           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># tools installed in the environment</span></span></code></pre></div></div>
+</div>
 </section>
-<section id="quality-control" class="level2">
-<h2 class="anchored" data-anchor-id="quality-control">Quality control</h2>
-<p>Before analysing sequencing data, we check whether the data is any good. Bad data gives bad results, no matter how careful the analysis is. Problems come from contamination, handling mistakes, or the sequencing machine itself.</p>
+<section id="add-tools-and-run-them" class="level3">
+<h3 class="anchored" data-anchor-id="add-tools-and-run-them">Add tools and run them</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> add quarto           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># install a tool into the environment </span></span>
+<span id="cb4-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> add <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--help</span>           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># every command has a help page</span></span>
+<span id="cb4-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run quarto <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--help</span>    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># run a tool from the environment</span></span></code></pre></div></div>
+</div>
+<p>After <code>pixi add</code>, a second file appears: <code>pixi.lock</code>. It records the exact version and source of every package.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Never delete <code>pixi.toml</code> or <code>pixi.lock</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Together they <em>are</em> the environment. <code>pixi.toml</code> says what I asked for, <code>pixi.lock</code> says exactly what was installed. Sharing these two files lets anyone rebuild the same environment.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span><code>pixi shell</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On a normal computer, <code>pixi shell</code> “enters” the environment so tools can be used without typing <code>pixi run</code> every time (<code>exit</code> to leave). <strong>This does not work on HPC2N</strong>, so there I always used <code>pixi run</code>.</p>
+</div>
+</div>
 </section>
-<section id="what-the-raw-data-looks-like" class="level2">
-<h2 class="anchored" data-anchor-id="what-the-raw-data-looks-like">What the raw data looks like</h2>
-<p>Sequencing data comes in <strong>FASTQ</strong> files. Every read takes four lines:</p>
+</section>
+<section id="screen-keep-working-when-i-disconnect" class="level2">
+<h2 class="anchored" data-anchor-id="screen-keep-working-when-i-disconnect">3. screen: keep working when I disconnect</h2>
+<p><code>screen</code> opens a terminal session on the server that keeps running even if my laptop goes to sleep or I lose connection.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">screen</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-S</span> fastqc      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># start a new session called "fastqc"</span></span>
+<span id="cb5-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Ctrl + a, then d     -&gt; detach (leave it running in the background)</span></span>
+<span id="cb5-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">screen</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-ls</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># list my sessions</span></span>
+<span id="cb5-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">screen</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> fastqc      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># go back into the session</span></span>
+<span id="cb5-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">exit</span>                  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># inside a session: close it for good</span></span></code></pre></div></div>
+</div>
+</section>
+<section id="setting-up-the-project" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-the-project">4. Setting up the project</h2>
+<p>It is important that we keep the folder organized. Raw data goes in <code>data/</code>, and I should never change it. Instead of copying the large files, I make <strong>symbolic links</strong> (shortcuts) to the shared course data:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mkdir</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> rnaseq/data</span>
+<span id="cb6-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> rnaseq/data</span>
+<span id="cb6-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ln</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-s</span> /path/to/repbio26/common_data/RNAseq/<span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">*</span>fastq.gz .</span>
+<span id="cb6-4"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> ..</span></code></pre></div></div>
+</div>
+</section>
+<section id="the-fastq-format" class="level2">
+<h2 class="anchored" data-anchor-id="the-fastq-format">5. The FASTQ format</h2>
+<p>Sequencing reads are stored in FASTQ files. Each read takes <strong>4 lines</strong>:</p>
 <ol type="1">
-<li>The read name, starting with <code>@</code></li>
-<li>The sequence itself</li>
-<li>A <code>+</code> separator</li>
-<li>The quality scores, one character per base</li>
+<li><code>@</code> + the read name</li>
+<li>the DNA sequence</li>
+<li>a <code>+</code> (sometimes followed by the name again)</li>
+<li>the quality of each base, one character per base</li>
 </ol>
-<p>The fourth line is the important one. Each character is a score from 0 to 42 saying how sure the machine was about that base. Low scores mean the base might be wrong.</p>
+<p>To look at the first reads of a (compressed) file on the server:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">zcat</span> data/SRR5223504_1.fastq.gz <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-n</span> 8</span></code></pre></div></div>
+</div>
 </section>
-<section id="fastqc" class="level2">
-<h2 class="anchored" data-anchor-id="fastqc">FastQC</h2>
-<p><strong>FastQC</strong> checks the quality of a whole file at once, so we do not have to look at millions of reads by hand.</p>
-<p>We add it to the Pixi environment, not to the whole computer:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+<section id="fastqc-in-a-pixi-environment" class="level2">
+<h2 class="anchored" data-anchor-id="fastqc-in-a-pixi-environment">6. FastQC in a Pixi environment</h2>
+<p>FastQC is not installed on the server (<code>fastqc: command not found</code>), so I made an environment for it inside my project folder:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> init <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> conda-forge <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> bioconda</span>
+<span id="cb8-2"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pixi</span> add fastqc</span>
-<span id="cb3-2"><span class="ex" style="color: null;
+<span id="cb8-3"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pixi</span> run fastqc <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">--help</span></span></code></pre></div></div>
-</section>
-<section id="running-it-on-the-cluster" class="level2">
-<h2 class="anchored" data-anchor-id="running-it-on-the-cluster">Running it on the cluster</h2>
-<p>Big files take time, so the work runs on a cluster instead of a laptop. The cluster uses <strong>SLURM</strong> to decide who runs what and when. We ask for an account, some time, and a number of cores:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+</div>
+<section id="running-a-job-with-slurm" class="level3">
+<h3 class="anchored" data-anchor-id="running-a-job-with-slurm">Running a job with SLURM</h3>
+<p>On a cluster, I must not run heavy work on the <strong>login node</strong>. Instead I ask the job scheduler <strong>SLURM</strong> for resources. SLURM needs to know:</p>
+<ul>
+<li><code>-A</code> which project pays for the computing time</li>
+<li><code>-t</code> how long the job may run (e.g.&nbsp;<code>15:00</code> = 15 minutes)</li>
+<li><code>-n</code> how many cores</li>
+</ul>
+<p><strong>Option 1: <code>srun</code></strong>, quick, for one command:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mkdir</span> fastqc</span>
+<span id="cb9-2"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">srun</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-A</span> project_ID <span class="at" style="color: #657422;
+font-style: inherit;">-A</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">-t</span> 15:00 <span class="at" style="color: #657422;
+font-style: inherit;">&lt;</span>project_ID<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">-n</span> 1 pixi run fastqc</span></code></pre></div></div>
-<p>For more than one sample it is easier to put the same settings into a small script and submit it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+font-style: inherit;">&gt;</span> -t 15:00 <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">sbatch</span> fastqc.sh</span></code></pre></div></div>
-<p>The script is also a record of exactly what was run, which is the reproducible part.</p>
+font-style: inherit;">-n</span> 1 pixi run fastqc <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--noextract</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-o</span> fastqc <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb9-3">     data/SRR5223504_1.fastq.gz data/SRR5223504_2.fastq.gz</span></code></pre></div></div>
+</div>
+<p><strong>Option 2: <code>sbatch</code></strong>, a script I can save and reuse. This is better for reproducibility, because the script is a record of exactly what I ran.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>scripts/fastqc.sh</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="scripts/fastqc.sh" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#! /bin/bash -l</span></span>
+<span id="cb10-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#SBATCH -A &lt;project_ID&gt;</span></span>
+<span id="cb10-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#SBATCH -t 30:00</span></span>
+<span id="cb10-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#SBATCH -n 1</span></span>
+<span id="cb10-5"></span>
+<span id="cb10-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pixi</span> run fastqc <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-o</span> ../fastqc <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--noextract</span> ../data/<span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">*</span>fastq.gz</span></code></pre></div></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> scripts</span>
+<span id="cb11-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sbatch</span> fastqc.sh                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># submit the job</span></span>
+<span id="cb11-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">squeue</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-u</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>username<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>             <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># check if it is waiting (PD) or running (R)</span></span>
+<span id="cb11-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">less</span> slurm-<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>jobID<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>.out           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># read the log when it's done (q to quit)</span></span></code></pre></div></div>
+</div>
+<p>Project structure at this point:</p>
+<pre><code>rnaseq/
+├── data/            # symbolic links to the raw fastq.gz files
+├── fastqc/          # one .html + one .zip report per fastq file
+├── pixi.lock
+├── pixi.toml
+└── scripts/
+    └── fastqc.sh</code></pre>
+<p>To look at a report, right-click the <code>.html</code> file in the VS Code file explorer and choose <strong>Download</strong>.</p>
 </section>
-<section id="multiqc" class="level2">
-<h2 class="anchored" data-anchor-id="multiqc">MultiQC</h2>
-<p>One report per sample adds up quickly. <strong>MultiQC</strong> collects them all into a single report, so the whole dataset can be checked in one place.</p>
 </section>
-<section id="keeping-the-session-alive" class="level2">
-<h2 class="anchored" data-anchor-id="keeping-the-session-alive">Keeping the session alive</h2>
-<p>If the connection to the cluster drops, the job dies with it. <code>screen</code> keeps it running:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+<section id="multiqc-one-report-for-all-samples" class="level2">
+<h2 class="anchored" data-anchor-id="multiqc-one-report-for-all-samples">7. MultiQC: one report for all samples</h2>
+<p>Opening eight separate FastQC reports gets tedious. MultiQC collects them into one report.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">screen</span> <span class="at" style="color: #657422;
+font-style: inherit;">pixi</span> add multiqc</span></code></pre></div></div>
+</div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>scripts/multiqc.sh</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="scripts/multiqc.sh" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">-S</span> fastqc     <span class="co" style="color: #5E5E5E;
+font-style: inherit;">#! /bin/bash -l</span></span>
+<span id="cb14-2"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># start a session</span></span>
-<span id="cb6-2"><span class="co" style="color: #5E5E5E;
+font-style: inherit;">#SBATCH -A &lt;project_ID&gt;</span></span>
+<span id="cb14-3"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># Ctrl + a, then d   # leave it running</span></span>
-<span id="cb6-3"><span class="ex" style="color: null;
+font-style: inherit;">#SBATCH -t 15:00</span></span>
+<span id="cb14-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">screen</span> <span class="at" style="color: #657422;
+font-style: inherit;">#SBATCH -n 1</span></span>
+<span id="cb14-5"></span>
+<span id="cb14-6"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">-r</span> fastqc     <span class="co" style="color: #5E5E5E;
+font-style: inherit;">pixi</span> run multiqc ../fastqc <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"># come back to it later</span></span></code></pre></div></div>
+font-style: inherit;">-o</span> ../multiqc</span></code></pre></div></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sbatch</span> multiqc.sh</span></code></pre></div></div>
+</div>
+<p>The result is <code>multiqc/multiqc_report.html</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Reading the report
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Some “failed” modules are normal for RNA-seq. For example, <em>Per base sequence content</em> often fails at the start of the reads because of random-primer bias, and <em>Sequence duplication</em> is high because highly expressed genes produce many identical reads. Always check whether a warning is expected for the type of data.</p>
+</div>
+</div>
 </section>
-<section id="containers" class="level2">
-<h2 class="anchored" data-anchor-id="containers">Containers</h2>
-<p>Pixi makes sure we install the same tools. A <strong>container</strong> goes one step further: it packs the tools <em>and</em> the operating system around them into a single file. That file behaves the same way on a laptop, on a server, or on someone else’s computer years from now.</p>
-<p>Containers help when:</p>
-<ul>
-<li>people in the group use different operating systems</li>
-<li>two tools need different versions of the same dependency</li>
-<li>old software will not install on a modern system</li>
-</ul>
+<section id="cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="cheat-sheet">Cheat sheet</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>I want to…</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>create a Pixi environment</td>
+<td><code>pixi init &lt;name&gt; -c conda-forge -c bioconda</code></td>
+</tr>
+<tr class="even">
+<td>install a tool</td>
+<td><code>pixi add &lt;tool&gt;</code></td>
+</tr>
+<tr class="odd">
+<td>run a tool</td>
+<td><code>pixi run &lt;tool&gt; &lt;options&gt;</code></td>
+</tr>
+<tr class="even">
+<td>start / leave / return to screen</td>
+<td><code>screen -S &lt;name&gt;</code> / <code>Ctrl+a d</code> / <code>screen -r &lt;name&gt;</code></td>
+</tr>
+<tr class="odd">
+<td>link data instead of copying</td>
+<td><code>ln -s /path/to/source .</code></td>
+</tr>
+<tr class="even">
+<td>peek into a fastq.gz</td>
+<td><code>zcat file.fastq.gz \| head -n 8</code></td>
+</tr>
+<tr class="odd">
+<td>run one command on the cluster</td>
+<td><code>srun -A &lt;proj&gt; -t 15:00 -n 1 &lt;command&gt;</code></td>
+</tr>
+<tr class="even">
+<td>submit a script</td>
+<td><code>sbatch script.sh</code></td>
+</tr>
+<tr class="odd">
+<td>check my jobs</td>
+<td><code>squeue -u &lt;username&gt;</code></td>
+</tr>
+<tr class="even">
+<td>check my projects</td>
+<td><code>projinfo</code></td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="which-container-tool" class="level2">
-<h2 class="anchored" data-anchor-id="which-container-tool">Which container tool</h2>
-<ul>
-<li><strong>Apptainer</strong> — for shared servers and clusters (it used to be called Singularity)</li>
-<li><strong>Docker</strong> — for a personal machine</li>
-</ul>
-<p>Ready-made images are kept on <strong>Docker Hub</strong> and <strong>Seqera</strong>. It is safer to pick a popular image from a trusted maker, such as <code>biocontainers</code>.</p>
-</section>
-<section id="getting-an-image" class="level2">
-<h2 class="anchored" data-anchor-id="getting-an-image">Getting an image</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">apptainer</span> pull name.sif docker://repository/image:version</span></code></pre></div></div>
-<p>The <code>.sif</code> file that comes out <em>is</em> the container. Naming it with the tool and version keeps things clear later.</p>
-</section>
-<section id="running-it" class="level2">
-<h2 class="anchored" data-anchor-id="running-it">Running it</h2>
-<p>Run a single command inside the container:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">apptainer</span> exec image.sif tool <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">--version</span></span></code></pre></div></div>
-<p>Or step inside and work there:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">apptainer</span> shell image.sif</span></code></pre></div></div>
-<p>A container cannot see our files by default. <code>-B outside:inside</code> makes a folder on the computer visible inside the container.</p>
-<p><code>run</code> and <code>exec</code> are not the same: <code>run</code> first executes the container’s own start-up script, while <code>exec</code> skips it and runs exactly the command we give.</p>
-</section>
-<section id="building-our-own" class="level2">
-<h2 class="anchored" data-anchor-id="building-our-own">Building our own</h2>
-<p>If no ready-made image exists, we describe one in a <code>.def</code> file: which operating system to start from, what to install (<code>%post</code>), which paths to set (<code>%environment</code>), and what to run by default (<code>%runscript</code>). Then:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">apptainer</span> build output.sif definition.def</span></code></pre></div></div>
-</section>
-<section id="container-or-pixi" class="level2">
-<h2 class="anchored" data-anchor-id="container-or-pixi">Container or Pixi?</h2>
-<p>Pixi pins the tools. A container pins the whole system around them. Containers are bigger and slower to make, but more complete, so they suit sharing a finished pipeline or rescuing software that refuses to install.</p>
-</section>
-<section id="up-next" class="level2">
-<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
-<p>What I plan to pick up on <a href="../wednesday/">Wednesday</a>.</p>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
 
 
 </section>
 
  ]]></description>
-  <category>weekly</category>
-  <category>tools</category>
+  <category>Pixi</category>
+  <category>HPC2N</category>
+  <category>SLURM</category>
+  <category>screen</category>
+  <category>FastQC</category>
+  <category>MultiQC</category>
+  <category>RNA-seq</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/tuesday/</guid>
   <pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Welcome To My Blog</title>
-  <dc:creator>Zana Brilej</dc:creator>
-  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/welcome/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>This is my first post in a Quarto blog. I have no idea what I’m doing but I will figure it out eventually.</p>
-<p><img src="https://zanabrilej22.github.io/Reproducible_research_course/posts/welcome/IMG_20230621_145059.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
-
-
-
- ]]></description>
-  <category>news</category>
-  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/welcome/</guid>
-  <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Monday</title>
@@ -317,47 +3000,576 @@ font-style: inherit;">apptainer</span> build output.sif definition.def</span></c
 
 
 
-<section id="what-i-did-today" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>The first day of the week. I set up this blog with Quarto and got the project structure in place.</p>
+<section id="what-we-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-did-today">What we did today</h2>
+<p>Morning session was about git and git hub. In the afternoon we were setting up this blog. We will use it to make notes on everything we do during the week. The blog was createdwith <strong>Quarto</strong>, using version control with <strong>git</strong>. We uploaded it to <strong>GitHub</strong>, and set <strong>GitHub Actions</strong> so that the website is updated and published automatically every time I push changes.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The idea of Reproducible Research
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Someone else (or me, in six months) can take my data and my code and get the same result. So, good documentation is importnat. Quarto is a <strong>fantastic</strong> tool that lets me keep text, code and results together in one document, which is called <em>literate programming</em>.</p>
+</div>
+</div>
+</section>
+<section id="creating-a-blog-with-quarto" class="level2">
+<h2 class="anchored" data-anchor-id="creating-a-blog-with-quarto">1. Creating a blog with Quarto</h2>
+<p>In VS Code, open the command palette (<strong>View → Command Palette</strong>, or <code>Ctrl/Cmd + Shift + P</code>) and type:</p>
+<pre><code>Quarto: Create Project</code></pre>
+<p>Choose <strong>Blog Project</strong>, pick a folder on your computer and give the blog a name (I gave it a name New_blog).</p>
+<p>You can do the same thing from the terminal:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">quarto</span> create project blog New_blog</span></code></pre></div></div>
+</div>
+<section id="what-is-inside-the-project-folder" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-inside-the-project-folder">What is inside the project folder?</h3>
+<pre><code>New_blog/
+├── _quarto.yml        # settings for the whole website (title, navbar, theme...)
+├── index.qmd          # the home page, which lists all posts
+├── about.qmd          # the "About" page
+├── profile.jpg        # picture used on the About page
+├── styles.css         # extra styling 
+└── posts/
+    ├── _metadata.yml  # settings shared by all posts
+    └── monday/
+        └── index.qmd  # one folder per post, the post itself is index.qmd</code></pre>
+<p>Every post is in its own folder inside <code>posts/</code>. The home page finds them automatically. This is called a <em>listing</em>.</p>
+</section>
+</section>
+<section id="previewing-the-blog" class="level2">
+<h2 class="anchored" data-anchor-id="previewing-the-blog">2. Previewing the blog</h2>
+<p>To see the website while I work on it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">quarto</span> preview</span></code></pre></div></div>
+</div>
+<p>This opens the blog in the browser and refreshes it every time I save a file. In VS Code, the <strong>Preview</strong> button (top right of a <code>.qmd</code> file) does the same for a single page.</p>
+</section>
+<section id="writing-a-post" class="level2">
+<h2 class="anchored" data-anchor-id="writing-a-post">3. Writing a post</h2>
+<p>A post starts with a <strong>YAML header</strong> between two lines of <code>---</code>. It holds information <em>about</em> the post:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">---</span></span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">title</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Monday"</span></span>
+<span id="cb5-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">description</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"One sentence shown on the home page"</span></span>
+<span id="cb5-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">date</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2026-09-14"</span></span>
+<span id="cb5-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">categories</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Quarto</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">,</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> git</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">]</span></span>
+<span id="cb5-6"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">---</span></span></code></pre></div></div>
+<p>After the header comes normal text written in Markdown (<code>**bold**</code>, <code>*italic*</code>, <code>## Heading</code>, <code>[link](https://...)</code>), and <strong>code chunks</strong>.</p>
+<section id="code-chunks" class="level3">
+<h3 class="anchored" data-anchor-id="code-chunks">Code chunks</h3>
+<p>A code chunk is a block of code that Quarto can actually <em>run</em> when it builds the page. The result is shown right below the code.</p>
+<p>Lines starting with <code>#|</code> are <strong>chunk options</strong>. They control what happens with the chunk:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>#| eval: false</code></td>
+<td>show the code but <strong>don’t run it</strong> (I use this for code that only works on the HPC server)</td>
+</tr>
+<tr class="even">
+<td><code>#| echo: false</code></td>
+<td>run the code but <strong>hide</strong> it, show only the result</td>
+</tr>
+<tr class="odd">
+<td><code>#| output: false</code></td>
+<td>run the code but <strong>hide the result</strong></td>
+</tr>
+<tr class="even">
+<td><code>#| warning: false</code></td>
+<td>hide warnings</td>
+</tr>
+<tr class="odd">
+<td><code>#| label: my-chunk</code></td>
+<td>give the chunk a name</td>
+</tr>
+<tr class="even">
+<td><code>#| fig-cap: "..."</code></td>
+<td>caption for a figure</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why most chunks in this blog have <code>eval: false</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The commands from Tuesday to Thursday were run on the HPC2N server, with data and software that only exist there. My computer can’t run them, so I show the code without executing it.</p>
+</div>
+</div>
+</section>
+<section id="freeze" class="level3">
+<h3 class="anchored" data-anchor-id="freeze">Freeze</h3>
+<p>In <code>_quarto.yml</code> I added:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">execute</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb6-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">freeze</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> auto</span></span></code></pre></div></div>
+<p>This means Quarto re-runs the code in a post <strong>only when that post has changed</strong>, and stores the results in a folder called <code>_freeze/</code>. I commit <code>_freeze/</code> to GitHub, so GitHub Actions can build the website without needing R installed.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>More features
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://quarto.org/">Quarto website</a> # Here is literally everything you need to know about Quarto. It has a lot of features!</p>
+</div>
+</div>
+</section>
+</section>
+<section id="tracking-the-blog-with-git" class="level2">
+<h2 class="anchored" data-anchor-id="tracking-the-blog-with-git">4. Tracking the blog with git</h2>
+<p>git keeps a history of every change I make. In the terminal, inside the blog folder:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> init                      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># turn the folder into a git repository</span></span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> status                    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># see which files are new or changed</span></span>
+<span id="cb7-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> add .                     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># stage all files</span></span>
+<span id="cb7-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> commit <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-m</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Create blog"</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># save a snapshot with a message</span></span></code></pre></div></div>
+</div>
+</section>
+<section id="putting-the-blog-on-github" class="level2">
+<h2 class="anchored" data-anchor-id="putting-the-blog-on-github">5. Putting the blog on GitHub</h2>
+<p>On [github.com], create a <strong>new, public, empty</strong> repository (no README, no .gitignore, no license). GitHub then shows the commands under <em>“…or push an existing repository from the command line”</em>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git</span>
+<span id="cb8-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> branch <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-M</span> main</span>
+<span id="cb8-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> push <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-u</span> origin main</span></code></pre></div></div>
+</div>
+<p>Refresh the GitHub page and the files are there.</p>
+</section>
+<section id="publishing-with-github-actions" class="level2">
+<h2 class="anchored" data-anchor-id="publishing-with-github-actions">6. Publishing with GitHub Actions</h2>
+<p><strong>GitHub Pages</strong> is a free hosting service for websites. <strong>GitHub Actions</strong> is a robot that runs a set of commands every time I push. Together, they rebuild and publish the blog automatically. I followed the <a href="https://quarto.org/docs/publishing/github-pages.html#github-action">Quarto guide</a>.</p>
+<p><strong>Step 1.</strong> Render the blog locally, so the <code>_freeze/</code> folder exists:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">quarto</span> render</span></code></pre></div></div>
+</div>
+<p><strong>Step 2.</strong> Publish once by hand. This creates a branch called <code>gh-pages</code>, which is where the finished website lives:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">quarto</span> publish gh-pages</span></code></pre></div></div>
+</div>
+<p><strong>Step 3.</strong> On GitHub, go to <strong>Settings → Pages</strong> and check that the source is <strong>Deploy from a branch</strong>, branch <strong>gh-pages</strong>, folder <strong>/ (root)</strong>.</p>
+<p><strong>Step 4.</strong> Add the workflow file <code>.github/workflows/publish.yml</code>. This is the “recipe” GitHub Actions follows:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/workflows/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename=".github/workflows/publish.yml" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">on</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb11-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">workflow_dispatch</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb11-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">push</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb11-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">branches</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> main</span></span>
+<span id="cb11-5"></span>
+<span id="cb11-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Quarto Publish</span></span>
+<span id="cb11-7"></span>
+<span id="cb11-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">jobs</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb11-9"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">build-deploy</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb11-10"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runs-on</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> ubuntu-latest</span></span>
+<span id="cb11-11"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">permissions</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb11-12"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">contents</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> write</span></span>
+<span id="cb11-13"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">steps</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb11-14"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Check out repository</span></span>
+<span id="cb11-15"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uses</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> actions/checkout@v4</span></span>
+<span id="cb11-16"></span>
+<span id="cb11-17"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Set up Quarto</span></span>
+<span id="cb11-18"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uses</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> quarto-dev/quarto-actions/setup@v2</span></span>
+<span id="cb11-19"></span>
+<span id="cb11-20"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Render and Publish</span></span>
+<span id="cb11-21"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uses</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> quarto-dev/quarto-actions/publish@v2</span></span>
+<span id="cb11-22"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb11-23"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">          </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">target</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> gh-pages</span></span>
+<span id="cb11-24"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">env</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb11-25"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">          </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">GITHUB_TOKEN</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> ${{ secrets.GITHUB_TOKEN }}</span></span></code></pre></div></div>
+</div>
+<p><strong>Step 5.</strong> Commit and push. The <strong>Actions</strong> tab on GitHub shows the workflow running (yellow = running, green = done, red = error). The blog will online at <code>https://zanabrilej22.github.io/Reproducible_research_course/</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> add .</span>
+<span id="cb12-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> commit <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-m</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Add GitHub Actions workflow"</span></span>
+<span id="cb12-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> push</span></code></pre></div></div>
+</div>
+<p>From now on, every <code>git push</code> updates the website.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Don’t push data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>GitHub is for code, not data. Large files (like <code>.fastq.gz</code>) should be listed in <code>.gitignore</code> so git ignores them.</p>
+</div>
+</div>
+</section>
+<section id="cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="cheat-sheet">Cheat sheet</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>I want to…</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>create a blog</td>
+<td><code>quarto create project blog &lt;name&gt;</code></td>
+</tr>
+<tr class="even">
+<td>see the blog live while editing</td>
+<td><code>quarto preview</code></td>
+</tr>
+<tr class="odd">
+<td>build the whole website</td>
+<td><code>quarto render</code></td>
+</tr>
+<tr class="even">
+<td>see what changed</td>
+<td><code>git status</code></td>
+</tr>
+<tr class="odd">
+<td>save a snapshot</td>
+<td><code>git add .</code> then <code>git commit -m "message"</code></td>
+</tr>
+<tr class="even">
+<td>upload to GitHub</td>
+<td><code>git push</code></td>
+</tr>
+<tr class="odd">
+<td>publish by hand</td>
+<td><code>quarto publish gh-pages</code></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p>Write today’s notes here.</p>
-</section>
-<section id="up-next" class="level2">
-<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
-<p>What I plan to pick up on <a href="../tuesday/">Tuesday</a>.</p>
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
 
 
 </section>
 
  ]]></description>
-  <category>weekly</category>
+  <category>Quarto</category>
+  <category>git</category>
+  <category>GitHub</category>
+  <category>GitHub Actions</category>
   <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/monday/</guid>
   <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Post With Code</title>
-  <dc:creator>Zana Brilej</dc:creator>
-  <link>https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>This is a post with executable code.</p>
-
-
-
- ]]></description>
-  <category>news</category>
-  <category>code</category>
-  <category>analysis</category>
-  <guid>https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/</guid>
-  <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
-  <media:content url="https://zanabrilej22.github.io/Reproducible_research_course/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

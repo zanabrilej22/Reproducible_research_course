@@ -8,7 +8,7 @@
 
 <meta name="author" content="Zana Brilej">
 <meta name="dcterms.date" content="2026-09-18">
-<meta name="description" content="Wrapping up the week.">
+<meta name="description" content="Plotting with ggplot2 and a discussion about AI in bioinformatics">
 
 <title>Friday – Blog</title>
 <style>
@@ -29,6 +29,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -48,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3f68e3761999f75b0fd8faf9fa20daed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-95e700bef72d2880c277d2cb84c9764b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -100,7 +135,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">About me</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/zanabrilej22"> <i class="bi bi-github" role="img">
@@ -126,11 +161,14 @@ ul.task-list li input[type="checkbox"] {
       <h1 class="title">Friday</h1>
                   <div>
         <div class="description">
-          Wrapping up the week.
+          Plotting with ggplot2 and a discussion about AI in bioinformatics
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">weekly</div>
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">ggplot2</div>
+                <div class="quarto-category">visualisation</div>
+                <div class="quarto-category">AI</div>
               </div>
                   </div>
   </div>
@@ -167,17 +205,314 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="what-i-did-today" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>Write a short summary of Friday here.</p>
+<section id="what-we-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-did-today">What we did today</h2>
+<p>In the morning we learned how to make plots in R with <strong>ggplot2</strong>. In the afternoon we had a discussion about <strong>AI in bioinformatics</strong>.</p>
+</section>
+<section id="part-1-ggplot2" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-ggplot2">Part 1: ggplot2</h2>
+<section id="setup" class="level3">
+<h3 class="anchored" data-anchor-id="setup">Setup</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)   <span class="co"># only needed once</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="the-grammar-of-graphics" class="level3">
+<h3 class="anchored" data-anchor-id="the-grammar-of-graphics">The grammar of graphics</h3>
+<p>Every ggplot is built from the same layers, added with <code>+</code>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>Question it answers</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>data</strong></td>
+<td>which table?</td>
+<td><code>ggplot(iris, ...)</code></td>
+</tr>
+<tr class="even">
+<td><strong>aesthetics</strong> <code>aes()</code></td>
+<td>which column goes where (x, y, colour, size…)?</td>
+<td><code>aes(x = Sepal.Length, colour = Species)</code></td>
+</tr>
+<tr class="odd">
+<td><strong>geoms</strong></td>
+<td>what shape? points, lines, boxes…</td>
+<td><code>geom_point()</code>, <code>geom_boxplot()</code></td>
+</tr>
+<tr class="even">
+<td><strong>facets</strong></td>
+<td>split into small panels?</td>
+<td><code>facet_wrap(~ Species)</code></td>
+</tr>
+<tr class="odd">
+<td><strong>scales</strong></td>
+<td>how values map to colours/axes</td>
+<td><code>scale_colour_manual()</code>, <code>scale_y_log10()</code></td>
+</tr>
+<tr class="even">
+<td><strong>labels</strong></td>
+<td>titles and axis names</td>
+<td><code>labs(title = ..., x = ...)</code></td>
+</tr>
+<tr class="odd">
+<td><strong>theme</strong></td>
+<td>the look (background, fonts…)</td>
+<td><code>theme_bw()</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="a-first-plot" class="level3">
+<h3 class="anchored" data-anchor-id="a-first-plot">1. A first plot</h3>
+<p><code>iris</code> is a dataset built into R: flower measurements from three species.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-first" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-first-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-first-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The simplest ggplot: data + aesthetics + one geom.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="colour-labels-and-a-theme" class="level3">
+<h3 class="anchored" data-anchor-id="colour-labels-and-a-theme">2. Colour, labels and a theme</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Petal.Length, <span class="at">colour =</span> Species)) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Petal length vs sepal length"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Sepal length (cm)"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Petal length (cm)"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"Species"</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-colour" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-colour-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-colour-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-colour-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Colour mapped to species, with labels and a cleaner theme.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Inside or outside <code>aes()</code>?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Inside</strong> <code>aes()</code> = <em>depends on the data</em>: <code>aes(colour = Species)</code> gives each species its own colour.</li>
+<li><strong>Outside</strong> <code>aes()</code> = <em>the same for everything</em>: <code>geom_point(colour = "blue")</code> makes all points blue.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="boxplots-with-the-data-points-on-top" class="level3">
+<h3 class="anchored" data-anchor-id="boxplots-with-the-data-points-on-top">3. Boxplots with the data points on top</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> Petal.Width, <span class="at">fill =</span> Species)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Petal width (cm)"</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-boxplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-boxplot-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: A boxplot shows the distribution. Jittered points show every observation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="facets-and-trend-lines" class="level3">
+<h3 class="anchored" data-anchor-id="facets-and-trend-lines">4. Facets and trend lines</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Species) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-facets" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-facets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-facets-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-facets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: One panel per species, each with a linear trend line.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="a-volcano-plot" class="level3">
+<h3 class="anchored" data-anchor-id="a-volcano-plot">5. A volcano plot</h3>
+<p>A volcano plot is the classic way to show a differential expression result: fold change on the x-axis, significance on the y-axis. The data below is <strong>simulated</strong>, just to practise the plot.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n_genes <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>de <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene   =</span> <span class="fu">paste0</span>(<span class="st">"gene_"</span>, <span class="fu">seq_len</span>(n_genes)),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">log2FC =</span> <span class="fu">rnorm</span>(n_genes, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="fl">1.2</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>de<span class="sc">$</span>pvalue <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="fu">abs</span>(de<span class="sc">$</span>log2FC) <span class="sc">*</span> <span class="fu">runif</span>(n_genes, <span class="fl">0.5</span>, <span class="dv">3</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>de<span class="sc">$</span>direction <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(de<span class="sc">$</span>pvalue <span class="sc">&lt;</span> <span class="fl">0.01</span> <span class="sc">&amp;</span> de<span class="sc">$</span>log2FC <span class="sc">&gt;</span>  <span class="dv">1</span>, <span class="st">"Up"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ifelse</span>(de<span class="sc">$</span>pvalue <span class="sc">&lt;</span> <span class="fl">0.01</span> <span class="sc">&amp;</span> de<span class="sc">$</span>log2FC <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span>, <span class="st">"Down"</span>, <span class="st">"Not significant"</span>))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(de)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    gene     log2FC       pvalue       direction
+1 gene_1  1.6451501 0.0005177275              Up
+2 gene_2 -0.6776378 0.0104638682 Not significant
+3 gene_3  0.4357541 0.2273419244 Not significant
+4 gene_4  0.7594351 0.0100262655 Not significant
+5 gene_5  0.4851220 0.5083378570 Not significant
+6 gene_6 -0.1273494 0.6325646647 Not significant</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(de<span class="sc">$</span>direction)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+           Down Not significant              Up 
+            293            1444             263 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(de, <span class="fu">aes</span>(<span class="at">x =</span> log2FC, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">colour =</span> direction)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.01</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Down"</span> <span class="ot">=</span> <span class="st">"#2166ac"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"Not significant"</span> <span class="ot">=</span> <span class="st">"grey75"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"Up"</span> <span class="ot">=</span> <span class="st">"#b2182b"</span>)) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log2 fold change"</span>, <span class="at">y =</span> <span class="st">"-log10(p-value)"</span>, <span class="at">colour =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-volcano" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-volcano-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Volcano plot of simulated data. Dashed lines show the cut-offs |log2FC| &gt; 1 and p &lt; 0.01.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="saving-a-plot" class="level3">
+<h3 class="anchored" data-anchor-id="saving-a-plot">6. Saving a plot</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(Sepal.Length, Petal.Length, <span class="at">colour =</span> Species)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"my_plot.png"</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"my_plot.pdf"</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">4</span>)   <span class="co"># vector format, good for papers</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="part-2-ai-in-bioinformatics" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-ai-in-bioinformatics">Part 2: AI in bioinformatics</h2>
+<p>The afternoon was a discussion about <strong>AI in bioinformatics</strong>. The main points:</p>
+<p><strong>LLMs predict text, they don’t “know” things.</strong> They are trained on huge amounts of internet text, including biased and wrong content. They don’t say “I don’t know” and can <strong>hallucinate</strong> answers, including citations that don’t exist. Every reference an AI gives me must be checked.</p>
+<p><strong>Data privacy.</strong> Sequencing and patient data are sensitive. Pasting data into an online chatbot can send it to a company’s servers, depending on the terms of service. A safer habit is to describe the data (column names, data types) instead of uploading it. <strong>Local, open-weight models</strong> keep everything on my own computer, but need good hardware and are usually less capable.</p>
+<p><strong>Learning and productivity.</strong> Relying on AI too much can mean learning less. Studies discussed in the course suggest it does not always make experienced people faster either.</p>
+<p><strong>Responsibility.</strong> I am responsible for everything I use.</p>
+<p><strong>Environmental cost.</strong> Data centres use a lot of electricity and water, so it is worth thinking before sending a query.</p>
+<p><strong>AI and reproducibility.</strong> The habits from this week (version control, clear folder structure, documented decisions) also make it easier for an AI assistant, or a human colleague, to understand and help with a project.</p>
+</section>
+<section id="cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="cheat-sheet">Cheat sheet</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>I want to…</th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>start a plot</td>
+<td><code>ggplot(data, aes(x = ..., y = ...))</code></td>
+</tr>
+<tr class="even">
+<td>scatter / line / bar / boxplot</td>
+<td><code>geom_point()</code>, <code>geom_line()</code>, <code>geom_col()</code>, <code>geom_boxplot()</code></td>
+</tr>
+<tr class="odd">
+<td>colour by a column</td>
+<td><code>aes(colour = column)</code> (or <code>fill =</code> for areas)</td>
+</tr>
+<tr class="even">
+<td>one fixed colour</td>
+<td><code>geom_point(colour = "blue")</code></td>
+</tr>
+<tr class="odd">
+<td>split into panels</td>
+<td><code>facet_wrap(~ column)</code></td>
+</tr>
+<tr class="even">
+<td>add a trend line</td>
+<td><code>geom_smooth(method = "lm")</code></td>
+</tr>
+<tr class="odd">
+<td>set titles and axis names</td>
+<td><code>labs(title = , x = , y = )</code></td>
+</tr>
+<tr class="even">
+<td>change the look</td>
+<td><code>theme_bw()</code>, <code>theme_minimal()</code>, <code>theme(legend.position = "none")</code></td>
+</tr>
+<tr class="odd">
+<td>save</td>
+<td><code>ggsave("plot.png", width = , height = , dpi = 300)</code></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="notes" class="level2">
 <h2 class="anchored" data-anchor-id="notes">Notes</h2>
-<p>Write today’s notes here.</p>
-</section>
-<section id="looking-back-on-the-week" class="level2">
-<h2 class="anchored" data-anchor-id="looking-back-on-the-week">Looking back on the week</h2>
-<p>A few things that stood out across <a href="../monday/">Monday</a> through today.</p>
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
 
 
 </section>

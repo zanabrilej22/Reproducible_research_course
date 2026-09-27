@@ -8,7 +8,7 @@
 
 <meta name="author" content="Zana Brilej">
 <meta name="dcterms.date" content="2026-09-15">
-<meta name="description" content="Today we were learning about environments, such as Pixi, and containers, such as Apptainer. Inside the pixi we installed FastQC and MultiQC to check the quality of sequencing data. We also learned how to use screen to keep a session alive on a cluster.">
+<meta name="description" content="Pixi environments and quality control of RNA-seq data">
 
 <title>Tuesday – Blog</title>
 <style>
@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3f68e3761999f75b0fd8faf9fa20daed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-95e700bef72d2880c277d2cb84c9764b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -135,7 +135,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">About me</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/zanabrilej22"> <i class="bi bi-github" role="img">
@@ -161,12 +161,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <h1 class="title">Tuesday</h1>
                   <div>
         <div class="description">
-          Today we were learning about environments, such as Pixi, and containers, such as Apptainer. Inside the pixi we installed FastQC and MultiQC to check the quality of sequencing data. We also learned how to use screen to keep a session alive on a cluster.
+          Pixi environments and quality control of RNA-seq data
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">weekly</div>
-                <div class="quarto-category">tools</div>
+                <div class="quarto-category">Pixi</div>
+                <div class="quarto-category">HPC2N</div>
+                <div class="quarto-category">SLURM</div>
+                <div class="quarto-category">screen</div>
+                <div class="quarto-category">FastQC</div>
+                <div class="quarto-category">MultiQC</div>
+                <div class="quarto-category">RNA-seq</div>
               </div>
                   </div>
   </div>
@@ -203,116 +208,269 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="what-i-did-today" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-did-today">What I did today</h2>
-<p>Today we learn about <strong>environments</strong> and why the same code can give different results on two different computers.</p>
-<p>The environment we looked at is called <strong>Pixi</strong>.</p>
+<section id="what-we-did-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-did-today">What we did today</h2>
+<p>In the morning we learned about <strong>software environments</strong> and the environment manager <strong>Pixi</strong>. In the afternoon we used Pixi on the <strong>HPC2N</strong> cluster to run a quality control (QC) of an RNA-seq dataset with <strong>FastQC</strong>, and summarised all the reports with <strong>MultiQC</strong>.</p>
 </section>
-<section id="why-do-we-use-environments" class="level2">
-<h2 class="anchored" data-anchor-id="why-do-we-use-environments">Why do we use environments?</h2>
-<p>An environment keeps each project separate. It also means someone else can rebuild the exact same setup on their own computer.</p>
+<section id="why-do-we-need-environments" class="level2">
+<h2 class="anchored" data-anchor-id="why-do-we-need-environments">1. Why do we need environments?</h2>
+<p>It makes pipline more reproducible. Different computers have different operating systems and different versions of tools. If my FastQC version is different from yours, we might get different results.</p>
+<p>An <strong>environment</strong> is a separate box that contains exactly the tools and versions a project needs. The tools are installed <em>inside</em> the environment, not on the whole computer. Each project gets its own environment, so projects never mess with each other.</p>
 </section>
-<section id="installing-pixi" class="level2">
-<h2 class="anchored" data-anchor-id="installing-pixi">Installing Pixi</h2>
-<p>One line in the terminal:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-qO-</span> https://pixi.sh/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="pixi-basics" class="level2">
+<h2 class="anchored" data-anchor-id="pixi-basics">2. Pixi basics</h2>
+<section id="install-pixi-once-per-user" class="level3">
+<h3 class="anchored" data-anchor-id="install-pixi-once-per-user">Install Pixi (once per user)</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-qO-</span> https://pixi.sh/install.sh <span class="kw">|</span> <span class="fu">sh</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc    <span class="co"># reload the shell so the "pixi" command is found (on Mac: ~/.zshrc)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="starting-a-project" class="level2">
-<h2 class="anchored" data-anchor-id="starting-a-project">Starting a project</h2>
-<p>Make a new environment for the project:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> init lina_pixi_training <span class="at">-c</span> conda-forge <span class="at">-c</span> bioconda</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>-c</code> parts say where to download software from.</p>
-<p>This creates two files:</p>
+<section id="create-an-environment" class="level3">
+<h3 class="anchored" data-anchor-id="create-an-environment">Create an environment</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> init zana_pixi_training <span class="at">-c</span> conda-forge <span class="at">-c</span> bioconda</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> zana_pixi_training</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <ul>
-<li><strong><code>pixi.toml</code></strong> — the short, readable one. It lists the project name and the tools I asked for. This is the file I actually edit.</li>
-<li><strong><code>pixi.lock</code></strong> — the long, automatic one. It records the exact versions and where they came from. I never edit this by hand, but it is the file that makes the setup truly reproducible.</li>
+<li><code>-c</code> adds a <strong>channel</strong>, a trusted place Pixi is allowed to download tools from.</li>
+<li>The order matters: <strong>conda-forge first, then bioconda</strong>.</li>
 </ul>
+<p>This creates a file called <code>pixi.toml</code>:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pixi.toml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="pixi.toml"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[workspace]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">channels</span> <span class="op">=</span> <span class="op">[</span><span class="st">"conda-forge"</span><span class="op">,</span> <span class="st">"bioconda"</span><span class="op">]</span>   <span class="co"># where tools come from</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"zana_pixi_training"</span>              <span class="co"># name of the environment</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dt">platforms</span> <span class="op">=</span> <span class="op">[</span><span class="st">"linux-64"</span><span class="op">]</span>                 <span class="co"># operating system(s)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">"0.1.0"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">[tasks]</span>                                  <span class="co"># (not used in this course)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">[dependencies]</span>                           <span class="co"># tools installed in the environment</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="quality-control" class="level2">
-<h2 class="anchored" data-anchor-id="quality-control">Quality control</h2>
-<p>Before analysing sequencing data, we check whether the data is any good. Bad data gives bad results, no matter how careful the analysis is. Problems come from contamination, handling mistakes, or the sequencing machine itself.</p>
+<section id="add-tools-and-run-them" class="level3">
+<h3 class="anchored" data-anchor-id="add-tools-and-run-them">Add tools and run them</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> add quarto           <span class="co"># install a tool into the environment </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> add <span class="at">--help</span>           <span class="co"># every command has a help page</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run quarto <span class="at">--help</span>    <span class="co"># run a tool from the environment</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>After <code>pixi add</code>, a second file appears: <code>pixi.lock</code>. It records the exact version and source of every package.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Never delete <code>pixi.toml</code> or <code>pixi.lock</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Together they <em>are</em> the environment. <code>pixi.toml</code> says what I asked for, <code>pixi.lock</code> says exactly what was installed. Sharing these two files lets anyone rebuild the same environment.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span><code>pixi shell</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On a normal computer, <code>pixi shell</code> “enters” the environment so tools can be used without typing <code>pixi run</code> every time (<code>exit</code> to leave). <strong>This does not work on HPC2N</strong>, so there I always used <code>pixi run</code>.</p>
+</div>
+</div>
 </section>
-<section id="what-the-raw-data-looks-like" class="level2">
-<h2 class="anchored" data-anchor-id="what-the-raw-data-looks-like">What the raw data looks like</h2>
-<p>Sequencing data comes in <strong>FASTQ</strong> files. Every read takes four lines:</p>
+</section>
+<section id="screen-keep-working-when-i-disconnect" class="level2">
+<h2 class="anchored" data-anchor-id="screen-keep-working-when-i-disconnect">3. screen: keep working when I disconnect</h2>
+<p><code>screen</code> opens a terminal session on the server that keeps running even if my laptop goes to sleep or I lose connection.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">screen</span> <span class="at">-S</span> fastqc      <span class="co"># start a new session called "fastqc"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ctrl + a, then d     -&gt; detach (leave it running in the background)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">screen</span> <span class="at">-ls</span>            <span class="co"># list my sessions</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">screen</span> <span class="at">-r</span> fastqc      <span class="co"># go back into the session</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span>                  <span class="co"># inside a session: close it for good</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="setting-up-the-project" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-the-project">4. Setting up the project</h2>
+<p>It is important that we keep the folder organized. Raw data goes in <code>data/</code>, and I should never change it. Instead of copying the large files, I make <strong>symbolic links</strong> (shortcuts) to the shared course data:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> rnaseq/data</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> rnaseq/data</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /path/to/repbio26/common_data/RNAseq/<span class="pp">*</span>fastq.gz .</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="the-fastq-format" class="level2">
+<h2 class="anchored" data-anchor-id="the-fastq-format">5. The FASTQ format</h2>
+<p>Sequencing reads are stored in FASTQ files. Each read takes <strong>4 lines</strong>:</p>
 <ol type="1">
-<li>The read name, starting with <code>@</code></li>
-<li>The sequence itself</li>
-<li>A <code>+</code> separator</li>
-<li>The quality scores, one character per base</li>
+<li><code>@</code> + the read name</li>
+<li>the DNA sequence</li>
+<li>a <code>+</code> (sometimes followed by the name again)</li>
+<li>the quality of each base, one character per base</li>
 </ol>
-<p>The fourth line is the important one. Each character is a score from 0 to 42 saying how sure the machine was about that base. Low scores mean the base might be wrong.</p>
+<p>To look at the first reads of a (compressed) file on the server:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> data/SRR5223504_1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 8</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="fastqc" class="level2">
-<h2 class="anchored" data-anchor-id="fastqc">FastQC</h2>
-<p><strong>FastQC</strong> checks the quality of a whole file at once, so we do not have to look at millions of reads by hand.</p>
-<p>We add it to the Pixi environment, not to the whole computer:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> add fastqc</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run fastqc <span class="at">--help</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="running-it-on-the-cluster" class="level2">
-<h2 class="anchored" data-anchor-id="running-it-on-the-cluster">Running it on the cluster</h2>
-<p>Big files take time, so the work runs on a cluster instead of a laptop. The cluster uses <strong>SLURM</strong> to decide who runs what and when. We ask for an account, some time, and a number of cores:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">-A</span> project_ID <span class="at">-t</span> 15:00 <span class="at">-n</span> 1 pixi run fastqc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>For more than one sample it is easier to put the same settings into a small script and submit it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> fastqc.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The script is also a record of exactly what was run, which is the reproducible part.</p>
-</section>
-<section id="multiqc" class="level2">
-<h2 class="anchored" data-anchor-id="multiqc">MultiQC</h2>
-<p>One report per sample adds up quickly. <strong>MultiQC</strong> collects them all into a single report, so the whole dataset can be checked in one place.</p>
-</section>
-<section id="keeping-the-session-alive" class="level2">
-<h2 class="anchored" data-anchor-id="keeping-the-session-alive">Keeping the session alive</h2>
-<p>If the connection to the cluster drops, the job dies with it. <code>screen</code> keeps it running:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">screen</span> <span class="at">-S</span> fastqc     <span class="co"># start a session</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ctrl + a, then d   # leave it running</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">screen</span> <span class="at">-r</span> fastqc     <span class="co"># come back to it later</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="containers" class="level2">
-<h2 class="anchored" data-anchor-id="containers">Containers</h2>
-<p>Pixi makes sure we install the same tools. A <strong>container</strong> goes one step further: it packs the tools <em>and</em> the operating system around them into a single file. That file behaves the same way on a laptop, on a server, or on someone else’s computer years from now.</p>
-<p>Containers help when:</p>
+<section id="fastqc-in-a-pixi-environment" class="level2">
+<h2 class="anchored" data-anchor-id="fastqc-in-a-pixi-environment">6. FastQC in a Pixi environment</h2>
+<p>FastQC is not installed on the server (<code>fastqc: command not found</code>), so I made an environment for it inside my project folder:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> init <span class="at">-c</span> conda-forge <span class="at">-c</span> bioconda</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> add fastqc</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run fastqc <span class="at">--help</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="running-a-job-with-slurm" class="level3">
+<h3 class="anchored" data-anchor-id="running-a-job-with-slurm">Running a job with SLURM</h3>
+<p>On a cluster, I must not run heavy work on the <strong>login node</strong>. Instead I ask the job scheduler <strong>SLURM</strong> for resources. SLURM needs to know:</p>
 <ul>
-<li>people in the group use different operating systems</li>
-<li>two tools need different versions of the same dependency</li>
-<li>old software will not install on a modern system</li>
+<li><code>-A</code> which project pays for the computing time</li>
+<li><code>-t</code> how long the job may run (e.g.&nbsp;<code>15:00</code> = 15 minutes)</li>
+<li><code>-n</code> how many cores</li>
 </ul>
+<p><strong>Option 1: <code>srun</code></strong>, quick, for one command:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> fastqc</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">-A</span> <span class="op">&lt;</span>project_ID<span class="op">&gt;</span> -t 15:00 <span class="at">-n</span> 1 pixi run fastqc <span class="at">--noextract</span> <span class="at">-o</span> fastqc <span class="dt">\</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>     data/SRR5223504_1.fastq.gz data/SRR5223504_2.fastq.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Option 2: <code>sbatch</code></strong>, a script I can save and reuse. This is better for reproducibility, because the script is a record of exactly what I ran.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>scripts/fastqc.sh</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="scripts/fastqc.sh"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#! /bin/bash -l</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -A &lt;project_ID&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -t 30:00</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 1</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run fastqc <span class="at">-o</span> ../fastqc <span class="at">--noextract</span> ../data/<span class="pp">*</span>fastq.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> scripts</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> fastqc.sh                 <span class="co"># submit the job</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="op">&lt;</span>username<span class="op">&gt;</span>             <span class="co"># check if it is waiting (PD) or running (R)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> slurm-<span class="op">&lt;</span>jobID<span class="op">&gt;</span>.out           <span class="co"># read the log when it's done (q to quit)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Project structure at this point:</p>
+<pre><code>rnaseq/
+├── data/            # symbolic links to the raw fastq.gz files
+├── fastqc/          # one .html + one .zip report per fastq file
+├── pixi.lock
+├── pixi.toml
+└── scripts/
+    └── fastqc.sh</code></pre>
+<p>To look at a report, right-click the <code>.html</code> file in the VS Code file explorer and choose <strong>Download</strong>.</p>
 </section>
-<section id="which-container-tool" class="level2">
-<h2 class="anchored" data-anchor-id="which-container-tool">Which container tool</h2>
-<ul>
-<li><strong>Apptainer</strong> — for shared servers and clusters (it used to be called Singularity)</li>
-<li><strong>Docker</strong> — for a personal machine</li>
-</ul>
-<p>Ready-made images are kept on <strong>Docker Hub</strong> and <strong>Seqera</strong>. It is safer to pick a popular image from a trusted maker, such as <code>biocontainers</code>.</p>
 </section>
-<section id="getting-an-image" class="level2">
-<h2 class="anchored" data-anchor-id="getting-an-image">Getting an image</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> pull name.sif docker://repository/image:version</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>.sif</code> file that comes out <em>is</em> the container. Naming it with the tool and version keeps things clear later.</p>
+<section id="multiqc-one-report-for-all-samples" class="level2">
+<h2 class="anchored" data-anchor-id="multiqc-one-report-for-all-samples">7. MultiQC: one report for all samples</h2>
+<p>Opening eight separate FastQC reports gets tedious. MultiQC collects them into one report.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> add multiqc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>scripts/multiqc.sh</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="scripts/multiqc.sh"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#! /bin/bash -l</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -A &lt;project_ID&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -t 15:00</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 1</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run multiqc ../fastqc <span class="at">-o</span> ../multiqc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> multiqc.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The result is <code>multiqc/multiqc_report.html</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Reading the report
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Some “failed” modules are normal for RNA-seq. For example, <em>Per base sequence content</em> often fails at the start of the reads because of random-primer bias, and <em>Sequence duplication</em> is high because highly expressed genes produce many identical reads. Always check whether a warning is expected for the type of data.</p>
+</div>
+</div>
 </section>
-<section id="running-it" class="level2">
-<h2 class="anchored" data-anchor-id="running-it">Running it</h2>
-<p>Run a single command inside the container:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec image.sif tool <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Or step inside and work there:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> shell image.sif</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>A container cannot see our files by default. <code>-B outside:inside</code> makes a folder on the computer visible inside the container.</p>
-<p><code>run</code> and <code>exec</code> are not the same: <code>run</code> first executes the container’s own start-up script, while <code>exec</code> skips it and runs exactly the command we give.</p>
+<section id="cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="cheat-sheet">Cheat sheet</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>I want to…</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>create a Pixi environment</td>
+<td><code>pixi init &lt;name&gt; -c conda-forge -c bioconda</code></td>
+</tr>
+<tr class="even">
+<td>install a tool</td>
+<td><code>pixi add &lt;tool&gt;</code></td>
+</tr>
+<tr class="odd">
+<td>run a tool</td>
+<td><code>pixi run &lt;tool&gt; &lt;options&gt;</code></td>
+</tr>
+<tr class="even">
+<td>start / leave / return to screen</td>
+<td><code>screen -S &lt;name&gt;</code> / <code>Ctrl+a d</code> / <code>screen -r &lt;name&gt;</code></td>
+</tr>
+<tr class="odd">
+<td>link data instead of copying</td>
+<td><code>ln -s /path/to/source .</code></td>
+</tr>
+<tr class="even">
+<td>peek into a fastq.gz</td>
+<td><code>zcat file.fastq.gz \| head -n 8</code></td>
+</tr>
+<tr class="odd">
+<td>run one command on the cluster</td>
+<td><code>srun -A &lt;proj&gt; -t 15:00 -n 1 &lt;command&gt;</code></td>
+</tr>
+<tr class="even">
+<td>submit a script</td>
+<td><code>sbatch script.sh</code></td>
+</tr>
+<tr class="odd">
+<td>check my jobs</td>
+<td><code>squeue -u &lt;username&gt;</code></td>
+</tr>
+<tr class="even">
+<td>check my projects</td>
+<td><code>projinfo</code></td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="building-our-own" class="level2">
-<h2 class="anchored" data-anchor-id="building-our-own">Building our own</h2>
-<p>If no ready-made image exists, we describe one in a <code>.def</code> file: which operating system to start from, what to install (<code>%post</code>), which paths to set (<code>%environment</code>), and what to run by default (<code>%runscript</code>). Then:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> build output.sif definition.def</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="container-or-pixi" class="level2">
-<h2 class="anchored" data-anchor-id="container-or-pixi">Container or Pixi?</h2>
-<p>Pixi pins the tools. A container pins the whole system around them. Containers are bigger and slower to make, but more complete, so they suit sharing a finished pipeline or rescuing software that refuses to install.</p>
-</section>
-<section id="up-next" class="level2">
-<h2 class="anchored" data-anchor-id="up-next">Up next</h2>
-<p>What I plan to pick up on <a href="../wednesday/">Wednesday</a>.</p>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<!-- Add your notes as bullet points below this line, for example:
+- something I want to remember
+-->
 
 
 </section>

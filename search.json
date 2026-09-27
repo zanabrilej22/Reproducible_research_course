@@ -1,268 +1,352 @@
 [
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About me",
+    "section": "",
+    "text": "Hi! I am Zana, a second-year PhD student at Karolinska Institutet. As you can see I love pasta. I spend most of my free time dancing, running, and beeing outdoors."
+  },
+  {
+    "objectID": "about.html#about-me",
+    "href": "about.html#about-me",
+    "title": "About me",
+    "section": "",
+    "text": "Hi! I am Zana, a second-year PhD student at Karolinska Institutet. As you can see I love pasta. I spend most of my free time dancing, running, and beeing outdoors."
+  },
+  {
+    "objectID": "about.html#my-research",
+    "href": "about.html#my-research",
+    "title": "About me",
+    "section": "My research",
+    "text": "My research\nMy PhD project is about immune evasion in Merkel cell carcinoma, a rare and aggressive skin cancer. I am trying to understand why some tumours do not respond to immunotherapy."
+  },
+  {
+    "objectID": "about.html#why-this-blog",
+    "href": "about.html#why-this-blog",
+    "title": "About me",
+    "section": "Why this blog?",
+    "text": "Why this blog?\nI started this blog during the course Reproducible Research in Bioinformatics and Computational Biology (September 2026). I use it as a report of what we did during the course, and a notebook I can come back to whenever I need to remember how to use the tools we learned."
+  },
+  {
     "objectID": "posts/tuesday/index.html",
     "href": "posts/tuesday/index.html",
     "title": "Tuesday",
     "section": "",
-    "text": "Today we learn about environments and why the same code can give different results on two different computers.\nThe environment we looked at is called Pixi."
+    "text": "In the morning we learned about software environments and the environment manager Pixi. In the afternoon we used Pixi on the HPC2N cluster to run a quality control (QC) of an RNA-seq dataset with FastQC, and summarised all the reports with MultiQC."
   },
   {
-    "objectID": "posts/tuesday/index.html#what-i-did-today",
-    "href": "posts/tuesday/index.html#what-i-did-today",
+    "objectID": "posts/tuesday/index.html#what-we-did-today",
+    "href": "posts/tuesday/index.html#what-we-did-today",
     "title": "Tuesday",
     "section": "",
-    "text": "Today we learn about environments and why the same code can give different results on two different computers.\nThe environment we looked at is called Pixi."
+    "text": "In the morning we learned about software environments and the environment manager Pixi. In the afternoon we used Pixi on the HPC2N cluster to run a quality control (QC) of an RNA-seq dataset with FastQC, and summarised all the reports with MultiQC."
   },
   {
-    "objectID": "posts/tuesday/index.html#why-do-we-use-environments",
-    "href": "posts/tuesday/index.html#why-do-we-use-environments",
+    "objectID": "posts/tuesday/index.html#why-do-we-need-environments",
+    "href": "posts/tuesday/index.html#why-do-we-need-environments",
     "title": "Tuesday",
-    "section": "Why do we use environments?",
-    "text": "Why do we use environments?\nAn environment keeps each project separate. It also means someone else can rebuild the exact same setup on their own computer."
+    "section": "1. Why do we need environments?",
+    "text": "1. Why do we need environments?\nIt makes pipline more reproducible. Different computers have different operating systems and different versions of tools. If my FastQC version is different from yours, we might get different results.\nAn environment is a separate box that contains exactly the tools and versions a project needs. The tools are installed inside the environment, not on the whole computer. Each project gets its own environment, so projects never mess with each other."
   },
   {
-    "objectID": "posts/tuesday/index.html#installing-pixi",
-    "href": "posts/tuesday/index.html#installing-pixi",
+    "objectID": "posts/tuesday/index.html#pixi-basics",
+    "href": "posts/tuesday/index.html#pixi-basics",
     "title": "Tuesday",
-    "section": "Installing Pixi",
-    "text": "Installing Pixi\nOne line in the terminal:\nwget -qO- https://pixi.sh/install.sh | sh"
+    "section": "2. Pixi basics",
+    "text": "2. Pixi basics\n\nInstall Pixi (once per user)\n\nwget -qO- https://pixi.sh/install.sh | sh\nsource ~/.bashrc    # reload the shell so the \"pixi\" command is found (on Mac: ~/.zshrc)\n\n\n\nCreate an environment\n\npixi init zana_pixi_training -c conda-forge -c bioconda\ncd zana_pixi_training\n\n\n-c adds a channel, a trusted place Pixi is allowed to download tools from.\nThe order matters: conda-forge first, then bioconda.\n\nThis creates a file called pixi.toml:\n\n\npixi.toml\n\n[workspace]\nchannels = [\"conda-forge\", \"bioconda\"]   # where tools come from\nname = \"zana_pixi_training\"              # name of the environment\nplatforms = [\"linux-64\"]                 # operating system(s)\nversion = \"0.1.0\"\n\n[tasks]                                  # (not used in this course)\n\n[dependencies]                           # tools installed in the environment\n\n\n\nAdd tools and run them\n\npixi add quarto           # install a tool into the environment \npixi add --help           # every command has a help page\npixi run quarto --help    # run a tool from the environment\n\nAfter pixi add, a second file appears: pixi.lock. It records the exact version and source of every package.\n\n\n\n\n\n\nImportantNever delete pixi.toml or pixi.lock\n\n\n\nTogether they are the environment. pixi.toml says what I asked for, pixi.lock says exactly what was installed. Sharing these two files lets anyone rebuild the same environment.\n\n\n\n\n\n\n\n\nNotepixi shell\n\n\n\nOn a normal computer, pixi shell “enters” the environment so tools can be used without typing pixi run every time (exit to leave). This does not work on HPC2N, so there I always used pixi run."
   },
   {
-    "objectID": "posts/tuesday/index.html#starting-a-project",
-    "href": "posts/tuesday/index.html#starting-a-project",
+    "objectID": "posts/tuesday/index.html#screen-keep-working-when-i-disconnect",
+    "href": "posts/tuesday/index.html#screen-keep-working-when-i-disconnect",
     "title": "Tuesday",
-    "section": "Starting a project",
-    "text": "Starting a project\nMake a new environment for the project:\npixi init lina_pixi_training -c conda-forge -c bioconda\nThe -c parts say where to download software from.\nThis creates two files:\n\npixi.toml — the short, readable one. It lists the project name and the tools I asked for. This is the file I actually edit.\npixi.lock — the long, automatic one. It records the exact versions and where they came from. I never edit this by hand, but it is the file that makes the setup truly reproducible."
+    "section": "3. screen: keep working when I disconnect",
+    "text": "3. screen: keep working when I disconnect\nscreen opens a terminal session on the server that keeps running even if my laptop goes to sleep or I lose connection.\n\nscreen -S fastqc      # start a new session called \"fastqc\"\n# Ctrl + a, then d     -&gt; detach (leave it running in the background)\nscreen -ls            # list my sessions\nscreen -r fastqc      # go back into the session\nexit                  # inside a session: close it for good"
   },
   {
-    "objectID": "posts/tuesday/index.html#quality-control",
-    "href": "posts/tuesday/index.html#quality-control",
+    "objectID": "posts/tuesday/index.html#setting-up-the-project",
+    "href": "posts/tuesday/index.html#setting-up-the-project",
     "title": "Tuesday",
-    "section": "Quality control",
-    "text": "Quality control\nBefore analysing sequencing data, we check whether the data is any good. Bad data gives bad results, no matter how careful the analysis is. Problems come from contamination, handling mistakes, or the sequencing machine itself."
+    "section": "4. Setting up the project",
+    "text": "4. Setting up the project\nIt is important that we keep the folder organized. Raw data goes in data/, and I should never change it. Instead of copying the large files, I make symbolic links (shortcuts) to the shared course data:\n\nmkdir -p rnaseq/data\ncd rnaseq/data\nln -s /path/to/repbio26/common_data/RNAseq/*fastq.gz .\ncd .."
   },
   {
-    "objectID": "posts/tuesday/index.html#what-the-raw-data-looks-like",
-    "href": "posts/tuesday/index.html#what-the-raw-data-looks-like",
+    "objectID": "posts/tuesday/index.html#the-fastq-format",
+    "href": "posts/tuesday/index.html#the-fastq-format",
     "title": "Tuesday",
-    "section": "What the raw data looks like",
-    "text": "What the raw data looks like\nSequencing data comes in FASTQ files. Every read takes four lines:\n\nThe read name, starting with @\nThe sequence itself\nA + separator\nThe quality scores, one character per base\n\nThe fourth line is the important one. Each character is a score from 0 to 42 saying how sure the machine was about that base. Low scores mean the base might be wrong."
+    "section": "5. The FASTQ format",
+    "text": "5. The FASTQ format\nSequencing reads are stored in FASTQ files. Each read takes 4 lines:\n\n@ + the read name\nthe DNA sequence\na + (sometimes followed by the name again)\nthe quality of each base, one character per base\n\nTo look at the first reads of a (compressed) file on the server:\n\nzcat data/SRR5223504_1.fastq.gz | head -n 8"
   },
   {
-    "objectID": "posts/tuesday/index.html#fastqc",
-    "href": "posts/tuesday/index.html#fastqc",
+    "objectID": "posts/tuesday/index.html#fastqc-in-a-pixi-environment",
+    "href": "posts/tuesday/index.html#fastqc-in-a-pixi-environment",
     "title": "Tuesday",
-    "section": "FastQC",
-    "text": "FastQC\nFastQC checks the quality of a whole file at once, so we do not have to look at millions of reads by hand.\nWe add it to the Pixi environment, not to the whole computer:\npixi add fastqc\npixi run fastqc --help"
+    "section": "6. FastQC in a Pixi environment",
+    "text": "6. FastQC in a Pixi environment\nFastQC is not installed on the server (fastqc: command not found), so I made an environment for it inside my project folder:\n\npixi init -c conda-forge -c bioconda\npixi add fastqc\npixi run fastqc --help\n\n\nRunning a job with SLURM\nOn a cluster, I must not run heavy work on the login node. Instead I ask the job scheduler SLURM for resources. SLURM needs to know:\n\n-A which project pays for the computing time\n-t how long the job may run (e.g. 15:00 = 15 minutes)\n-n how many cores\n\nOption 1: srun, quick, for one command:\n\nmkdir fastqc\nsrun -A &lt;project_ID&gt; -t 15:00 -n 1 pixi run fastqc --noextract -o fastqc \\\n     data/SRR5223504_1.fastq.gz data/SRR5223504_2.fastq.gz\n\nOption 2: sbatch, a script I can save and reuse. This is better for reproducibility, because the script is a record of exactly what I ran.\n\n\nscripts/fastqc.sh\n\n#! /bin/bash -l\n#SBATCH -A &lt;project_ID&gt;\n#SBATCH -t 30:00\n#SBATCH -n 1\n\npixi run fastqc -o ../fastqc --noextract ../data/*fastq.gz\n\n\ncd scripts\nsbatch fastqc.sh                 # submit the job\nsqueue -u &lt;username&gt;             # check if it is waiting (PD) or running (R)\nless slurm-&lt;jobID&gt;.out           # read the log when it's done (q to quit)\n\nProject structure at this point:\nrnaseq/\n├── data/            # symbolic links to the raw fastq.gz files\n├── fastqc/          # one .html + one .zip report per fastq file\n├── pixi.lock\n├── pixi.toml\n└── scripts/\n    └── fastqc.sh\nTo look at a report, right-click the .html file in the VS Code file explorer and choose Download."
   },
   {
-    "objectID": "posts/tuesday/index.html#running-it-on-the-cluster",
-    "href": "posts/tuesday/index.html#running-it-on-the-cluster",
+    "objectID": "posts/tuesday/index.html#multiqc-one-report-for-all-samples",
+    "href": "posts/tuesday/index.html#multiqc-one-report-for-all-samples",
     "title": "Tuesday",
-    "section": "Running it on the cluster",
-    "text": "Running it on the cluster\nBig files take time, so the work runs on a cluster instead of a laptop. The cluster uses SLURM to decide who runs what and when. We ask for an account, some time, and a number of cores:\nsrun -A project_ID -t 15:00 -n 1 pixi run fastqc\nFor more than one sample it is easier to put the same settings into a small script and submit it:\nsbatch fastqc.sh\nThe script is also a record of exactly what was run, which is the reproducible part."
+    "section": "7. MultiQC: one report for all samples",
+    "text": "7. MultiQC: one report for all samples\nOpening eight separate FastQC reports gets tedious. MultiQC collects them into one report.\n\npixi add multiqc\n\n\n\nscripts/multiqc.sh\n\n#! /bin/bash -l\n#SBATCH -A &lt;project_ID&gt;\n#SBATCH -t 15:00\n#SBATCH -n 1\n\npixi run multiqc ../fastqc -o ../multiqc\n\n\nsbatch multiqc.sh\n\nThe result is multiqc/multiqc_report.html.\n\n\n\n\n\n\nTipReading the report\n\n\n\nSome “failed” modules are normal for RNA-seq. For example, Per base sequence content often fails at the start of the reads because of random-primer bias, and Sequence duplication is high because highly expressed genes produce many identical reads. Always check whether a warning is expected for the type of data."
   },
   {
-    "objectID": "posts/tuesday/index.html#multiqc",
-    "href": "posts/tuesday/index.html#multiqc",
+    "objectID": "posts/tuesday/index.html#cheat-sheet",
+    "href": "posts/tuesday/index.html#cheat-sheet",
     "title": "Tuesday",
-    "section": "MultiQC",
-    "text": "MultiQC\nOne report per sample adds up quickly. MultiQC collects them all into a single report, so the whole dataset can be checked in one place."
+    "section": "Cheat sheet",
+    "text": "Cheat sheet\n\n\n\n\n\n\n\nI want to…\nCommand\n\n\n\n\ncreate a Pixi environment\npixi init &lt;name&gt; -c conda-forge -c bioconda\n\n\ninstall a tool\npixi add &lt;tool&gt;\n\n\nrun a tool\npixi run &lt;tool&gt; &lt;options&gt;\n\n\nstart / leave / return to screen\nscreen -S &lt;name&gt; / Ctrl+a d / screen -r &lt;name&gt;\n\n\nlink data instead of copying\nln -s /path/to/source .\n\n\npeek into a fastq.gz\nzcat file.fastq.gz \\| head -n 8\n\n\nrun one command on the cluster\nsrun -A &lt;proj&gt; -t 15:00 -n 1 &lt;command&gt;\n\n\nsubmit a script\nsbatch script.sh\n\n\ncheck my jobs\nsqueue -u &lt;username&gt;\n\n\ncheck my projects\nprojinfo"
   },
   {
-    "objectID": "posts/tuesday/index.html#keeping-the-session-alive",
-    "href": "posts/tuesday/index.html#keeping-the-session-alive",
+    "objectID": "posts/tuesday/index.html#notes",
+    "href": "posts/tuesday/index.html#notes",
     "title": "Tuesday",
-    "section": "Keeping the session alive",
-    "text": "Keeping the session alive\nIf the connection to the cluster drops, the job dies with it. screen keeps it running:\nscreen -S fastqc     # start a session\n# Ctrl + a, then d   # leave it running\nscreen -r fastqc     # come back to it later"
-  },
-  {
-    "objectID": "posts/tuesday/index.html#containers",
-    "href": "posts/tuesday/index.html#containers",
-    "title": "Tuesday",
-    "section": "Containers",
-    "text": "Containers\nPixi makes sure we install the same tools. A container goes one step further: it packs the tools and the operating system around them into a single file. That file behaves the same way on a laptop, on a server, or on someone else’s computer years from now.\nContainers help when:\n\npeople in the group use different operating systems\ntwo tools need different versions of the same dependency\nold software will not install on a modern system"
-  },
-  {
-    "objectID": "posts/tuesday/index.html#which-container-tool",
-    "href": "posts/tuesday/index.html#which-container-tool",
-    "title": "Tuesday",
-    "section": "Which container tool",
-    "text": "Which container tool\n\nApptainer — for shared servers and clusters (it used to be called Singularity)\nDocker — for a personal machine\n\nReady-made images are kept on Docker Hub and Seqera. It is safer to pick a popular image from a trusted maker, such as biocontainers."
-  },
-  {
-    "objectID": "posts/tuesday/index.html#getting-an-image",
-    "href": "posts/tuesday/index.html#getting-an-image",
-    "title": "Tuesday",
-    "section": "Getting an image",
-    "text": "Getting an image\napptainer pull name.sif docker://repository/image:version\nThe .sif file that comes out is the container. Naming it with the tool and version keeps things clear later."
-  },
-  {
-    "objectID": "posts/tuesday/index.html#running-it",
-    "href": "posts/tuesday/index.html#running-it",
-    "title": "Tuesday",
-    "section": "Running it",
-    "text": "Running it\nRun a single command inside the container:\napptainer exec image.sif tool --version\nOr step inside and work there:\napptainer shell image.sif\nA container cannot see our files by default. -B outside:inside makes a folder on the computer visible inside the container.\nrun and exec are not the same: run first executes the container’s own start-up script, while exec skips it and runs exactly the command we give."
-  },
-  {
-    "objectID": "posts/tuesday/index.html#building-our-own",
-    "href": "posts/tuesday/index.html#building-our-own",
-    "title": "Tuesday",
-    "section": "Building our own",
-    "text": "Building our own\nIf no ready-made image exists, we describe one in a .def file: which operating system to start from, what to install (%post), which paths to set (%environment), and what to run by default (%runscript). Then:\napptainer build output.sif definition.def"
-  },
-  {
-    "objectID": "posts/tuesday/index.html#container-or-pixi",
-    "href": "posts/tuesday/index.html#container-or-pixi",
-    "title": "Tuesday",
-    "section": "Container or Pixi?",
-    "text": "Container or Pixi?\nPixi pins the tools. A container pins the whole system around them. Containers are bigger and slower to make, but more complete, so they suit sharing a finished pipeline or rescuing software that refuses to install."
-  },
-  {
-    "objectID": "posts/tuesday/index.html#up-next",
-    "href": "posts/tuesday/index.html#up-next",
-    "title": "Tuesday",
-    "section": "Up next",
-    "text": "Up next\nWhat I plan to pick up on Wednesday."
-  },
-  {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
-    "section": "",
-    "text": "This is a post with executable code."
-  },
-  {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "This is my first post in a Quarto blog. I have no idea what I’m doing but I will figure it out eventually.\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+    "section": "Notes",
+    "text": "Notes"
   },
   {
     "objectID": "posts/thursday/index.html",
     "href": "posts/thursday/index.html",
     "title": "Thursday",
     "section": "",
-    "text": "Write a short summary of Thursday here."
+    "text": "On Wednesday we wrote a small workflow ourselves. Today we used a ready-made, community pipeline from nf-core: nf-core/rnaseq. We ran it on our real RNA-seq data on the HPC2N cluster. Because the run takes hours, we started it inside a screen session so it kept running after we disconnected."
   },
   {
-    "objectID": "posts/thursday/index.html#what-i-did-today",
-    "href": "posts/thursday/index.html#what-i-did-today",
+    "objectID": "posts/thursday/index.html#what-we-did-today",
+    "href": "posts/thursday/index.html#what-we-did-today",
     "title": "Thursday",
     "section": "",
-    "text": "Write a short summary of Thursday here."
+    "text": "On Wednesday we wrote a small workflow ourselves. Today we used a ready-made, community pipeline from nf-core: nf-core/rnaseq. We ran it on our real RNA-seq data on the HPC2N cluster. Because the run takes hours, we started it inside a screen session so it kept running after we disconnected."
+  },
+  {
+    "objectID": "posts/thursday/index.html#what-is-nf-core",
+    "href": "posts/thursday/index.html#what-is-nf-core",
+    "title": "Thursday",
+    "section": "1. What is nf-core?",
+    "text": "1. What is nf-core?\nnf-core is a community that builds and maintains Nextflow pipelines for common analyses (RNA-seq, variant calling, metagenomics…). Every nf-core pipeline:\n\nis versioned (I can always rerun the exact same version, e.g. -r 3.26.0),\nuses containers for every tool,\nhas good documentation (the Usage, Parameters and Output tabs on the website),\ncomes with a test profile with tiny data to check that everything works.\n\nFor publications, this makes the analysis much easier to reproduce than a homemade script."
+  },
+  {
+    "objectID": "posts/thursday/index.html#start-a-screen-session-first",
+    "href": "posts/thursday/index.html#start-a-screen-session-first",
+    "title": "Thursday",
+    "section": "2. Start a screen session first",
+    "text": "2. Start a screen session first\nPipelines can run for hours. If I start them in a normal terminal and my connection drops, the run stops. So the first step is always:\n\nscreen -S rnaseq          # new session called \"rnaseq\"\n\n\nCtrl + a, then d: detach. The pipeline keeps running and I can close my laptop.\nscreen -ls: list sessions.\nscreen -r rnaseq: reconnect and see the progress."
+  },
+  {
+    "objectID": "posts/thursday/index.html#pixi-environment-with-nextflow-and-nf-core",
+    "href": "posts/thursday/index.html#pixi-environment-with-nextflow-and-nf-core",
+    "title": "Thursday",
+    "section": "3. Pixi environment with Nextflow and nf-core",
+    "text": "3. Pixi environment with Nextflow and nf-core\n\npixi init nextflow_test -c conda-forge -c bioconda\ncd nextflow_test\npixi add nextflow nf-core\n\n# check that everything works\npixi run nextflow -version\npixi run nf-core --help\npixi run nextflow run hello"
+  },
+  {
+    "objectID": "posts/thursday/index.html#the-hpc2n-configuration-file",
+    "href": "posts/thursday/index.html#the-hpc2n-configuration-file",
+    "title": "Thursday",
+    "section": "4. The HPC2N configuration file",
+    "text": "4. The HPC2N configuration file\nThe config file tells Nextflow how to use the cluster: use SLURM, use Singularity/Apptainer, and the maximum memory, CPUs and time a job may ask for.\n\nwget https://raw.githubusercontent.com/hpc2n/intro-course/master/exercises/NEXTFLOW/INTERACTIVE/hpc2n.config\n\nIn the file I changed project = null to our project ID, with single quotes. On the real run I also added my email under email to get a summary when the run finished.\n\n\nhpc2n.config (the parts that matter)\n\nparams {\n  project    = '&lt;project_ID&gt;'   // &lt;- changed this line\n  max_memory = 128.GB\n  max_cpus   = 28\n  max_time   = 168.h\n}\n\nsingularity {\n  enabled = true\n}\n\nprocess {\n  executor = 'slurm'\n  clusterOptions = { \"-A $params.project ${params.clusterOptions ?: ''}\" }\n}"
+  },
+  {
+    "objectID": "posts/thursday/index.html#test-run-with-the-built-in-test-data",
+    "href": "posts/thursday/index.html#test-run-with-the-built-in-test-data",
+    "title": "Thursday",
+    "section": "5. Test run with the built-in test data",
+    "text": "5. Test run with the built-in test data\nBefore using real data, I checked the setup and got to know the output with the pipeline’s test profile:\n\npixi run nextflow run nf-core/rnaseq -r 3.26.0 -profile test --outdir rnaseq_test -c hpc2n.config\n\nWhat each part means:\n\n\n\n\n\n\n\nPart\nMeaning\n\n\n\n\npixi run\nuse the Pixi environment\n\n\nnextflow run nf-core/rnaseq\ndownload and run the pipeline from nf-core\n\n\n-r 3.26.0\nuse this exact version\n\n\n-profile test\nuse the small built-in test data\n\n\n--outdir rnaseq_test\nwhere to save the results\n\n\n-c hpc2n.config\nsettings for the HPC2N cluster"
+  },
+  {
+    "objectID": "posts/thursday/index.html#running-the-pipeline-on-our-rna-seq-data",
+    "href": "posts/thursday/index.html#running-the-pipeline-on-our-rna-seq-data",
+    "title": "Thursday",
+    "section": "6. Running the pipeline on our RNA-seq data",
+    "text": "6. Running the pipeline on our RNA-seq data\n\nProject folder and data\n\nmkdir -p rnaseq_nfcore/data\ncd rnaseq_nfcore\npixi init -c conda-forge -c bioconda\npixi add nextflow nf-core\n\ncd data\nln -s /path/to/repbio26/common_data/RNAseq/*fastq.gz .\ncd ..\n\n\n\nThe samplesheet\nThe pipeline needs a CSV file that lists the samples. The exact format is described in the Usage tab of the pipeline. For paired-end data it has four columns: sample name, read 1, read 2 and strandedness (auto lets the pipeline figure it out).\nInstead of typing it by hand, I let a small loop write it. The chunk below runs, so you can see the result. On the server I replaced the path with my absolute path and saved it with &gt; samplesheet.csv at the end:\n\nDATA=/path/to/rnaseq_nfcore/data   # use ABSOLUTE paths\n\necho \"sample,fastq_1,fastq_2,strandedness\"\nfor id in SRR5223504 SRR5223517 SRR5223546 SRR5223559; do\n  echo \"${id},${DATA}/${id}_1.fastq.gz,${DATA}/${id}_2.fastq.gz,auto\"\ndone\n\nsample,fastq_1,fastq_2,strandedness\nSRR5223504,/path/to/rnaseq_nfcore/data/SRR5223504_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223504_2.fastq.gz,auto\nSRR5223517,/path/to/rnaseq_nfcore/data/SRR5223517_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223517_2.fastq.gz,auto\nSRR5223546,/path/to/rnaseq_nfcore/data/SRR5223546_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223546_2.fastq.gz,auto\nSRR5223559,/path/to/rnaseq_nfcore/data/SRR5223559_1.fastq.gz,/path/to/rnaseq_nfcore/data/SRR5223559_2.fastq.gz,auto\n\n\n\n\nReference genome\nOur samples are human. iGenomes has a human reference, but its annotation is outdated, so nf-core recommends downloading an up-to-date genome FASTA and GTF annotation (see the nf-core docs). I downloaded them to a reference/ folder.\n\n\nnf-core launch → nf-params.json\nOn the nf-core/rnaseq page I clicked Launch version 3.26.0 and filled in the form: absolute paths to the samplesheet, the output folder, the genome FASTA and the GTF file, and resume set to true. At the end, the launcher gives a JSON file. I saved it on the server as nf-params.json and added \"save_reference\": true, so the genome index is saved and does not have to be built again.\n\n\nnf-params.json (example, replace the paths)\n\n{\n    \"input\": \"/path/to/rnaseq_nfcore/samplesheet.csv\",\n    \"outdir\": \"/path/to/rnaseq_nfcore/results\",\n    \"fasta\": \"/path/to/rnaseq_nfcore/reference/genome.fa.gz\",\n    \"gtf\": \"/path/to/rnaseq_nfcore/reference/annotation.gtf.gz\",\n    \"save_reference\": true\n}\n\n\n\n\n\n\n\nWarningJSON is picky\n\n\n\nEvery line except the last one needs a comma at the end.\n\n\n\n\nStarting the run\nOption A: directly with Pixi, inside the screen session. This is what I did:\n\nscreen -S rnaseq\npixi run nextflow run nf-core/rnaseq -r 3.26.0 -resume -params-file nf-params.json -c hpc2n.config\n# Ctrl + a, d  -&gt; detach and go home :)\n\nOption B: submit it as a SLURM job with sbatch.\n\n\nzana_submit_rnaseq.sh\n\n#!/bin/bash -l\n#SBATCH -A &lt;project_ID&gt;\n#SBATCH -n 5\n#SBATCH -t 24:00:00\n\n/home/&lt;user&gt;/.pixi/bin/pixi run nextflow run nf-core/rnaseq -r 3.26.0 \\\n    -params-file /path/to/nf-params.json -c /path/to/hpc2n.config\n\n\nsbatch zana_submit_rnaseq.sh\nsqueue -u &lt;username&gt;\n\nThe main Nextflow process sends each step to SLURM as its own job, so squeue shows many small jobs appearing and disappearing while the pipeline runs."
+  },
+  {
+    "objectID": "posts/thursday/index.html#the-results",
+    "href": "posts/thursday/index.html#the-results",
+    "title": "Thursday",
+    "section": "7. The results",
+    "text": "7. The results\nWhen the run is finished, the output folder contains, among other things:\n\nmultiqc/: the first thing to open. One report with QC, trimming, alignment and quantification statistics for all samples.\nstar_salmon/: alignments and the gene/transcript count tables, which are the input for differential expression analysis.\nfastqc/, trimgalore/: quality control and trimming results.\npipeline_info/: exact versions of every tool and the run parameters. This is very useful for the methods section of a paper."
+  },
+  {
+    "objectID": "posts/thursday/index.html#cheat-sheet",
+    "href": "posts/thursday/index.html#cheat-sheet",
+    "title": "Thursday",
+    "section": "Cheat sheet",
+    "text": "Cheat sheet\n\n\n\n\n\n\n\nI want to…\nCommand\n\n\n\n\nstart / detach / return to a session\nscreen -S &lt;name&gt; / Ctrl+a d / screen -r &lt;name&gt;\n\n\nset up the environment\npixi add nextflow nf-core\n\n\ntest a pipeline\npixi run nextflow run nf-core/&lt;pipeline&gt; -r &lt;version&gt; -profile test --outdir &lt;dir&gt; -c hpc2n.config\n\n\nrun on my data\npixi run nextflow run nf-core/rnaseq -r 3.26.0 -resume -params-file nf-params.json -c hpc2n.config\n\n\ncheck jobs\nsqueue -u &lt;username&gt;\n\n\nclean up old runs\nnextflow log, then nextflow clean -f -before &lt;run_name&gt;"
   },
   {
     "objectID": "posts/thursday/index.html#notes",
     "href": "posts/thursday/index.html#notes",
     "title": "Thursday",
     "section": "Notes",
-    "text": "Notes\nWrite today’s notes here."
-  },
-  {
-    "objectID": "posts/thursday/index.html#up-next",
-    "href": "posts/thursday/index.html#up-next",
-    "title": "Thursday",
-    "section": "Up next",
-    "text": "Up next\nWhat I plan to pick up on Friday."
+    "text": "Notes"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Blog Zana",
+    "title": "Reproducible Research Course Blog",
     "section": "",
-    "text": "Friday\n\n\n\nweekly\n\n\n\nWrapping up the week.\n\n\n\n\n\nSep 18, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nThursday\n\n\n\nweekly\n\n\n\nDay four.\n\n\n\n\n\nSep 17, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWednesday\n\n\n\nweekly\n\n\n\nMidweek.\n\n\n\n\n\nSep 16, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nTuesday\n\n\n\nweekly\n\ntools\n\n\n\nToday we were learning about environments, such as Pixi, and containers, such as Apptainer. Inside the pixi we installed FastQC and MultiQC to check the quality of sequencing data. We also learned how to use screen to keep a session alive on a cluster.\n\n\n\n\n\nSep 15, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nMonday\n\n\n\nweekly\n\n\n\nStarting the week: setting up the blog.\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this blog"
-  },
-  {
-    "objectID": "posts/friday/index.html",
-    "href": "posts/friday/index.html",
-    "title": "Friday",
-    "section": "",
-    "text": "Write a short summary of Friday here."
-  },
-  {
-    "objectID": "posts/friday/index.html#what-i-did-today",
-    "href": "posts/friday/index.html#what-i-did-today",
-    "title": "Friday",
-    "section": "",
-    "text": "Write a short summary of Friday here."
-  },
-  {
-    "objectID": "posts/friday/index.html#notes",
-    "href": "posts/friday/index.html#notes",
-    "title": "Friday",
-    "section": "Notes",
-    "text": "Notes\nWrite today’s notes here."
-  },
-  {
-    "objectID": "posts/friday/index.html#looking-back-on-the-week",
-    "href": "posts/friday/index.html#looking-back-on-the-week",
-    "title": "Friday",
-    "section": "Looking back on the week",
-    "text": "Looking back on the week\nA few things that stood out across Monday through today."
+    "text": "Friday\n\n\n\nR\n\nggplot2\n\nvisualisation\n\nAI\n\n\n\nPlotting with ggplot2 and a discussion about AI in bioinformatics\n\n\n\n\n\nSep 18, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nThursday\n\n\n\nnf-core\n\nNextflow\n\nRNA-seq\n\nHPC2N\n\nscreen\n\nPixi\n\n\n\nRunning the nf-core/rnaseq pipeline\n\n\n\n\n\nSep 17, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nWednesday\n\n\n\ncontainers\n\nApptainer\n\nNextflow\n\nRNA-seq\n\nSalmon\n\n\n\nContainers and Nextflow workflows\n\n\n\n\n\nSep 16, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nTuesday\n\n\n\nPixi\n\nHPC2N\n\nSLURM\n\nscreen\n\nFastQC\n\nMultiQC\n\nRNA-seq\n\n\n\nPixi environments and quality control of RNA-seq data\n\n\n\n\n\nSep 15, 2026\n\n\nZana Brilej\n\n\n\n\n\n\n\n\n\n\n\n\nMonday\n\n\n\nQuarto\n\ngit\n\nGitHub\n\nGitHub Actions\n\n\n\nHow to create quarto blog in VS Code, connect it with git, and set up GitHub Actions so that it publishes every time I push.\n\n\n\n\n\nSep 14, 2026\n\n\nZana Brilej\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/monday/index.html",
     "href": "posts/monday/index.html",
     "title": "Monday",
     "section": "",
-    "text": "The first day of the week. I set up this blog with Quarto and got the project structure in place."
+    "text": "Morning session was about git and git hub. In the afternoon we were setting up this blog. We will use it to make notes on everything we do during the week. The blog was createdwith Quarto, using version control with git. We uploaded it to GitHub, and set GitHub Actions so that the website is updated and published automatically every time I push changes.\n\n\n\n\n\n\nTipThe idea of Reproducible Research\n\n\n\nSomeone else (or me, in six months) can take my data and my code and get the same result. So, good documentation is importnat. Quarto is a fantastic tool that lets me keep text, code and results together in one document, which is called literate programming."
   },
   {
-    "objectID": "posts/monday/index.html#what-i-did-today",
-    "href": "posts/monday/index.html#what-i-did-today",
+    "objectID": "posts/monday/index.html#what-we-did-today",
+    "href": "posts/monday/index.html#what-we-did-today",
     "title": "Monday",
     "section": "",
-    "text": "The first day of the week. I set up this blog with Quarto and got the project structure in place."
+    "text": "Morning session was about git and git hub. In the afternoon we were setting up this blog. We will use it to make notes on everything we do during the week. The blog was createdwith Quarto, using version control with git. We uploaded it to GitHub, and set GitHub Actions so that the website is updated and published automatically every time I push changes.\n\n\n\n\n\n\nTipThe idea of Reproducible Research\n\n\n\nSomeone else (or me, in six months) can take my data and my code and get the same result. So, good documentation is importnat. Quarto is a fantastic tool that lets me keep text, code and results together in one document, which is called literate programming."
+  },
+  {
+    "objectID": "posts/monday/index.html#creating-a-blog-with-quarto",
+    "href": "posts/monday/index.html#creating-a-blog-with-quarto",
+    "title": "Monday",
+    "section": "1. Creating a blog with Quarto",
+    "text": "1. Creating a blog with Quarto\nIn VS Code, open the command palette (View → Command Palette, or Ctrl/Cmd + Shift + P) and type:\nQuarto: Create Project\nChoose Blog Project, pick a folder on your computer and give the blog a name (I gave it a name New_blog).\nYou can do the same thing from the terminal:\n\nquarto create project blog New_blog\n\n\nWhat is inside the project folder?\nNew_blog/\n├── _quarto.yml        # settings for the whole website (title, navbar, theme...)\n├── index.qmd          # the home page, which lists all posts\n├── about.qmd          # the \"About\" page\n├── profile.jpg        # picture used on the About page\n├── styles.css         # extra styling \n└── posts/\n    ├── _metadata.yml  # settings shared by all posts\n    └── monday/\n        └── index.qmd  # one folder per post, the post itself is index.qmd\nEvery post is in its own folder inside posts/. The home page finds them automatically. This is called a listing."
+  },
+  {
+    "objectID": "posts/monday/index.html#previewing-the-blog",
+    "href": "posts/monday/index.html#previewing-the-blog",
+    "title": "Monday",
+    "section": "2. Previewing the blog",
+    "text": "2. Previewing the blog\nTo see the website while I work on it:\n\nquarto preview\n\nThis opens the blog in the browser and refreshes it every time I save a file. In VS Code, the Preview button (top right of a .qmd file) does the same for a single page."
+  },
+  {
+    "objectID": "posts/monday/index.html#writing-a-post",
+    "href": "posts/monday/index.html#writing-a-post",
+    "title": "Monday",
+    "section": "3. Writing a post",
+    "text": "3. Writing a post\nA post starts with a YAML header between two lines of ---. It holds information about the post:\n---\ntitle: \"Monday\"\ndescription: \"One sentence shown on the home page\"\ndate: \"2026-09-14\"\ncategories: [Quarto, git]\n---\nAfter the header comes normal text written in Markdown (**bold**, *italic*, ## Heading, [link](https://...)), and code chunks.\n\nCode chunks\nA code chunk is a block of code that Quarto can actually run when it builds the page. The result is shown right below the code.\nLines starting with #| are chunk options. They control what happens with the chunk:\n\n\n\n\n\n\n\nOption\nWhat it does\n\n\n\n\n#| eval: false\nshow the code but don’t run it (I use this for code that only works on the HPC server)\n\n\n#| echo: false\nrun the code but hide it, show only the result\n\n\n#| output: false\nrun the code but hide the result\n\n\n#| warning: false\nhide warnings\n\n\n#| label: my-chunk\ngive the chunk a name\n\n\n#| fig-cap: \"...\"\ncaption for a figure\n\n\n\n\n\n\n\n\n\nNoteWhy most chunks in this blog have eval: false\n\n\n\nThe commands from Tuesday to Thursday were run on the HPC2N server, with data and software that only exist there. My computer can’t run them, so I show the code without executing it.\n\n\n\n\nFreeze\nIn _quarto.yml I added:\nexecute:\n  freeze: auto\nThis means Quarto re-runs the code in a post only when that post has changed, and stores the results in a folder called _freeze/. I commit _freeze/ to GitHub, so GitHub Actions can build the website without needing R installed.\n\n\n\n\n\n\nTipMore features\n\n\n\nQuarto website # Here is literally everything you need to know about Quarto. It has a lot of features!"
+  },
+  {
+    "objectID": "posts/monday/index.html#tracking-the-blog-with-git",
+    "href": "posts/monday/index.html#tracking-the-blog-with-git",
+    "title": "Monday",
+    "section": "4. Tracking the blog with git",
+    "text": "4. Tracking the blog with git\ngit keeps a history of every change I make. In the terminal, inside the blog folder:\n\ngit init                      # turn the folder into a git repository\ngit status                    # see which files are new or changed\ngit add .                     # stage all files\ngit commit -m \"Create blog\"   # save a snapshot with a message"
+  },
+  {
+    "objectID": "posts/monday/index.html#putting-the-blog-on-github",
+    "href": "posts/monday/index.html#putting-the-blog-on-github",
+    "title": "Monday",
+    "section": "5. Putting the blog on GitHub",
+    "text": "5. Putting the blog on GitHub\nOn [github.com], create a new, public, empty repository (no README, no .gitignore, no license). GitHub then shows the commands under “…or push an existing repository from the command line”:\n\ngit remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git\ngit branch -M main\ngit push -u origin main\n\nRefresh the GitHub page and the files are there."
+  },
+  {
+    "objectID": "posts/monday/index.html#publishing-with-github-actions",
+    "href": "posts/monday/index.html#publishing-with-github-actions",
+    "title": "Monday",
+    "section": "6. Publishing with GitHub Actions",
+    "text": "6. Publishing with GitHub Actions\nGitHub Pages is a free hosting service for websites. GitHub Actions is a robot that runs a set of commands every time I push. Together, they rebuild and publish the blog automatically. I followed the Quarto guide.\nStep 1. Render the blog locally, so the _freeze/ folder exists:\n\nquarto render\n\nStep 2. Publish once by hand. This creates a branch called gh-pages, which is where the finished website lives:\n\nquarto publish gh-pages\n\nStep 3. On GitHub, go to Settings → Pages and check that the source is Deploy from a branch, branch gh-pages, folder / (root).\nStep 4. Add the workflow file .github/workflows/publish.yml. This is the “recipe” GitHub Actions follows:\n\n\n.github/workflows/publish.yml\n\non:\n  workflow_dispatch:\n  push:\n    branches: main\n\nname: Quarto Publish\n\njobs:\n  build-deploy:\n    runs-on: ubuntu-latest\n    permissions:\n      contents: write\n    steps:\n      - name: Check out repository\n        uses: actions/checkout@v4\n\n      - name: Set up Quarto\n        uses: quarto-dev/quarto-actions/setup@v2\n\n      - name: Render and Publish\n        uses: quarto-dev/quarto-actions/publish@v2\n        with:\n          target: gh-pages\n        env:\n          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n\nStep 5. Commit and push. The Actions tab on GitHub shows the workflow running (yellow = running, green = done, red = error). The blog will online at https://zanabrilej22.github.io/Reproducible_research_course/.\n\ngit add .\ngit commit -m \"Add GitHub Actions workflow\"\ngit push\n\nFrom now on, every git push updates the website.\n\n\n\n\n\n\nWarningDon’t push data\n\n\n\nGitHub is for code, not data. Large files (like .fastq.gz) should be listed in .gitignore so git ignores them."
+  },
+  {
+    "objectID": "posts/monday/index.html#cheat-sheet",
+    "href": "posts/monday/index.html#cheat-sheet",
+    "title": "Monday",
+    "section": "Cheat sheet",
+    "text": "Cheat sheet\n\n\n\nI want to…\nCommand\n\n\n\n\ncreate a blog\nquarto create project blog &lt;name&gt;\n\n\nsee the blog live while editing\nquarto preview\n\n\nbuild the whole website\nquarto render\n\n\nsee what changed\ngit status\n\n\nsave a snapshot\ngit add . then git commit -m \"message\"\n\n\nupload to GitHub\ngit push\n\n\npublish by hand\nquarto publish gh-pages"
   },
   {
     "objectID": "posts/monday/index.html#notes",
     "href": "posts/monday/index.html#notes",
     "title": "Monday",
     "section": "Notes",
-    "text": "Notes\nWrite today’s notes here."
-  },
-  {
-    "objectID": "posts/monday/index.html#up-next",
-    "href": "posts/monday/index.html#up-next",
-    "title": "Monday",
-    "section": "Up next",
-    "text": "Up next\nWhat I plan to pick up on Tuesday."
+    "text": "Notes"
   },
   {
     "objectID": "posts/wednesday/index.html",
     "href": "posts/wednesday/index.html",
     "title": "Wednesday",
     "section": "",
-    "text": "Write a short summary of Wednesday here."
+    "text": "First we learned about containers and ran our QC tools inside them with Apptainer. Then we learned the basics of the workflow manager Nextflow and used it to build a small RNA-seq workflow (index → quantify → QC → report)."
   },
   {
-    "objectID": "posts/wednesday/index.html#what-i-did-today",
-    "href": "posts/wednesday/index.html#what-i-did-today",
+    "objectID": "posts/wednesday/index.html#what-we-did-today",
+    "href": "posts/wednesday/index.html#what-we-did-today",
     "title": "Wednesday",
     "section": "",
-    "text": "Write a short summary of Wednesday here."
+    "text": "First we learned about containers and ran our QC tools inside them with Apptainer. Then we learned the basics of the workflow manager Nextflow and used it to build a small RNA-seq workflow (index → quantify → QC → report)."
+  },
+  {
+    "objectID": "posts/wednesday/index.html#part-1-containers",
+    "href": "posts/wednesday/index.html#part-1-containers",
+    "title": "Wednesday",
+    "section": "Part 1: Containers",
+    "text": "Part 1: Containers\n\nWhat is a container?\nA Pixi environment packs the tools. A container goes one step further: it packs the tools and a whole operating system into a single file, called an image. Because the operating system travels with it, a container runs the same way on my laptop, on a colleague’s computer and on a cluster. Images do not change once they are built, so they stay stable over time.\nPopular container programs are Docker, Podman and Apptainer (earlier called Singularity). On shared servers like HPC2N, Apptainer is the right choice.\n\n\nGetting an image\nTwo good places to find images:\n\nDocker Hub: images that people have uploaded. The biocontainers profile has many well-built bioinformatics tools.\nSeqera Containers: builds an image on request from conda-forge/bioconda packages, and can put several tools into one image. Choose Singularity as the format. #we used this to get containers for Salmon, FastQC and MultiQC.\n\n\n# from Seqera (note the oras:// prefix)\napptainer pull vcftools_0.1.17.sif oras://community.wave.seqera.io/library/vcftools:0.1.17--b541aa8d9f9213f9\n\nThe first name (vcftools_0.1.17.sif) is what the file is called on my computer. Putting the tool name and version in it makes it clear what is inside.\n\n\nUsing a container\n\n# run one command inside the container (\"from the outside\")\napptainer exec vcftools_0.1.17.sif vcftools --version\n\n# open a shell inside the container (\"from the inside\"), type exit to leave\napptainer shell vcftools_0.1.17.sif\n\n# make a folder from outside visible inside the container with -B outside:inside\napptainer exec -B ../data:/rawdata fastqc_0.12.1.sif ls /rawdata\n\nexec vs run:\n\napptainer exec runs the command I give it. This is what I use most.\napptainer run first runs the container’s built-in runscript (its default action).\n\n\n\nBuilding my own container\nIf nobody has made an image for a tool, I can build one from a definition file. The course example was a cow that tells the date:\n\n\nlolcow.def\n\nBootstrap: docker\nFrom: ubuntu:22.04\n\n%post\n    apt-get -y update\n    apt-get -y install cowsay lolcat fortune\n\n%environment\n    export LC_ALL=C\n    export PATH=/usr/games:$PATH\n\n%runscript\n    date | cowsay | lolcat\n\n\nFrom: which operating system to start from\n%post commands that install things\n%environment settings available when the container runs\n%runscript what apptainer run does\n\n\napptainer build lolcow.sif lolcow.def\napptainer run lolcow.sif\n\n\n\nQC with containers\nWe repeated Tuesday’s QC, but with FastQC and MultiQC from containers instead of the Pixi environment. The only change in the SLURM script is the command line:\n\n\nscripts/fastqc_container.sh\n\n#! /bin/bash -l\n#SBATCH -A &lt;project_ID&gt;\n#SBATCH -t 30:00\n#SBATCH -n 1\n\napptainer exec ../containers/fastqc_0.12.1.sif fastqc -o ../fastqc --noextract ../data/*fastq.gz\n\nMultiQC from the outside and from the inside:\n\n# outside\napptainer exec containers/multiqc.sif multiqc fastqc -o multiqc\n\n# inside\napptainer shell containers/multiqc.sif\nmultiqc fastqc -o multiqc\nexit"
+  },
+  {
+    "objectID": "posts/wednesday/index.html#part-2-nextflow-basics",
+    "href": "posts/wednesday/index.html#part-2-nextflow-basics",
+    "title": "Wednesday",
+    "section": "Part 2: Nextflow basics",
+    "text": "Part 2: Nextflow basics\n\nWhy a workflow manager?\nNextflow:\n\nconnects the steps so the output of one becomes the input of the next,\nruns independent tasks in parallel,\nremembers what already finished, so I can resume after an error,\nseparates what to run (the workflow) from where to run it (laptop, cluster, cloud). This is called execution abstraction.\n\n\n\nThe building blocks\n\nprocess: one step, e.g. “run FastQC”. It has input, output and a script.\nchannel: a queue that carries data from one process to the next.\nworkflow: the part that connects processes and channels.\nexecutor: where the tasks run (local or slurm).\n\n\n\n\n\n\nflowchart LR\n    A([\"greeting_ch&lt;br/&gt;'Hello world!'\"]) --&gt; B[\"SPLITLETTERS\"]\n    B --&gt; C([\"chunk_aa, chunk_ab\"])\n    C --&gt;|flatten| D[\"CONVERTTOUPPER\"]\n    D --&gt; E([\"HELLO&lt;br/&gt;WORLD!\"])\n\n\n\n\n\n\n\n\nSetting up\n\nscreen -S nextflow\ncp -r /path/to/repbio26/common_data/nf-training .\ncd nf-training\npixi init -c conda-forge -c bioconda\npixi add nextflow\n\n\n\nhello.nf\n\n\nhello.nf\n\n#!/usr/bin/env nextflow\n\nparams.greeting = 'Hello world!'          // a parameter I can change from the command line\n\nprocess SPLITLETTERS {\n    input:\n    val x                                  // a value\n\n    output:\n    path 'chunk_*'                         // files starting with chunk_\n\n    script:\n    \"\"\"\n    printf '$x' | split -b 6 - chunk_\n    \"\"\"\n}\n\nprocess CONVERTTOUPPER {\n    input:\n    path y\n\n    output:\n    stdout                                 // whatever is printed\n\n    script:\n    \"\"\"\n    cat $y | tr '[a-z]' '[A-Z]'\n    \"\"\"\n}\n\nworkflow {\n    greeting_ch = Channel.of(params.greeting)\n    letters_ch  = SPLITLETTERS(greeting_ch)\n    results_ch  = CONVERTTOUPPER(letters_ch.flatten())   // flatten: one task per chunk\n    results_ch.view{ it }\n}\n\n\npixi run nextflow run hello.nf\n\nOutput:\nexecutor &gt;  local (3)\n[96/fd5f07] SPLITLETTERS (1)   [100%] 1 of 1 ✔\n[7e/dad424] CONVERTTOUPPER (2) [100%] 2 of 2 ✔\nHELLO\nWORLD!\nThe codes like 96/fd5f07 are the start of the folder in work/ where that task ran. It is useful for debugging. HELLO and WORLD! can come in any order because the two tasks run in parallel.\n\n\nResume and parameters\n\n# after changing a process: only the changed part is re-run, the rest comes from the cache\npixi run nextflow run hello.nf -resume\n\n# change a parameter from the command line (two dashes = pipeline parameter)\npixi run nextflow run hello.nf -resume --greeting 'Bonjour le monde!'\n\n\n\n\n\n\n\nNoteOne dash or two?\n\n\n\n-resume has one dash, so it is an option for Nextflow itself. --greeting has two dashes, so it is a parameter of my pipeline.\n\n\nSettings can come from many places. The most important ones, from strongest to weakest: command line (--param) → -params-file → -c my.config → nextflow.config in the current folder → values in the script.\n\n\nCleaning up\nThe work/ folder grows fast.\n\npixi run nextflow log                        # list previous runs in this folder\npixi run nextflow clean -f                   # remove work files\npixi run nextflow clean -before &lt;run_name&gt; -f"
+  },
+  {
+    "objectID": "posts/wednesday/index.html#part-3-a-simple-rna-seq-workflow-with-nextflow",
+    "href": "posts/wednesday/index.html#part-3-a-simple-rna-seq-workflow-with-nextflow",
+    "title": "Wednesday",
+    "section": "Part 3: A simple RNA-seq workflow with Nextflow",
+    "text": "Part 3: A simple RNA-seq workflow with Nextflow\nWe built this workflow step by step in script1.nf to script7.nf:\n\n\n\n\n\nflowchart TD\n    T([transcriptome.fa]) --&gt; IDX[\"INDEX&lt;br/&gt;salmon index\"]\n    R([paired-end reads]) --&gt;|fromFilePairs| RP([read pairs per sample])\n    IDX --&gt; Q[\"QUANTIFICATION&lt;br/&gt;salmon quant\"]\n    RP --&gt; Q\n    RP --&gt; FQ[\"FASTQC\"]\n    Q --&gt; M[\"MULTIQC\"]\n    FQ --&gt; M\n    M --&gt; REP([multiqc_report.html])\n\n\n\n\n\n\n\nINDEX: Salmon turns the transcriptome into a searchable index. This is done once.\nQUANTIFICATION: for each sample, Salmon estimates how much of each transcript is present.\nFASTQC: checks read quality. It runs at the same time as quantification, because neither needs the other.\nMULTIQC: waits for everything and makes one report.\n\n\nRunning on the cluster: nextflow.config\nRunning on the login node is not allowed on a cluster, so we told Nextflow to send every task to SLURM. This file is read automatically when it is in the folder where I run Nextflow:\n\n\nnextflow.config\n\nprocess {\n    executor = \"slurm\"\n    time = '2.h'          // default time for every process\n    cpus = 4\n\n    withName: 'INDEX' {   // settings only for the INDEX process\n        time = 15.m\n        cpus = 2\n    }\n    withName: 'QUANTIFICATION' {\n        time = 30.m\n        cpus = 2\n    }\n}\n\nresume = true             // always resume, no need to type -resume\nsingularity.enabled = true\n\nexecutor {\n    account = '&lt;project_ID&gt;'\n}\n\n\n\nChannels of read pairs\nSalmon needs both files of a pair together. fromFilePairs groups them by sample name. The {1,2} marks the part of the file name that differs:\nread_pairs_ch = channel.fromFilePairs(params.reads)\nread_pairs_ch.view()\n// [gut, [/.../gut_1.fq, /.../gut_2.fq]]   &lt;- a tuple: sample ID + list of two files\n\n\nThe complete workflow\nThis is what my final script looked like. Each process gets its tool from a container, which is more reproducible than installing the tools in the environment:\n\n\nscript7.nf\n\n#!/usr/bin/env nextflow\n\nparams.reads              = \"$projectDir/data/ggal/gut_{1,2}.fq\"\nparams.transcriptome_file = \"$projectDir/data/ggal/transcriptome.fa\"\nparams.outdir             = \"results\"\n\nworkflow {\n    read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true)\n\n    index_ch  = INDEX(file(params.transcriptome_file, checkIfExists: true))\n    quant_ch  = QUANTIFICATION(index_ch, read_pairs_ch)\n    fastqc_ch = FASTQC(read_pairs_ch)\n\n    // mix: put both channels together; collect: wait for all and pass them as ONE item\n    MULTIQC(quant_ch.mix(fastqc_ch).collect())\n}\n\nprocess INDEX {\n    container 'oras://community.wave.seqera.io/library/salmon:2.7.0--cb05356ce9eb88b7'\n\n    input:\n    path transcriptome\n\n    output:\n    path 'salmon_index'\n\n    script:\n    \"\"\"\n    salmon index --threads $task.cpus -t $transcriptome -i salmon_index\n    \"\"\"\n}\n\nprocess QUANTIFICATION {\n    tag \"Salmon on $sample_id\"\n    container 'oras://community.wave.seqera.io/library/salmon:2.7.0--cb05356ce9eb88b7'\n    publishDir \"$params.outdir/salmon\", mode: 'copy'\n\n    input:\n    path salmon_index\n    tuple val(sample_id), path(reads)\n\n    output:\n    path \"$sample_id\"\n\n    script:\n    \"\"\"\n    salmon quant --threads $task.cpus --libType=U -i $salmon_index -1 ${reads[0]} -2 ${reads[1]} -o $sample_id\n    \"\"\"\n}\n\nprocess FASTQC {\n    tag \"FastQC on $sample_id\"\n    container '&lt;fastqc container address from Seqera&gt;'\n\n    input:\n    tuple val(sample_id), path(reads)\n\n    output:\n    path \"fastqc_${sample_id}_logs\"\n\n    script:\n    \"\"\"\n    mkdir fastqc_${sample_id}_logs\n    fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads}\n    \"\"\"\n}\n\nprocess MULTIQC {\n    container '&lt;multiqc container address from Seqera&gt;'\n    publishDir \"$params.outdir/multiqc\", mode: 'copy'\n\n    input:\n    path '*'\n\n    output:\n    path 'multiqc_report.html'\n\n    script:\n    \"\"\"\n    multiqc .\n    \"\"\"\n}\n\n\n# run on all three samples (gut, liver, lung)\npixi run nextflow run script7.nf --reads 'data/ggal/*_{1,2}.fq'\n\n\n\n\n\n\n\nTippublishDir and mode: 'copy'\n\n\n\nBy default, publishDir only makes links to files inside work/. If I clean work/, the results disappear. mode: 'copy' makes real copies that survive the cleanup."
+  },
+  {
+    "objectID": "posts/wednesday/index.html#cheat-sheet",
+    "href": "posts/wednesday/index.html#cheat-sheet",
+    "title": "Wednesday",
+    "section": "Cheat sheet",
+    "text": "Cheat sheet\n\n\n\n\n\n\n\nI want to…\nCommand\n\n\n\n\ndownload an image\napptainer pull &lt;name&gt;.sif docker://... or oras://...\n\n\nrun a tool in a container\napptainer exec &lt;image&gt;.sif &lt;command&gt;\n\n\nwork inside a container\napptainer shell &lt;image&gt;.sif\n\n\nmake a folder visible inside\n-B outside/path:inside/path\n\n\nbuild an image\napptainer build &lt;name&gt;.sif &lt;name&gt;.def\n\n\nrun a Nextflow script\npixi run nextflow run script.nf\n\n\ncontinue where it stopped\nadd -resume\n\n\nchange a parameter\nadd --param_name value\n\n\nsee previous runs / clean up\nnextflow log / nextflow clean -f"
   },
   {
     "objectID": "posts/wednesday/index.html#notes",
     "href": "posts/wednesday/index.html#notes",
     "title": "Wednesday",
     "section": "Notes",
-    "text": "Notes\nWrite today’s notes here."
+    "text": "Notes"
   },
   {
-    "objectID": "posts/wednesday/index.html#up-next",
-    "href": "posts/wednesday/index.html#up-next",
-    "title": "Wednesday",
-    "section": "Up next",
-    "text": "Up next\nWhat I plan to pick up on Thursday."
+    "objectID": "posts/friday/index.html",
+    "href": "posts/friday/index.html",
+    "title": "Friday",
+    "section": "",
+    "text": "In the morning we learned how to make plots in R with ggplot2. In the afternoon we had a discussion about AI in bioinformatics."
+  },
+  {
+    "objectID": "posts/friday/index.html#what-we-did-today",
+    "href": "posts/friday/index.html#what-we-did-today",
+    "title": "Friday",
+    "section": "",
+    "text": "In the morning we learned how to make plots in R with ggplot2. In the afternoon we had a discussion about AI in bioinformatics."
+  },
+  {
+    "objectID": "posts/friday/index.html#part-1-ggplot2",
+    "href": "posts/friday/index.html#part-1-ggplot2",
+    "title": "Friday",
+    "section": "Part 1: ggplot2",
+    "text": "Part 1: ggplot2\n\nSetup\n\ninstall.packages(\"ggplot2\")   # only needed once\n\n\nlibrary(ggplot2)\n\n\n\nThe grammar of graphics\nEvery ggplot is built from the same layers, added with +:\n\n\n\n\n\n\n\n\nLayer\nQuestion it answers\nExample\n\n\n\n\ndata\nwhich table?\nggplot(iris, ...)\n\n\naesthetics aes()\nwhich column goes where (x, y, colour, size…)?\naes(x = Sepal.Length, colour = Species)\n\n\ngeoms\nwhat shape? points, lines, boxes…\ngeom_point(), geom_boxplot()\n\n\nfacets\nsplit into small panels?\nfacet_wrap(~ Species)\n\n\nscales\nhow values map to colours/axes\nscale_colour_manual(), scale_y_log10()\n\n\nlabels\ntitles and axis names\nlabs(title = ..., x = ...)\n\n\ntheme\nthe look (background, fonts…)\ntheme_bw()\n\n\n\n\n\n1. A first plot\niris is a dataset built into R: flower measurements from three species.\n\nggplot(data = iris, mapping = aes(x = Sepal.Length, y = Petal.Length)) +\n  geom_point()\n\n\n\n\n\n\n\nFigure 1: The simplest ggplot: data + aesthetics + one geom.\n\n\n\n\n\n\n\n2. Colour, labels and a theme\n\nggplot(iris, aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +\n  geom_point(size = 2, alpha = 0.7) +\n  labs(\n    title = \"Petal length vs sepal length\",\n    x = \"Sepal length (cm)\",\n    y = \"Petal length (cm)\",\n    colour = \"Species\"\n  ) +\n  theme_bw()\n\n\n\n\n\n\n\nFigure 2: Colour mapped to species, with labels and a cleaner theme.\n\n\n\n\n\n\n\n\n\n\n\nImportantInside or outside aes()?\n\n\n\n\nInside aes() = depends on the data: aes(colour = Species) gives each species its own colour.\nOutside aes() = the same for everything: geom_point(colour = \"blue\") makes all points blue.\n\n\n\n\n\n3. Boxplots with the data points on top\n\nggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) +\n  geom_boxplot(alpha = 0.5, outlier.shape = NA) +\n  geom_jitter(width = 0.15, alpha = 0.6) +\n  labs(x = NULL, y = \"Petal width (cm)\") +\n  theme_classic() +\n  theme(legend.position = \"none\")\n\n\n\n\n\n\n\nFigure 3: A boxplot shows the distribution. Jittered points show every observation.\n\n\n\n\n\n\n\n4. Facets and trend lines\n\nggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +\n  geom_point(colour = \"steelblue\") +\n  geom_smooth(method = \"lm\", colour = \"black\") +\n  facet_wrap(~ Species) +\n  theme_bw()\n\n\n\n\n\n\n\nFigure 4: One panel per species, each with a linear trend line.\n\n\n\n\n\n\n\n5. A volcano plot\nA volcano plot is the classic way to show a differential expression result: fold change on the x-axis, significance on the y-axis. The data below is simulated, just to practise the plot.\n\nset.seed(42)\nn_genes &lt;- 2000\nde &lt;- data.frame(\n  gene   = paste0(\"gene_\", seq_len(n_genes)),\n  log2FC = rnorm(n_genes, mean = 0, sd = 1.2)\n)\nde$pvalue &lt;- 10^(-abs(de$log2FC) * runif(n_genes, 0.5, 3))\nde$direction &lt;- ifelse(de$pvalue &lt; 0.01 & de$log2FC &gt;  1, \"Up\",\n                ifelse(de$pvalue &lt; 0.01 & de$log2FC &lt; -1, \"Down\", \"Not significant\"))\nhead(de)\n\n    gene     log2FC       pvalue       direction\n1 gene_1  1.6451501 0.0005177275              Up\n2 gene_2 -0.6776378 0.0104638682 Not significant\n3 gene_3  0.4357541 0.2273419244 Not significant\n4 gene_4  0.7594351 0.0100262655 Not significant\n5 gene_5  0.4851220 0.5083378570 Not significant\n6 gene_6 -0.1273494 0.6325646647 Not significant\n\ntable(de$direction)\n\n\n           Down Not significant              Up \n            293            1444             263 \n\n\n\nggplot(de, aes(x = log2FC, y = -log10(pvalue), colour = direction)) +\n  geom_point(alpha = 0.6, size = 1.2) +\n  geom_vline(xintercept = c(-1, 1), linetype = \"dashed\") +\n  geom_hline(yintercept = -log10(0.01), linetype = \"dashed\") +\n  scale_colour_manual(values = c(\"Down\" = \"#2166ac\",\n                                 \"Not significant\" = \"grey75\",\n                                 \"Up\" = \"#b2182b\")) +\n  labs(x = \"log2 fold change\", y = \"-log10(p-value)\", colour = NULL) +\n  theme_minimal()\n\n\n\n\n\n\n\nFigure 5: Volcano plot of simulated data. Dashed lines show the cut-offs |log2FC| &gt; 1 and p &lt; 0.01.\n\n\n\n\n\n\n\n6. Saving a plot\n\np &lt;- ggplot(iris, aes(Sepal.Length, Petal.Length, colour = Species)) + geom_point()\nggsave(\"my_plot.png\", plot = p, width = 6, height = 4, dpi = 300)\nggsave(\"my_plot.pdf\", plot = p, width = 6, height = 4)   # vector format, good for papers"
+  },
+  {
+    "objectID": "posts/friday/index.html#part-2-ai-in-bioinformatics",
+    "href": "posts/friday/index.html#part-2-ai-in-bioinformatics",
+    "title": "Friday",
+    "section": "Part 2: AI in bioinformatics",
+    "text": "Part 2: AI in bioinformatics\nThe afternoon was a discussion about AI in bioinformatics. The main points:\nLLMs predict text, they don’t “know” things. They are trained on huge amounts of internet text, including biased and wrong content. They don’t say “I don’t know” and can hallucinate answers, including citations that don’t exist. Every reference an AI gives me must be checked.\nData privacy. Sequencing and patient data are sensitive. Pasting data into an online chatbot can send it to a company’s servers, depending on the terms of service. A safer habit is to describe the data (column names, data types) instead of uploading it. Local, open-weight models keep everything on my own computer, but need good hardware and are usually less capable.\nLearning and productivity. Relying on AI too much can mean learning less. Studies discussed in the course suggest it does not always make experienced people faster either.\nResponsibility. I am responsible for everything I use.\nEnvironmental cost. Data centres use a lot of electricity and water, so it is worth thinking before sending a query.\nAI and reproducibility. The habits from this week (version control, clear folder structure, documented decisions) also make it easier for an AI assistant, or a human colleague, to understand and help with a project."
+  },
+  {
+    "objectID": "posts/friday/index.html#cheat-sheet",
+    "href": "posts/friday/index.html#cheat-sheet",
+    "title": "Friday",
+    "section": "Cheat sheet",
+    "text": "Cheat sheet\n\n\n\n\n\n\n\nI want to…\nCode\n\n\n\n\nstart a plot\nggplot(data, aes(x = ..., y = ...))\n\n\nscatter / line / bar / boxplot\ngeom_point(), geom_line(), geom_col(), geom_boxplot()\n\n\ncolour by a column\naes(colour = column) (or fill = for areas)\n\n\none fixed colour\ngeom_point(colour = \"blue\")\n\n\nsplit into panels\nfacet_wrap(~ column)\n\n\nadd a trend line\ngeom_smooth(method = \"lm\")\n\n\nset titles and axis names\nlabs(title = , x = , y = )\n\n\nchange the look\ntheme_bw(), theme_minimal(), theme(legend.position = \"none\")\n\n\nsave\nggsave(\"plot.png\", width = , height = , dpi = 300)"
+  },
+  {
+    "objectID": "posts/friday/index.html#notes",
+    "href": "posts/friday/index.html#notes",
+    "title": "Friday",
+    "section": "Notes",
+    "text": "Notes"
   }
 ]
