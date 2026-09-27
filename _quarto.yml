@@ -17,7 +17,6 @@ format:
   html:
     theme:
       - minty
-      - brand
     css: styles.css
 
 

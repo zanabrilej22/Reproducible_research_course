@@ -2,7 +2,7 @@
 title: "About me"
 image: profile copy.jpg
 about:
-  template: minty
+  template: jolla
   links:
     - icon: linkedin
       text: LinkedIn
